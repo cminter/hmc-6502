@@ -50,6 +50,15 @@ class Memspace:
             current_offset = (current_offset + 1) % (2**WIDTH)
 
 class Machine:
+    C = 1<<0
+    Z = 1<<1
+    I = 1<<2
+    D = 1<<3
+    B = 1<<4
+    # bit 5 is expansion
+    V = 1<<6
+    N = 1<<7
+    
     def __init__(self):
         self.mem = Memspace()
         
@@ -65,6 +74,13 @@ class Machine:
         # reset data bus
         self.d = None
         
+    def set_flag(self, flag):
+        self.flags = self.flags | flag
+        
+    def clear_flag(self, flag):
+        self.set_flag(flag)
+        self.flags = self.flags - flag
+        
     def __str__(self):
         return "flags (NVxBDIZC): %s \na: %s \npc: %s \nx: %s\ny: %s" %\
             (int2bin(self.flags), hex(self.a), hex(self.pc), hex(self.x), hex(self.y))
@@ -79,12 +95,13 @@ class Machine:
             raise InvalidOpcodeError
         
         # assert correct value on data bus    
-        self.d = address_mode(self, address)
+        (self.d, self.daddr) = address_mode(self, address)
         
         # advance PC and run instruction
         # (advance PC first so that we can change it in the instruction
         # not all instructions that need to set flags actually set A,
         # so in those cases we write to result, and test that for our flags.
+        old_a = self.a
         self.result = None
         self.pc = (address + length) % MAXMEM
         instruction_func(self)
@@ -94,16 +111,30 @@ class Machine:
         
         # set flags from result
         for flag in flags_to_set:
-            if flag == 's':
-                pass
+            if flag == 'n':
+                if (self.result & 0x80):
+                    self.set_flag(self.N)
+                else:
+                    self.clear_flag(self.N)
+            
             elif flag == 'v':
+                # see p28 of 6802 programming manual
                 pass
+                
             elif flag == 'z':
-                pass
+                if (self.result & 0xff) == 0x0:
+                    self.set_flag(self.Z)
+                else:
+                    self.clear_flag(self.Z)
+            
             elif flag == 'c':
-                pass
+                if (self.result & 0x100):
+                    self.set_flag(self.V)
+                else:
+                    self.clear_flag(self.V)
+            
             else:
-                raise ProgrammingError, "invalid flag to set"
+                raise ValueError, "invalid flag to set"
                 
         # normalize registers
         self.a = self.a & (2**WIDTH - 1)

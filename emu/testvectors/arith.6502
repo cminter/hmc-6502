@@ -1,0 +1,18 @@
+# test arithmetic functions
+# adc
+69
+42
+69
+42
+# and
+29
+4
+# asl
+0a
+6
+# eor
+49
+6
+# break and dump status
+0
+1

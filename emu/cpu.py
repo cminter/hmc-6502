@@ -2,7 +2,7 @@
 # implements base for 6502emu
 # tbarr@cs.hmc.edu, 27sep07
 
-from instructions import instruction_table
+from instruction_table import instruction_table
 
 WIDTH = 8
 MEMWORDS = 2
@@ -92,6 +92,7 @@ class Machine:
             (name, address_mode, instruction_func, flags_to_set, length) \
                 = instruction_table[self.mem[address]]
         except KeyError:
+            print "badop@%s: %s" % (address, hex(self.mem[address]))
             raise InvalidOpcodeError
         
         # assert correct value on data bus    

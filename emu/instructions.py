@@ -44,35 +44,68 @@ def lsr(mac):
 def sta(mac):
     mac.mem[mac.daddr] = mac.a
     
-# imm: immediate
-# zpg: zero page
-# zpx: zero page,x
-# abs: absolute
-# abx: absolute,x
-# aby: absolute,y
-# idx: indirect,x
-# idy: indirect,y
+def bit(mac):
+    # todo
+    pass
+    
+def cmp(mac):
+    # really not sure about the correct behaviour of this
+    # to test
+    mac.result = mac.d - mac.a
 
-instruction_table = {
-    0x69:('adc', imm, adc, 'nzcv', 2),
-    0x6d:('adc', abs, adc, 'nzcv', 2),
-    0x29:('and', imm, and_op, 'nz', 2),
-    0x0a:('asl', imm, asl, 'nzc', 2),
-    0x49:('eor', imm, eor, 'nz', 2),
-    0x00:('brk', imm, brk, '', 2),
-    0xa9:('lda', imm, lda, 'nz', 2),
+def cpx(mac):
+    # to test
+    mac.result = mac.d - mac.x
     
-    # flag instructions
-    0x18:('clc', imp, lambda x: x.clear_flag(x.C), '', 1),
-    0x38:('sec', imp, lambda x: x.set_flag(x.C), '', 1),
-    0x58:('cli', imp, lambda x: x.clear_flag(x.I), '', 1),
-    0x78:('sei', imp, lambda x: x.set_flag(x.I), '', 1),
-    0xb8:('clv', imp, lambda x: x.clear_flag(x.V), '', 1),
-    0xd8:('cld', imp, lambda x: x.clear_flag(x.D), '', 1),
-    0xf8:('sed', imp, lambda x: x.set_flag(x.D), '', 1),
+def cpy(mac):
+    # to test
+    mac.result = mac.d - mac.y
     
-    # memory instructions
-    0x8d:('sta', abs, sta, '', 3),
-    0xad:('lda', abs, lda, '', 3)
-    }
+def dec(mac):
+    # to test
+    mac.mem[mac.daddr] = (mac.data - 1) & 0xff
+    
+def inc(mac):
+    # to test
+    mac.mem[mac.daddr] = (mac.data + 1) & 0xff
+    
+def jmp(mac):
+    # todo
+    pass
+    
+def jsr(mac):
+    # todo
+    pass
+    
+def ldx(mac):
+    # to test
+    mac.a = mac.x
+    
+def ldy(mac):
+    # to test
+    mac.a = mac.y
+    
+def ora(mac):
+    # to test
+    mac.a = mac.a | mac.d
+    
+def rol(mac):
+    # to test
+    pass
+    
+def ror(mac):
+    # todo
+    pass
+    
+def sbc(mac):
+    # todo
+    pass
+    
+def stx(mac):
+    # to test
+    mac.mem[mac.daddr] = mac.x
+    
+def sty(mac):
+    # to test
+    mac.mem[mac.daddr] = mac.y
     

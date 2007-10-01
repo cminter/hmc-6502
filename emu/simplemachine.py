@@ -6,8 +6,8 @@ import cpu
 import sys
 
 m = cpu.Machine()
-m.mem.load_from_file(sys.argv[1])
-
+m.mem.load_from_file(sys.argv[1], offset=0x200)
+m.pc = 0x200
 running = True
 while running:
     running = m.step()

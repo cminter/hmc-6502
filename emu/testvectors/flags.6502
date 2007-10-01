@@ -1,0 +1,25 @@
+# tests flags operation
+# display startup status
+00
+01
+38
+78
+f8
+# all should be set
+00
+01
+# dump status
+18
+58
+b8
+d8
+# test zero
+69
+00
+00
+01
+# test negative
+a9
+ff
+00
+01

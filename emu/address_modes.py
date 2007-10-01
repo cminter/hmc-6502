@@ -31,15 +31,15 @@ def zpy(machine, address):
     return (machine.mem[daddr], daddr)
     
 def abs(machine, address):
-    daddr = machine.mem[address+1] + machine.mem[address+2] << 8
+    daddr = machine.mem[address+1] + (machine.mem[address+2] << 8)
     return (machine.mem[daddr], daddr)
     
 def abx(machine, address):
-    daddr = machine.mem[address+1] + machine.mem[address+2] << 8 + machine.x
+    daddr = machine.mem[address+1] + (machine.mem[address+2] << 8) + machine.x
     return (machine.mem[daddr], daddr)
     
 def aby(machine, address):
-    daddr = machine.mem[address+1] + machine.mem[address+2] << 8 + machine.y
+    daddr = machine.mem[address+1] + (machine.mem[address+2] << 8) + machine.y
     return (machine.mem[daddr], daddr)
     
 def idx(machine, address):
@@ -53,8 +53,10 @@ def idy(machine, address):
     return (machine.mem[daddr], daddr)
     
 def ind(machine, address):
-    #todo
-    pass
+    # to test
+    ia = machine.mem[address+1] + (machine.mem[address+2] << 8) + machine.y
+    daddr = machine.mem[ia]
+    return (machine.mem[daddr], daddr)
     
 def acc(machine, address):
     return (machine.a, None)

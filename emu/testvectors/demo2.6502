@@ -1,0 +1,41 @@
+# demo2.6502
+# adds numbers in memory
+# preload memory
+a9
+15
+8d
+00
+10
+a9
+0c
+8d
+01
+10
+a9
+09
+8d
+02
+10
+a9
+00
+00
+02
+# add numbers in accumulator
+# add, 0x1000,X
+7d
+00
+10
+# increment x
+e8
+# add, 0x1000,X
+7d
+00
+10
+# increment x
+e8
+# add, 0x1000,X
+7d
+00
+10
+# increment x
+e8

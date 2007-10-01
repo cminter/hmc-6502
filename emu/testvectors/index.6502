@@ -1,0 +1,37 @@
+# indexed registers
+# tests the function of the index registers
+# increments, decrements
+e8
+c8
+e8
+00
+01
+# x=2, y=1
+# a gets 2, then one
+8a
+98
+ca
+ca
+88
+# y=x=0
+00
+01
+a9
+42
+a8
+00
+01
+# y=0x42
+aa
+00
+01
+# x=0x42
+e8
+8e
+34
+12
+8c
+35
+12
+00
+02

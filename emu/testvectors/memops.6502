@@ -1,0 +1,22 @@
+# memops.6502
+# tests memory addressing and storage
+a9
+2a
+# store in memory
+8d
+34
+12
+# clear a
+a9
+00
+# load back
+ad
+34
+12
+# dump status
+00
+01
+00
+02
+00
+00

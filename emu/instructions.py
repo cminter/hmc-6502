@@ -109,3 +109,31 @@ def sty(mac):
     # to test
     mac.mem[mac.daddr] = mac.y
     
+# register instructions
+def tax(mac):
+    mac.result = mac.x = mac.a
+    
+def txa(mac):
+    mac.result = mac.a = mac.x
+    
+def tay(mac):
+    mac.result = mac.y = mac.a
+    
+def tya(mac):
+    mac.result = mac.a = mac.y
+    
+def dex(mac):
+    mac.x -= 1
+    mac.result = mac.x
+    
+def inx(mac):
+    mac.x += 1
+    mac.result = mac.x
+    
+def dey(mac):
+    mac.y -= 1
+    mac.result = mac.y
+    
+def iny(mac):
+    mac.y += 1
+    mac.result = mac.y

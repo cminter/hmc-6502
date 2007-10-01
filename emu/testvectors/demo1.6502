@@ -1,0 +1,17 @@
+# demo1.6502
+# simple demonstration of 6502
+# load accumulator, immediate 44
+a9
+03
+# add, immediate 04
+69
+04
+# store accumulator, zero page 42
+85
+42
+# break, dump memory
+00
+02
+# break, quit
+00
+00

@@ -1,0 +1,32 @@
+# addressmodes.6502
+# tests addressing modes of microprocessor
+a9
+10
+# zero page, 0x10=0x10
+85
+10
+00
+02
+e8
+c8
+c8
+98
+95
+10
+00
+02
+# 0x11=2
+a9
+03
+9d
+00
+10
+a9
+04
+99
+00
+10
+00
+02
+# 0x1001=3, 0x1002=4
+a9

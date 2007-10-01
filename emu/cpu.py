@@ -37,6 +37,7 @@ class Memspace:
     def __str__(self):
         memspace = self.values.items()
         memspace.sort(key=lambda x: x[0])
+        memspace = [x for x in memspace if not 0xff < x[0] < 0x0fff]
         return "\n".join(["[%s]: %s" % (hex(mem[0]), hex(mem[1])) for mem in memspace])
         
     def load_from_file(self, path, offset = 0x0):
@@ -44,10 +45,11 @@ class Memspace:
         current_offset = offset
         for line in f:
             # don't read comments
-            if line[0] == "#":
+            line = line.strip()
+            if line[0] == "#" or line == '':
                 continue
             self[current_offset] = int(line, 16)
-            current_offset = (current_offset + 1) % (2**WIDTH)
+            current_offset = (current_offset + 1) % (MAXMEM)
 
 class Machine:
     C = 1<<0
@@ -83,7 +85,7 @@ class Machine:
         
     def __str__(self):
         return "flags (NVxBDIZC): %s \na: %s \npc: %s \nx: %s\ny: %s" %\
-            (int2bin(self.flags), hex(self.a), hex(self.pc), hex(self.x), hex(self.y))
+            (int2bin(self.flags), self.a, hex(self.pc), hex(self.x), hex(self.y))
         
     def step(self, address=None, verbose=True):
         if address is None:
@@ -92,8 +94,8 @@ class Machine:
             (name, address_mode, instruction_func, flags_to_set, length) \
                 = instruction_table[self.mem[address]]
         except KeyError:
-            print "badop@%s: %s" % (address, hex(self.mem[address]))
-            raise InvalidOpcodeError
+            raise InvalidOpcodeError, "opcode (%s) not in table" % \
+                (hex(self.mem[address]))
         
         # assert correct value on data bus    
         (self.d, self.daddr) = address_mode(self, address)
@@ -117,25 +119,21 @@ class Machine:
                     self.set_flag(self.N)
                 else:
                     self.clear_flag(self.N)
-            
             elif flag == 'v':
                 # see p28 of 6802 programming manual
                 pass
-                
             elif flag == 'z':
                 if (self.result & 0xff) == 0x0:
                     self.set_flag(self.Z)
                 else:
                     self.clear_flag(self.Z)
-            
             elif flag == 'c':
                 if (self.result & 0x100):
                     self.set_flag(self.V)
                 else:
                     self.clear_flag(self.V)
-            
             else:
-                raise ValueError, "invalid flag to set"
+                raise ValueError, "invalid flag (%s) to set" % flag
                 
         # normalize registers
         self.a = self.a & (2**WIDTH - 1)

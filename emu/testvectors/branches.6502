@@ -1,0 +1,24 @@
+# branches.6502
+# tests simple branch modes
+a9
+42
+85
+01
+# load 42 into A, compare with memory
+a9
+42
+c5
+01
+# branch over break
+f0
+02
+# shouldn't see brk(99)
+00
+99
+00
+03
+# branch backwards to spin break
+c9
+33
+d0
+fa

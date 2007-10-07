@@ -72,6 +72,7 @@ class Machine:
         self.pc = 0
         self.x = 0
         self.y = 0
+        self.sp = 0
         
         # reset data bus
         self.d = None
@@ -83,6 +84,12 @@ class Machine:
         self.set_flag(flag)
         self.flags = self.flags - flag
         
+    def get_flag(self, flag):
+        if (self.flags & flag):
+            return 1
+        else:
+            return 0    
+    
     def __str__(self):
         return "flags (NVxBDIZC): %s \na: %s \npc: %s \nx: %s\ny: %s" %\
             (int2bin(self.flags), self.a, hex(self.pc), hex(self.x), hex(self.y))

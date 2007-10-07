@@ -6,7 +6,7 @@ from address_modes import *
 import sys
 
 def adc(mac):
-    mac.a = mac.d + mac.a
+    mac.a = mac.d + mac.a + mac.get_flag(mac.C)
     
 def brk(mac):
     if mac.d == 0:
@@ -20,9 +20,10 @@ def brk(mac):
         print "\nbreak, dump memory"
         print mac.mem
         print ""
+    elif mac.d == 3:
+        raw_input('brk(3), pausing...')
     else:
-        print "invalid break, quitting"
-        sys.exit()
+        print "brk(%s)" % mac.d
     
 def and_op(mac):
     mac.a = mac.d & mac.a
@@ -45,12 +46,18 @@ def sta(mac):
     mac.mem[mac.daddr] = mac.a
     
 def bit(mac):
-    # todo
-    pass
+    # to test
+    mac.result = mac.data & mac.a
+    if (mac.data & 0x80):
+        mac.set_bit(mac.S)
+    else:
+        mac.clear_bit(mac.S)
+    if (mac.data & 0x40):
+        mac.set_bit(mac.V)
+    else:
+        mac.clear_bit(mac.V)
     
 def cmp(mac):
-    # really not sure about the correct behaviour of this
-    # to test
     mac.result = mac.d - mac.a
 
 def cpx(mac):
@@ -70,8 +77,8 @@ def inc(mac):
     mac.mem[mac.daddr] = (mac.data + 1) & 0xff
     
 def jmp(mac):
-    # todo
-    pass
+    # to test
+    mac.pc = mac.data
     
 def jsr(mac):
     # todo
@@ -90,7 +97,7 @@ def ora(mac):
     mac.a = mac.a | mac.d
     
 def rol(mac):
-    # to test
+    # todo
     pass
     
 def ror(mac):
@@ -99,7 +106,7 @@ def ror(mac):
     
 def sbc(mac):
     # todo
-    pass
+    mac.a = mac.a - mac.m - mac.get_flag(mac.C)
     
 def stx(mac):
     # to test

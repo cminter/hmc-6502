@@ -8,7 +8,7 @@ import sys
 def adc(mac):
     mac.a = mac.d + mac.a + mac.get_flag(mac.C)
     
-def brk(mac):
+def brk_old(mac):
     if mac.d == 0:
         print "brk(0), exiting"
         sys.exit()
@@ -24,6 +24,10 @@ def brk(mac):
         raw_input('brk(3), pausing...')
     else:
         print "brk(%s)" % mac.d
+    
+def brk(mac):
+    print "break"
+    mac.broken = True
     
 def and_op(mac):
     mac.a = mac.d & mac.a
@@ -78,11 +82,7 @@ def inc(mac):
     
 def jmp(mac):
     # to test
-    mac.pc = mac.data
-    
-def jsr(mac):
-    # todo
-    pass
+    mac.pc = mac.daddr
     
 def ldx(mac):
     # to test
@@ -105,7 +105,7 @@ def ror(mac):
     pass
     
 def sbc(mac):
-    # todo
+    # to test
     mac.a = mac.a - mac.m - mac.get_flag(mac.C)
     
 def stx(mac):

@@ -21,6 +21,8 @@ class InvalidOpcodeError(Exception):
 class Memspace:
     def __init__(self):
         self.values = {}
+        self.wrote_char = False
+        self.broken = False
         
     def __getitem__(self, mem_address):
         try:
@@ -30,8 +32,13 @@ class Memspace:
             return 0
             
     def __setitem__(self, mem_address, value):
+        if 0x0400 <= mem_address < 0x0800:
+            self.wrote_char = True
+            self.last_char = (mem_address, value)
+                
         if not 0 <= mem_address <= MAXMEM:
             raise RangeError
+            
         self.values[mem_address] = value & 0xFF
         
     def __str__(self):
@@ -50,6 +57,18 @@ class Memspace:
                 continue
             self[current_offset] = int(line, 16)
             current_offset = (current_offset + 1) % (MAXMEM)
+            
+    def load_from_binary(self, path, offset = 0x0):
+        f = open(path, 'rb')
+        current_offset = offset
+        while 1:
+            byte = f.read(1)
+            if byte == '':
+                break
+            self[current_offset] = ord(byte)
+            current_offset = (current_offset + 1) % (MAXMEM)
+        f.close()
+        print "last byte written: %s" % hex(current_offset)
 
 class Machine:
     C = 1<<0
@@ -72,10 +91,31 @@ class Machine:
         self.pc = 0
         self.x = 0
         self.y = 0
-        self.sp = 0
+        self.sp = 0xff
         
         # reset data bus
         self.d = None
+        self.broken = False
+        
+    def reset(self):
+        # p127
+        self.pc = self.mem[0xfffc] + (self.mem[0xfffd] << 8)
+        self.set_flag(self.I)
+        print "reseting to: %s" % hex(self.pc)
+        
+    def interrupt(self):
+        # p131
+        #if (self.get_flag(self.I)):
+        #    # if interrupts are disabled
+        #    return None
+        #else:
+            print "serving interrupt"
+            pc = self.pc + 2
+            self.push((pc & 0xff00) >> 8)
+            self.push(pc & 0x00ff)
+            self.push(self.flags)
+            self.pc = self.mem[0xfffe] + (self.mem[0xffff] << 8)
+            self.set_flag(self.I)
         
     def set_flag(self, flag):
         self.flags = self.flags | flag
@@ -88,8 +128,16 @@ class Machine:
         if (self.flags & flag):
             return 1
         else:
-            return 0    
-    
+            return 0
+            
+    def push(self, val):
+        self.mem[0x0100 + self.sp] = val
+        self.sp = (self.sp - 1) & 0xff
+        
+    def pop(self):
+        self.sp = (self.sp + 1) & 0xff
+        return self.mem[0x0100 + self.sp]
+        
     def __str__(self):
         return "flags (NVxBDIZC): %s \na: %s \npc: %s \nx: %s\ny: %s" %\
             (int2bin(self.flags), self.a, hex(self.pc), hex(self.x), hex(self.y))
@@ -100,6 +148,7 @@ class Machine:
         try:
             (name, address_mode, instruction_func, flags_to_set, length) \
                 = instruction_table[self.mem[address]]
+            op = "".join([hex(self.mem[address+off])[2:] for off in range(length)])
         except KeyError:
             raise InvalidOpcodeError, "opcode (%s) not in table" % \
                 (hex(self.mem[address]))
@@ -147,7 +196,7 @@ class Machine:
         
         # display results
         if verbose:
-            print "[%s]: %s(%s) a=%s" % (hex(address), name, self.d, self.a)
+            print "[%s]: %s, %s(%s) a=%s" % (hex(address), op, name, self.d, self.a)
             
         # for future expansion, return false to stop
         return True

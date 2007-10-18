@@ -7,7 +7,9 @@ import sys
 
 m = cpu.Machine()
 m.mem.load_from_file(sys.argv[1], offset=0x200)
-m.pc = 0x200
+m.mem[0xfffd] = 0x02
+m.mem[0xfffc] = 0x00
+m.reset()
 running = True
 while running:
     running = m.step()

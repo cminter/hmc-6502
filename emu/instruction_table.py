@@ -4,6 +4,7 @@
 
 from instructions import *
 from branches import *
+from stack import *
 
 # flag constants
 # THIS IS BAD, WE'RE REPEATING THIS
@@ -170,7 +171,13 @@ instruction_table = {
     0xD0:('bne', imm, make_branch(Z, False), '', 2),
     0xf0:('beq', imm, make_branch(Z, True), '', 2),
     
-    # todo:
-    # rti, rts, stack instructions
-    
+    # stack instructions:
+    0x9a:('txs', imp, txs, '', 1),
+    0xba:('tsx', imp, tsx, '', 1),
+    0x48:('pha', imp, pha, '', 1),
+    0x68:('pla', imp, pla, '', 1),
+    0x08:('php', imp, php, '', 1),
+    0x28:('plp', imp, plp, '', 1),
+    0x60:('rts', imp, rts, '', 1),
+    0x40:('rti', imp, rti, '', 1)
 }

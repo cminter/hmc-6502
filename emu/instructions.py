@@ -27,7 +27,7 @@ def brk_old(mac):
     
 def brk(mac):
     print "break"
-    mac.broken = True
+    sys.exit()
     
 def and_op(mac):
     mac.a = mac.d & mac.a
@@ -51,15 +51,15 @@ def sta(mac):
     
 def bit(mac):
     # to test
-    mac.result = mac.data & mac.a
-    if (mac.data & 0x80):
-        mac.set_bit(mac.S)
+    mac.result = mac.d & mac.a
+    if (mac.d & 0x80):
+        mac.set_flag(mac.N)
     else:
-        mac.clear_bit(mac.S)
-    if (mac.data & 0x40):
-        mac.set_bit(mac.V)
+        mac.clear_flag(mac.N)
+    if (mac.d & 0x40):
+        mac.set_flag(mac.V)
     else:
-        mac.clear_bit(mac.V)
+        mac.clear_flag(mac.V)
     
 def cmp(mac):
     mac.result = mac.d - mac.a
@@ -74,15 +74,16 @@ def cpy(mac):
     
 def dec(mac):
     # to test
-    mac.mem[mac.daddr] = (mac.data - 1) & 0xff
+    mac.mem[mac.daddr] = (mac.d - 1) & 0xff
     
 def inc(mac):
     # to test
-    mac.mem[mac.daddr] = (mac.data + 1) & 0xff
+    mac.mem[mac.daddr] = (mac.d + 1) & 0xff
     
 def jmp(mac):
     # to test
     mac.pc = mac.daddr
+    print "jumped to %s" % mac.pc
     
 def ldx(mac):
     # to test
@@ -98,11 +99,11 @@ def ora(mac):
     
 def rol(mac):
     # todo
-    pass
+    raise Exception, "rol"
     
 def ror(mac):
     # todo
-    pass
+    raise Exception, "ror"
     
 def sbc(mac):
     # to test

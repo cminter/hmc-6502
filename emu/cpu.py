@@ -25,6 +25,8 @@ class Memspace:
         self.broken = False
         
     def __getitem__(self, mem_address):
+        if mem_address < 0xd000:
+            print "read address: %s" % hex(mem_address)
         try:
             # wrap to right place
             return self.values[mem_address % MAXMEM]
@@ -35,6 +37,7 @@ class Memspace:
         if 0x0400 <= mem_address < 0x0800:
             self.wrote_char = True
             self.last_char = (mem_address, value)
+            print "poked character"
                 
         if not 0 <= mem_address <= MAXMEM:
             raise RangeError

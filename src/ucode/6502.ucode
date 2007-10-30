@@ -1,0 +1,14 @@
+# 6502.ucode
+# source for ucodeasm
+# tbarr@cs.hmc.edu, 28oct07
+
+# use # for local comments and ! for exported comments
+
+base:
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	a_l_lat
+db	x	pass	none	1	pc_next	pc_next	pc_next	0
+
+mem_ex_imm:
+# internal execution on memory data, imm (2.1)
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	a_l_lat
+db	func	func	func	1	pc_next	pc_next	pc_next	0

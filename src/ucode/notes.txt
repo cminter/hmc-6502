@@ -1,0 +1,13 @@
+signals:
+
+a_sel
+b_sel
+alu_op
+write_en
+pc_w_en
+pc_sel
+a_h_sel
+a_l_sel
+a_h_lat
+a_l_lat
+memwrite

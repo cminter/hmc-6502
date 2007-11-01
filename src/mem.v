@@ -1,6 +1,6 @@
 // mem.v
 // basic memory system for development
-// 0xf000-0xffff - ROM, from file
+// 0xf000-0xffff - ROM, from file. program counter redirection = 0xf000
 // 0x0000-0x1000 - RAM, inits to X
 // 31 October 2007, Thomas W. Barr
 // tbarr at cs dot hmc dot edu

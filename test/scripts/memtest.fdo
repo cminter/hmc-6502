@@ -1,0 +1,9 @@
+## memtest.fdo
+## vsim script to test memory system
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/mem.v"
+vlog "test/unittests/memtest.v"
+vsim -voptargs="+acc" memtest
+show wave

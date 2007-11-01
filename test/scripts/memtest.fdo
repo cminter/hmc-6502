@@ -3,7 +3,7 @@
 ## tbarr at cs hmc edu
 
 vlib work
-vlog "src/mem.v"
+vlog "src/mem.sv"
 vlog "test/unittests/memtest.v"
 vsim -voptargs="+acc" memtest
 show wave

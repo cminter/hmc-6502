@@ -1,0 +1,9 @@
+## memtest.fdo
+## vsim script to test memory system
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/alu.sv"
+vlog "test/unittests/alutest.sv"
+vsim -voptargs="+acc" alutest
+view wave

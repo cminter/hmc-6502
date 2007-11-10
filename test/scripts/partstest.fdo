@@ -1,0 +1,9 @@
+## partstest.fdo
+## vsim script to test memory system
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/parts.sv"
+vlog "test/unittests/partstest.sv"
+vsim -voptargs="+acc" partstest
+view wave

@@ -1,0 +1,27 @@
+# list of control signals for datapath.
+
+th_in_en
+th_out_en
+tl_in_en
+tl_out_en
+p_in_en	[7:0]
+p_out_en
+p_sel
+reg_write_en
+reg_read_addr_a [1:0]
+reg_read_addr_b [1:0]
+reg_write_addr [1:0]
+reg_a_en
+pch_in_en
+pch_out_en
+pcl_in_en
+pcl_out_en
+pc_inc_en
+pc_sel
+d_in_en
+d_out_sel
+ah_sel	[1:0]
+al_sel
+alu_op	[3:0]
+c_temp_en
+carry_sel

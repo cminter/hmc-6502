@@ -1,4 +1,4 @@
-// memtest.v
+// memtest.sv
 // tests development memory system
 // tbarr at cs dot hmc dot edu
 
@@ -23,6 +23,14 @@ module memtest;
   end
   
   initial begin
+    // init ROM
+    mem.ROM[4093] = 8'hf0;
+    mem.ROM[4092] = 8'h00;
+    
+    // path relative to this file.
+    $readmemh("../roms/memtest.rom", mem.ROM);
+    
+    // start test
     address = 16'b0; reset = 0; read_write_sel = 0;
     data_write = 8'h42;
     #10;

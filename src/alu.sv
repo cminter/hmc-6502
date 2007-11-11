@@ -13,11 +13,12 @@ module alu(input logic [7:0] a, b,
   
   assign zero = ~(&(y));
   assign negative = y[7];
+  assign overflow = 0; // TODO
   
   always_comb begin
     case (op)
       4'h0: {c_out, y} = a + b + c_in; // add
-      4'h1: {c_out, y} = b - a; // sub - fix for borrow
+      4'h1: {c_out, y} = b - a - c_in; // sub - borrow may be sketchy.
       4'h2: {c_out, y} = {1'b0, a | b}; // OR
       4'h3: {c_out, y} = {1'b0, a & b}; // AND
       4'h4: {c_out, y} = {1'b0, a ^ b}; // EOR
@@ -26,7 +27,7 @@ module alu(input logic [7:0] a, b,
       4'h7: {c_out, y} = {a, 1'b0}; // asl
       4'h8: {c_out, y} = {a, c_in}; // rol
       4'h9: {y, c_out} = {c_in, a}; // ror
-      4'ha: {y, c_out} = 9'b0; // test bits - todo
+      4'ha: {y, c_out} = 9'b0; // test bits - TODO
       4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
       default: {y, c_out} = 9'b0;
     endcase

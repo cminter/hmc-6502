@@ -4,6 +4,6 @@
 
 vlib work
 vlog "src/mem.sv"
-vlog "test/unittests/memtest.v"
+vlog "test/unittests/memtest.sv"
 vsim -voptargs="+acc" memtest
 show wave

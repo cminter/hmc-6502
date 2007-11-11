@@ -8,7 +8,7 @@
 `timescale 1 ns / 1 ps
 
 module mem(input logic ph1, ph2, reset,
-	   input logic [15:0] address,
+	         input logic [15:0] address,
            inout [7:0] data,
            input logic read_write_sel );
 
@@ -18,12 +18,6 @@ module mem(input logic ph1, ph2, reset,
   reg [7:0] data_out;
   
   assign data = (read_write_sel) ? data_out : 8'bz;
-  
-  initial begin
-    ROM[4093] = 8'hf0;
-    ROM[4092] = 8'h00;
-    $readmemh("../test/roms/memtest.rom",ROM);
-  end
   
   always_ff @ ( posedge ph1 ) begin
     if ( read_write_sel ) begin

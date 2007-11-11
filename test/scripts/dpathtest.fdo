@@ -1,0 +1,12 @@
+## dpathtest.fdo
+## vsim script to test data path
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/parts.sv"
+vlog "src/mem.sv"
+vlog "src/alu.sv"
+vlog "src/datapath.sv"
+vlog "test/unittests/dpathtest.sv"
+vsim -voptargs="+acc" dpathtest
+view wave

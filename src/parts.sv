@@ -36,6 +36,16 @@ module latch #(parameter WIDTH = 8)
       else if (clk) q <= d;
 endmodule
 
+module flopr #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0] d,
+              output logic [WIDTH-1:0] q,
+              input logic clk, reset);
+  
+  always_ff @ (posedge clk)
+    if (reset) q <= 0;
+    else q <= d;
+endmodule
+
 module buslatch (input logic in_enable, out_enable,
                  output logic [7:0] value,
                  input logic [7:0] in_bus,

@@ -1,0 +1,10 @@
+## controltest.fdo
+## vsim script to test control FSM
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/parts.sv"
+vlog "src/control.sv"
+vlog "test/unittests/controltest.sv"
+vsim -voptargs="+acc" controltest
+view wave

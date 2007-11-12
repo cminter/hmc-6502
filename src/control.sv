@@ -38,7 +38,7 @@ module control(input logic [7:0] data_in,
   
   // output controls on correct phase
   assign controls[1:0] = c_s2[7:6];
-  assign controls[3:2] = c_s2[9:8];
+  assign controls[3:2] = c_s1[9:8];
 
 endmodule
 
@@ -49,10 +49,10 @@ module state_pla(input logic [3:0] state,
     4'h0 : out_controls <= 10'b0000_1_0_0000;
     4'h1 : out_controls <= 10'b0001_0_0_0010;
     4'h2 : out_controls <= 10'b0010_0_0_0011;
-    4'h3 : out_controls <= 10'b0011_0_1_0000;
+    4'h3 : out_controls <= 10'b0111_0_1_0000;
     4'h4 : out_controls <= 10'b0001_0_0_0101;
     4'h5 : out_controls <= 10'b0010_0_0_0110;
-    4'h6 : out_controls <= 10'b0011_0_1_0000;
+    4'h6 : out_controls <= 10'b1011_0_1_0000;
     default: out_controls <= 8'b0;
   endcase
 endmodule

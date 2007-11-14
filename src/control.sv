@@ -35,7 +35,8 @@ module control(input logic [7:0] data_in,
                output logic c_temp_en,
                output logic carry_sel
                );
-
+  // all controls become valid on ph1, and hold through end of ph2.
+  
   // opcode decoding logic
   logic [7:0] latched_opcode;
   logic op_en, op_en_buf, opcode_gated_clk;
@@ -48,7 +49,7 @@ module control(input logic [7:0] data_in,
   
   // FSM logic
   logic [7:0] state, next_state;
-  logic [9:0] c_s1, c_s2;
+  logic [9:0] c;
   logic next_state_sel;
   
   assign op_en = c_s2[4];
@@ -57,13 +58,9 @@ module control(input logic [7:0] data_in,
   mux2 #4 next_state_mux(c_s2[3:0], op_controls[3:0], next_state_sel, 
                          next_state);
   flopr #4 state_flop(next_state, state, ph1, reset);
-  state_pla state_pla(state, c_s2);
+  state_pla state_pla(state, c);
   
-  latch #10 control_buf(c_s2, c_s1, ph2, reset);
-  
-  // output controls on correct phase
-  assign controls[1:0] = c_s2[7:6];
-  assign controls[3:2] = c_s1[9:8];
+  assign controls[3:0] = c_s1[9:6];
 
 endmodule
 

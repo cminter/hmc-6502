@@ -23,6 +23,7 @@ module datapath(input logic [7:0] data_in,
                 input logic [1:0] reg_read_addr_b,
                 input logic [1:0] reg_write_addr,
                 input logic reg_a_en,
+                input logic reg_b_en,
                 input logic pch_in_en,
                 input logic pch_out_en,
                 input logic pcl_in_en,
@@ -31,24 +32,26 @@ module datapath(input logic [7:0] data_in,
                 input logic pc_sel,
                 input logic d_in_en,
                 input logic d_out_sel,
-                input logic [1:0] ah_sel,
-                input logic al_sel,
+                input logic [2:0] ah_sel,
+                input logic [1:0] al_sel,
                 input logic [3:0] alu_op,
                 input logic c_temp_en,
-                input logic carry_sel
+                input logic carry_sel,
+                input logic [7:0] constant,
+                input logic constant_en
                 );
   
   wire [7:0] a_s1, flag_selected_s2;
   logic [7:0] th_s1, tl_s1, p_s1, r_s2;
 
-  logic [7:0] reg_a_s1;
+  logic [7:0] reg_a_s1, reg_b_s1;
   
   logic [7:0] pch_in_s2, pcl_in_s2, pch_next_s1, pch_next_s2, pcl_next_s1,
               pcl_next_s2, pch_s1, pcl_s1;
   
   logic [7:0] di_s1;
   
-  logic [7:0] b_s1, b_s2;
+  wire [7:0] b_s1, b_s2;
   
   logic [7:0] th_s2, tl_s2;
   
@@ -59,17 +62,21 @@ module datapath(input logic [7:0] data_in,
   // registers
   buslatch temp_high(th_in_en, th_out_en, th_s1, r_s2, a_s1, ph2, reset);
   buslatch  temp_low(tl_in_en, tl_out_en, tl_s1, r_s2, a_s1, ph2, reset);
-  flaglatch p(p_in_en, p_out_en, p_s1, flag_selected_s2, a_s1, ph2, reset);
+  flaglatch p(p_in_en, p_out_en, p_s1, flag_selected_s2, b_s1, ph2, reset);
   mux2 #8 p_sel_mux(flags_s2, r_s2, p_sel, flag_selected_s2);
+  
+  // constant
+  tristate #8 constant_tris(constant, constant_en, a_s1);
   
   // register file
   regfile regfile(ph2, reset, reg_write_en, reg_read_addr_a, reg_read_addr_b, 
-          reg_write_addr, r_s2, reg_a_s1, b_s1);
-  tristate #8 rfile_tris(reg_a_s1, reg_a_en, a_s1);
+          reg_write_addr, r_s2, reg_a_s1, reg_b_s1);
+  tristate #8 rfile_tris_a(reg_a_s1, reg_a_en, a_s1);
+  tristate #8 rfile_tris_b(reg_b_s1, reg_b_en, b_s1);
   
   // program counter
-  buslatch pc_high(pch_in_en, pch_out_en, pch_s1, pch_in_s2, a_s1, ph2, reset);
-  buslatch  pc_low(pcl_in_en, pcl_out_en, pcl_s1, pcl_in_s2, a_s1, ph2, reset);
+  buslatch pc_high(pch_in_en, pch_out_en, pch_s1, pch_in_s2, b_s1, ph2, reset);
+  buslatch  pc_low(pcl_in_en, pcl_out_en, pcl_s1, pcl_in_s2, b_s1, ph2, reset);
   
   // -16-bit half adder
   halfadder #16 pcinc({pch_s1, pcl_s1}, pc_inc_en, {pch_next_s1, pcl_next_s1});
@@ -94,8 +101,8 @@ module datapath(input logic [7:0] data_in,
   latch th_buf(th_s1, th_s2, ph1, reset);
   latch tl_buf(tl_s1, tl_s2, ph1, reset);
   
-  mux4 #8 ah_mux(pch_next_s2, th_s2, 8'h00, 8'h01, ah_sel, address[15:8]);
-  mux2 #8 al_mux(pcl_next_s2, tl_s2, al_sel, address[7:0]);
+  mux5 #8 ah_mux(pch_next_s2, r_s2, th_s2, 8'h00, 8'h01, ah_sel, address[15:8]);
+  mux3 #8 al_mux(pcl_next_s2, r_s2, tl_s2, al_sel, address[7:0]);
   
   // ALU and carry logic
   assign bcd_s1 = p_s1[4];

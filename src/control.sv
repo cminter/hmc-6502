@@ -5,35 +5,11 @@
 
 `timescale 1 ns / 1 ps
 
-module control(input logic [7:0] data_in,
+module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, reset,
                
                // controls list from ucodeasm:
-               output logic th_in_en,
-               output logic th_out_en,
-               output logic tl_in_en,
-               output logic tl_out_en,
-               output logic [7:0] p_in_en,
-               output logic p_out_en,
-               output logic p_sel,
-               output logic reg_write_en,
-               output logic [1:0] reg_read_addr_a,
-               output logic [1:0] reg_read_addr_b,
-               output logic [1:0] reg_write_addr,
-               output logic reg_a_en,
-               output logic pch_in_en,
-               output logic pch_out_en,
-               output logic pcl_in_en,
-               output logic pcl_out_en,
-               output logic pc_inc_en,
-               output logic pc_sel,
-               output logic d_in_en,
-               output logic d_out_sel,
-               output logic [1:0] ah_sel,
-               output logic al_sel,
-               output logic [3:0] alu_op,
-               output logic c_temp_en,
-               output logic carry_sel
+               output logic [3:0] controls
                );
   // all controls become valid on ph1, and hold through end of ph2.
   

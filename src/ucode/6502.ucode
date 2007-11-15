@@ -1,14 +1,103 @@
 # 6502.ucode
 # source for ucodeasm
-# tbarr@cs.hmc.edu, 28oct07
-
-# use # for local comments and ! for exported comments
+# tbarr at cs hmc edu, 28oct07
 
 base:
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	a_l_lat
-db	x	pass	none	1	pc_next	pc_next	pc_next	0
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_next	pc_next	0	1
 
-mem_ex_imm:
-# internal execution on memory data, imm (2.1)
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	a_l_lat
-db	func	func	func	1	pc_next	pc_next	pc_next	0
+single_byte:
+# 1.0
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+func	func	func	func	0	-	pc_n	pc_n	0	1
+
+imm:
+# immediate addressing (5.4)
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+mem_ex_zpa:
+# 5.6
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	0	pc_n	0	r	0	0
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+abs:
+#5.5
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
+db	-	pass	none	0	-	r	temp	0	0
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+indirect_x:
+# Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
+# assert onto address bus, use as high part of next fetch
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	add	none	0	-	0	r	0	0
+db	-	pass	none	0	-	0	-	1	0
+db	x	add+1	none	0	-	0	r	0	0
+db	-	pass	none	0	-	r	temp	0	0
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+abs_x:
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t
+db	0	add+t	none	0	-	r	temp	0	0
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+# abs_y looks like abs_x. todo.
+
+zp_x:
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	add	none	0	-	0	r	0	0
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+# zp_y looks like zp_x. todo.
+
+indirect_y:
+# over by two cycles
+# "indirect indexed" addressing: *((*arg)+y)
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+# IAL in over data bus
+db	-	pass	none	0	-	0	r	0	0	0
+# BAL in over data bus
+db	-	pass	none	0	-	pc_n	pc_n	0	1	0
+# IAL back in over data bus
+db	-	add+1	none	0	-	0	r	0	0	0
+# BAH in over data bus
+db	-	pass	none	0	-	r	temp	1	0	0
+# [BAH, BAL] in over data bus (discard)
+tl	y	add	none	0	-	temp	r	0	1	t
+# [BAH, BAL+y] in over data bus (discard)
+th	-	add+c	none	0	-	r	temp	1	0	0
+# [BAH+c, BAL+y] in over data bus (correct vector)
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
+
+# store and read-modify-write instructions look a lot like these. todo.
+# RMW ops must use non-default data read source R.
+
+push:
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwr
+sp	func	dec	sp	0	-	1	r	1
+-	-	-	none	pc_n	pc_n	pc_n	pc_n	0
+                                                                                
+pull:                                                                           
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwr
+sp	-	pass	none	0	-	1	r	0
+db	-	pass	func	0	-	-	-	0
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	0
+
+jsr:
+# push high order byte of pc+2, then low order byte, jump to {pcl, pch}.
+# one cycle long.
+a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwr	pcinc
+db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	0	1
+db	-	pass	none	0	-	-	-	1	0	0	1
+sp	pc_h	dec	sp	0	-	1	r	0	0	1	0
+sp	pc_h	dec	sp	0	-	temp	temp	0	0	1	0
+tl	-	pass	pc_l	01	z	-	-	0	0	0	0
+th	-	pass	pc_h	10	z	temp	temp	0	0	0	0
+
+jmp:
+# absolute jump
+db	-	

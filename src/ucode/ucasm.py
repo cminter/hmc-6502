@@ -3,9 +3,14 @@
 # tbarr@cs.hmc.edu, 28oct2007
 
 import sys
+from odict import OrderedDict
 
 class ParseError(Exception):
     pass
+
+def int2bin(n, count=8):
+    """returns the binary of integer n, using count number of digits"""
+    return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
 
 class State:
     def __init__(self):
@@ -23,20 +28,59 @@ class State:
                            'pc_sel' : "pc_next",
                            'a_h_sel' : "pc_next",
                            'a_l_sel' : "pc_next",
-                           'a_h_lat' : "0",
-                           'a_l_lat' : "0",
-                           'memwrite' : "0"}
+                           'th_lat' : "0",
+                           'tl_lat' : "0",
+                           'memwrite' : "0",
+                           'flag' : "0"}
+                           
+        self.out_states = OrderedDict([
+                           ('th_in_en', '0'), # done
+                           ('th_out_en', '0'), 
+                           ('tl_in_en', '0'),  # done
+                           ('tl_out_en', '0'), 
+                           ('p_in_en', '00000000'), 
+                           ('p_out_en', '0'), 
+                           ('p_sel', '0'), 
+                           ('reg_write_en', '0'), 
+                           ('reg_read_addr_a', '00'), 
+                           ('reg_read_addr_b', '00'), 
+                           ('reg_write_addr', '00'), 
+                           ('reg_a_en', '0'), 
+                           ('pch_in_en', '0'), 
+                           ('pch_out_en', '0'), 
+                           ('pcl_in_en', '0'), 
+                           ('pcl_out_en', '0'), 
+                           ('pc_inc_en', '0'), 
+                           ('pc_sel', '0'), 
+                           ('d_in_en', '0'), # done
+                           ('d_out_sel', '0'), 
+                           ('ah_sel', '00'), 
+                           ('al_sel', '0'), 
+                           ('alu_op', '0000'), 
+                           ('c_temp_en', '0'), 
+                           ('carry_sel', '0')])
     
     def parse_line(self):
         fields_parsed = self.fields.split('\t')
         vals_parsed = self.vals.split('\t')
         if not len(fields_parsed) == len(vals_parsed):
-            raise (ParseError, "field mismatch")
+            raise ParseError, "field mismatch"
         for (attr, value) in zip(fields_parsed, vals_parsed):
             if not attr in self.in_states.keys():
-                raise (ParseError, "invalid field: %s" % attr)
+                raise ParseError, "invalid field: %s" % attr
             self.in_states[attr] = value
+    
+    def make_line(self):
+        # parse all the fields
+        if '1' in self.in_states['th_lat']:
+            self.out_states['th_in_en'] = '1'
+        if '1' in self.in_states['tl_lat']:
+            self.out_states['tl_in_en'] = '1'
+        if 'db' in self.in_states['a_sel']:
+            self.out_states['d_in_en'] = '1'
             
+        return '_'.join(self.out_states.values())
+        
     def __repr__(self):
         return "state %s: %s" % (self.state_num, self.in_states)
 
@@ -48,11 +92,14 @@ def process_block(block, next_state_num):
         next_state_num += 1
     # go back to base state on last
     block[2][-1].next_state = 0
+    print ""
+    print "// %s" % block[0]
     
     # now parse and generate the blocks
     for state in block[2]:
         state.parse_line()
-    print block
+        print state.make_line()
+    # print block
     return next_state_num
 
 def do_file():

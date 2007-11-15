@@ -1,30 +1,30 @@
 # 6502.ucode
-# source for ucodeasm
+# input for ucodeasm
 # tbarr at cs hmc edu, 28oct07
 
 base:
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	1	pc_n	pc_next	pc_next	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_n	pc_n	0	1
 
 single_byte:
 # 1.0
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 func	func	func	func	0	-	pc_n	pc_n	0	1
 
 imm:
 # immediate addressing (5.4)
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 mem_ex_zpa:
 # 5.6
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	-	pass	none	0	pc_n	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 abs:
 #5.5
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
 db	-	pass	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
@@ -32,7 +32,7 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
 # assert onto address bus, use as high part of next fetch
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	0	-	0	r	0	0
 db	-	pass	none	0	-	0	-	1	0
 db	x	add+1	none	0	-	0	r	0	0
@@ -40,7 +40,7 @@ db	-	pass	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 abs_x:
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	1	pc_n	pc_n	pc_n	1	t
 db	0	add+t	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
@@ -48,7 +48,7 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 # abs_y looks like abs_x. todo.
 
 zp_x:
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	0	-	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
@@ -57,7 +57,7 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 indirect_y:
 # over by two cycles
 # "indirect indexed" addressing: *((*arg)+y)
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
 # IAL in over data bus
 db	-	pass	none	0	-	0	r	0	0	0
 # BAL in over data bus
@@ -77,12 +77,12 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 # RMW ops must use non-default data read source R.
 
 push:
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwr
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri
 sp	func	dec	sp	0	-	1	r	1
 -	-	-	none	pc_n	pc_n	pc_n	pc_n	0
-                                                                                
+
 pull:                                                                           
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwr
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri
 sp	-	pass	none	0	-	1	r	0
 db	-	pass	func	0	-	-	-	0
 sp	-	inc	sp	1	pc_n	pc_n	pc_n	0
@@ -90,14 +90,56 @@ sp	-	inc	sp	1	pc_n	pc_n	pc_n	0
 jsr:
 # push high order byte of pc+2, then low order byte, jump to {pcl, pch}.
 # one cycle long.
-a_sel	b_sel	alu_op	write_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwr	pcinc
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwri	pcinc
 db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	0	1
 db	-	pass	none	0	-	-	-	1	0	0	1
 sp	pc_h	dec	sp	0	-	1	r	0	0	1	0
-sp	pc_h	dec	sp	0	-	temp	temp	0	0	1	0
-tl	-	pass	pc_l	01	z	-	-	0	0	0	0
-th	-	pass	pc_h	10	z	temp	temp	0	0	0	0
+sp	pc_l	dec	sp	0	-	temp	temp	0	0	1	0
+tl	-	pass	pc_l	01	r	-	-	0	0	0	0
+th	-	pass	pc_h	10	r	temp	temp	0	0	0	0
 
-jmp:
+jmp_abs:
 # absolute jump
-db	-	
+# can't munge PC until we fetch the high part, so we write the low part back
+# on the third cycle
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat
+db	-	pass	none	1	pc_n	pc_n	pc_n	0	1
+db	-	pass	pc_h	10	r	r	temp	1	0
+tl	-	pass	pc_l	01	r	temp	temp	0	0
+
+jmp_ind:
+# recall bug with page crossing
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	pcinc
+db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	1
+db	-	pass	none	0	-	r	temp	1	0	0
+db	-	pass	pc_l	01	r	-	-	0	0	0
+tl	-	inc	none	0	-	temp	r	0	0	0
+# this is where we'd fix Mr. Peddle's bug.
+db	-	pass	pc_h	10	r	r	pc_n	0	0	0
+
+rts:
+# pull low, then high of pc, jump to pc+1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc
+sp	-	pass	none	0	-	1	r	0
+db	-	pass	pc_l	01	r	-	-	0
+sp	-	dec	sp	0	-	1	r	0
+db	-	pass	pc_h	10	r	-	-	0
+sp	-	dec	sp	1	pc_n	pc_n	pc_n	1
+
+rti:
+# pull p, then pc, jump to pc. similar to above, but don't increment PC
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag
+sp	-	pass	none	0	-	1	r	0	0
+db	-	pass	p	0	-	-	-	0	1
+sp	-	dec	sp	0	-	1	r	0	0
+db	-	pass	pc_l	01	r	-	-	0	0
+sp	-	dec	sp	0	-	1	r	0	0
+db	-	pass	pc_h	10	r	-	-	0	0
+sp	-	dec	sp	1	pc_n	pc_n	pc_n	0	0
+
+# until I read otherwise, I won't be implementing interrupts
+
+# reset:
+# a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	pcinc	flag
+# 0xfc	-	pass	0	0	-	0xff	r	0	0	0	0
+# db	-	pass	0	0	-	-	-	

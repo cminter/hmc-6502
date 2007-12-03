@@ -8,6 +8,7 @@
 module datapath(input logic [7:0] data_in,
                 output logic [7:0] data_out,
                 output logic [15:0] address,
+                output logic [7:0] p_s1,
                 input logic ph1, ph2, reset,
                 
                 // controls list from ucodeasm:
@@ -42,7 +43,7 @@ module datapath(input logic [7:0] data_in,
                 );
   
   wire [7:0] a_s1, flag_selected_s2;
-  logic [7:0] th_s1, tl_s1, p_s1, r_s2;
+  logic [7:0] th_s1, tl_s1, r_s2;
 
   logic [7:0] reg_a_s1, reg_b_s1;
   
@@ -116,6 +117,6 @@ module datapath(input logic [7:0] data_in,
   
   // -select carry source
   latch #1 c_temp(flags_s2[0], c_temp_s1, (ph2 & c_temp_en), reset);
-  mux4 #1 carry_sel_mux(p_s1[0], c_temp_s1, 0, 1, carry_sel, c_in_s1);
+  mux4 #1 carry_sel_mux(p_s1[0], c_temp_s1, 1'b0, 1'b1, carry_sel, c_in_s1);
 
 endmodule

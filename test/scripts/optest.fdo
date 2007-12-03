@@ -1,0 +1,15 @@
+## optest.fdo
+## vsim script to test control top CPU
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/parts.sv"
+vlog "src/control.sv"
+vlog "src/alu.sv"
+vlog "src/datapath.sv"
+vlog "src/cpu.sv"
+vlog "src/mem.sv"
+vlog "src/top.sv"
+vlog "test/unittests/optest.sv"
+vsim -voptargs="+acc" optest
+view wave

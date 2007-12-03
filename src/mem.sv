@@ -17,9 +17,9 @@ module mem(input logic ph1, ph2, reset,
   logic [7:0] ROM[4095:0];
   reg [7:0] data_out;
   
-  assign data = (read_write_sel) ? data_out : 8'bz;
+  assign #3 data = (read_write_sel) ? data_out : 8'bz;
   
-  always_ff @ ( posedge ph1 ) begin
+  always_ff @ ( posedge ph2 ) begin
     if ( read_write_sel ) begin
       if ( address[15:12] == 4'b0000 ) data_out = RAM[address[11:0]];
       else if ( address[15:12] == 4'b1111 ) data_out = ROM[address[11:0]];

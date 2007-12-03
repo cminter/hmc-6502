@@ -25,9 +25,6 @@ module controltest;
     #100;
     reset = 0;
     #1;
-    control.state_flop.q = 8'd7;
-    #19;
-    data_in = 8'h1;
-
+    control.state_flop.q = 8'd1;
   end
 endmodule

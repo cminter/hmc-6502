@@ -6,30 +6,28 @@
 
 module controltest;
   logic ph1, ph2, reset;
-  logic [7:0] data_in;
-  logic [3:0] controls;
+  logic [7:0] data_in, p;
+  logic [36:0] controls;
   
-  control control(data_in, ph1, ph2, reset, controls);
+  control control(data_in, p, ph1, ph2, reset, controls);
   
   always begin
-    ph1 <= 1; #1; ph1 <= 0; #1;
+    ph1 <= 1; #8; ph1 <= 0; #12;
   end
-    always begin
-    ph2 <= 0; #1; ph2 <= 1; #1;
+  always begin
+    ph2 <= 0; #10; ph2 <= 1; #8; ph2 <= 0; #2;
   end
   
   initial begin
     // start test
-    reset = 1;
-    #10;
-    reset = 0;
-    control.op_en_reg.q = 1;
     data_in = 8'h1;
-    #2;
-    data_in = 8'h0;
-    #6;
-    data_in = 8'h2;
-    #2;
-    data_in = 8'h0;
+    reset = 1;
+    #100;
+    reset = 0;
+    #1;
+    control.state_flop.q = 8'd7;
+    #19;
+    data_in = 8'h1;
+
   end
 endmodule

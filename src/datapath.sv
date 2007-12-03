@@ -36,7 +36,7 @@ module datapath(input logic [7:0] data_in,
                 input logic [1:0] al_sel,
                 input logic [3:0] alu_op,
                 input logic c_temp_en,
-                input logic carry_sel,
+                input logic [1:0] carry_sel,
                 input logic [7:0] constant,
                 input logic constant_en
                 );
@@ -116,6 +116,6 @@ module datapath(input logic [7:0] data_in,
   
   // -select carry source
   latch #1 c_temp(flags_s2[0], c_temp_s1, (ph2 & c_temp_en), reset);
-  mux2 #1 carry_sel_mux(p_s1[0], c_temp_s1, carry_sel, c_in_s1);
+  mux4 #1 carry_sel_mux(p_s1[0], c_temp_s1, 0, 1, carry_sel, c_in_s1);
 
 endmodule

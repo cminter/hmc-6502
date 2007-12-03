@@ -5,62 +5,158 @@
 
 `timescale 1 ns / 1 ps
 
+// always kept in this order!
+parameter C_STATE_WIDTH = 23;
+parameter C_OP_WIDTH = 14;
+parameter C_INT_WIDTH = 12;
+
+parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
+
 module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, reset,
+               output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls);
                
-               // controls list from ucodeasm:
-               output logic [3:0] controls
-               );
   // all controls become valid on ph1, and hold through end of ph2.
-  
-  // opcode decoding logic
   logic [7:0] latched_opcode;
-  logic op_en, op_en_buf, opcode_gated_clk;
-  logic [7:0] op_controls;
+  logic opcode_gated_clk, first_cycle;
   
-  flopr #1 op_en_reg(op_en, op_en_buf, ph2, reset);
-  assign opcode_gated_clk = ph1 & op_en_buf;
+  logic [(C_OP_WIDTH - 1):0] c_op_state, c_op_opcode;
+  logic [(C_OP_WIDTH - 1):0] c_op_selected;
+  logic [(C_STATE_WIDTH - 1):0] c_state;
+  logic [(C_INT_WIDTH - 1):0] c_int;
+  
+  logic [7:0] op_flags;
+  
+  logic [7:0] state, next_state, next_state_states, next_state_opcode;
+  logic [7:0] next_state_branch;
+  logic [1:0] next_state_sel;
+  
+  // opcode logic
+  assign last_cycle = c_int[11];
+  flopr #1 opcode_reg(last_cycle, first_cycle, ph2, reset);
+  assign opcode_gated_clk = ph1 & first_cycle;
   latch #8 opcode_buf(data_in, latched_opcode, opcode_gated_clk, reset);
-  opcode_pla opcode_pla(latched_opcode, op_controls);
+  opcode_pla opcode_pla(latched_opcode, {c_op_opcode, op_flags, next_state_opcode});
   
-  // FSM logic
-  logic [7:0] state, next_state;
-  logic [9:0] c;
-  logic next_state_sel;
+  // next state logic
+  assign next_state_branch = 8'b0;
+  assign next_state_sel = c_int[9:8];
+  assign next_state_states = c_int[7:0];
+  mux3 #8 next_state_mux(next_state_states, next_state_opcode, next_state_branch,
+                         next_state_sel, next_state);
   
-  assign op_en = c_s2[4];
-  assign next_state_sel = c_s2[5];
+  // state PLA
+  flopr #8 state_flop(next_state, state, ph1, reset);
+  state_pla state_pla(state, {c_state, c_op_state, c_int});
   
-  mux2 #4 next_state_mux(c_s2[3:0], op_controls[3:0], next_state_sel, 
-                         next_state);
-  flopr #4 state_flop(next_state, state, ph1, reset);
-  state_pla state_pla(state, c);
+  // opcode specific controls
+  assign c_op_sel = c_int[10];
+  mux2 #(C_OP_WIDTH) func_mux(c_op_state, c_op_opcode, c_op_sel, c_op_selected);
   
-  assign controls[3:0] = c_s1[9:6];
-
+  // output
+  assign controls = {c_state, c_op_sel};
 endmodule
 
-module state_pla(input logic [3:0] state,
-                 output logic [9:0] out_controls);
+module state_pla(input logic [7:0] state,
+                 output logic [(C_TOTAL - 1):0] out_controls);
   always_comb
   case(state)
-    4'h0 : out_controls <= 10'b0000_1_0_0000;
-    4'h1 : out_controls <= 10'b0001_0_0_0010;
-    4'h2 : out_controls <= 10'b0010_0_0_0011;
-    4'h3 : out_controls <= 10'b0111_0_1_0000;
-    4'h4 : out_controls <= 10'b0001_0_0_0101;
-    4'h5 : out_controls <= 10'b0010_0_0_0110;
-    4'h6 : out_controls <= 10'b1011_0_1_0000;
-    default: out_controls <= 8'b0;
-  endcase
+      // base
+      8'd0 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_01_00000000;
+      
+      // single_byte
+      8'd1 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_000_00_0_00_1_1__0000_0_0_00_00_00_0_0__1_1_00_00000000;
+      
+      // imm
+      8'd2 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_0_0_000_00_0_00_1_1__0000_1_0_00_00_00_0_0__1_1_00_00000000;
+      
+      // mem_ex_zpa
+      8'd3 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00000100;
+      8'd4 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_0_0_100_10_0_10_1_1__0101_1_0_00_00_00_0_0__1_1_00_00000000;
+      
+      // abs
+      8'd5 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00000110;
+      8'd6 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00000111;
+      8'd7 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_10_1_1__0101_1_0_00_00_00_0_0__1_1_00_00000000;
+      
+      // indirect_x
+      8'd8 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0000_1_0_00_01_00_0_0__0_0_00_00001001;
+      8'd9 : out_controls <= 49'b0_0_1_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0101_1_0_00_01_00_0_0__0_0_00_00001010;
+      8'd10 : out_controls <= 49'b0_0_1_0_0_0_0_0_0_0_1_0_0_100_10_0_11_1_0__0000_1_0_00_01_00_0_0__0_0_00_00001011;
+      8'd11 : out_controls <= 49'b0_0_1_0_0_0_0_0_0_0_1_0_0_001_11_0_10_1_0__0101_1_0_00_01_00_0_0__0_0_00_00001100;
+      8'd12 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_10_1_1__0101_1_0_00_01_00_0_0__1_1_00_00000000;
+      
+      // abs_x
+      8'd13 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0000_1_0_00_01_00_0_0__0_0_00_00001110;
+      8'd14 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_01_1_0__0101_1_0_00_01_00_0_0__0_0_00_00001111;
+      8'd15 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_01_1_1__0101_1_0_00_01_00_0_0__1_1_00_00000000;
+      
+      // zp_x
+      8'd16 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0000_1_0_00_01_00_0_0__0_0_00_00010001;
+      8'd17 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_0_0_100_10_0_10_1_1__0000_1_0_00_01_00_0_0__1_1_00_00000000;
+      
+      // indirect_y
+      8'd18 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00010011;
+      8'd19 : out_controls <= 49'b0_0_1_0_0_0_0_0_0_0_1_0_0_100_10_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00010100;
+      8'd20 : out_controls <= 49'b0_0_1_0_0_0_0_0_0_0_1_0_0_100_10_0_11_1_0__0101_1_0_00_00_00_0_0__0_0_00_00010101;
+      8'd21 : out_controls <= 49'b1_0_1_0_0_0_0_0_0_0_1_0_0_001_11_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00010110;
+      8'd22 : out_controls <= 49'b1_0_1_1_0_0_0_0_0_0_1_0_0_010_10_0_10_1_0__0000_1_0_00_10_00_0_0__0_0_00_00010111;
+      8'd23 : out_controls <= 49'b1_1_1_1_0_0_0_0_0_0_1_0_0_001_11_0_01_1_0__0101_1_0_00_10_00_0_0__0_0_00_00011000;
+      8'd24 : out_controls <= 49'b1_1_1_1_0_0_1_0_1_0_1_0_0_001_11_0_01_1_1__0101_1_0_00_10_00_0_0__1_1_00_00000000;
+      
+      // push
+      8'd25 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_11_0_0__0110_0_1_11_00_11_1_0__0_1_00_00011010;
+      8'd26 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_11_0_0__0110_0_1_11_00_11_1_0__1_1_00_00000000;
+      
+      // pull
+      8'd27 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_10_1_0__0101_0_0_11_00_00_1_0__0_0_00_00011100;
+      8'd28 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_10_1_0__0101_1_0_11_00_00_1_0__0_1_00_00011101;
+      8'd29 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_0_0_101_10_0_11_1_0__0101_1_1_11_00_11_1_0__1_1_00_00000000;
+      
+      // jsr
+      8'd30 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00011111;
+      8'd31 : out_controls <= 49'b1_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00100000;
+      8'd32 : out_controls <= 49'b1_0_1_0_0_0_1_1_1_0_1_0_0_101_10_0_11_0_0__0110_1_1_11_00_11_1_0__0_0_00_00100001;
+      8'd33 : out_controls <= 49'b1_0_1_0_0_0_1_1_1_1_1_0_0_010_11_0_11_0_0__0110_1_1_11_00_11_1_0__0_0_00_00100010;
+      8'd34 : out_controls <= 49'b1_0_1_1_0_0_1_1_1_1_1_1_0_010_11_0_10_0_0__0101_1_1_11_00_11_1_0__0_0_00_00100011;
+      8'd35 : out_controls <= 49'b1_1_1_1_0_0_1_1_1_1_1_1_0_010_11_0_10_0_0__0101_1_1_11_00_11_1_0__1_0_00_00000000;
+      
+      // jmp_abs
+      8'd36 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00100101;
+      8'd37 : out_controls <= 49'b1_0_1_0_0_0_1_0_1_0_1_1_0_001_11_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00100110;
+      8'd38 : out_controls <= 49'b1_0_1_1_0_0_1_0_1_0_1_1_0_010_11_0_10_1_0__0101_1_0_00_00_00_0_0__1_0_00_00000000;
+      
+      // jmp_ind
+      8'd39 : out_controls <= 49'b0_0_1_0_0_0_1_0_1_0_1_0_0_000_00_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00101000;
+      8'd40 : out_controls <= 49'b1_0_1_0_0_0_1_0_1_0_1_0_0_001_11_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00101001;
+      8'd41 : out_controls <= 49'b1_0_1_0_0_0_1_0_1_0_1_1_0_001_11_0_10_1_0__0101_1_0_00_00_00_0_0__0_0_00_00101010;
+      8'd42 : out_controls <= 49'b1_0_1_1_0_0_1_0_1_0_1_1_0_010_10_0_11_1_0__0101_1_0_00_00_00_0_0__0_0_00_00101011;
+      8'd43 : out_controls <= 49'b1_0_1_1_0_0_1_0_1_0_1_1_0_001_10_0_10_1_0__0101_1_0_00_00_00_0_0__1_0_00_00000000;
+      
+      // rts
+      8'd44 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_10_1_0__0101_0_0_11_00_00_1_0__0_0_00_00101101;
+      8'd45 : out_controls <= 49'b0_0_0_0_0_0_0_0_1_0_1_1_0_101_10_0_10_1_0__0101_1_0_11_00_00_1_0__0_0_00_00101110;
+      8'd46 : out_controls <= 49'b0_0_0_0_0_0_0_0_1_0_1_1_0_101_10_0_11_1_0__0110_1_1_11_00_11_1_0__0_0_00_00101111;
+      8'd47 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_1_0_101_10_0_10_1_0__0101_1_1_11_00_11_1_0__0_0_00_00110000;
+      8'd48 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_1_0_101_10_0_11_1_0__0110_1_1_11_00_11_1_0__1_0_00_00000000;
+      
+      // rti
+      8'd49 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_10_1_0__0101_0_0_11_00_00_1_0__0_0_00_00110010;
+      8'd50 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_10_1_1__0101_1_0_11_00_00_1_0__0_0_00_00110011;
+      8'd51 : out_controls <= 49'b0_0_0_0_0_0_0_0_0_0_1_0_0_101_10_0_11_1_1__0110_1_1_11_00_11_1_0__0_0_00_00110100;
+      8'd52 : out_controls <= 49'b0_0_0_0_0_0_0_0_1_0_1_1_0_101_10_0_10_1_1__0101_1_1_11_00_11_1_0__0_0_00_00110101;
+      8'd53 : out_controls <= 49'b0_0_0_0_0_0_0_0_1_0_1_1_0_101_10_0_11_1_1__0110_1_1_11_00_11_1_0__0_0_00_00110110;
+      8'd54 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_1_0_101_10_0_10_1_1__0101_1_1_11_00_11_1_0__0_0_00_00110111;
+      8'd55 : out_controls <= 49'b0_0_0_0_0_0_1_0_1_0_1_1_0_101_10_0_11_1_1__0110_1_1_11_00_11_1_0__1_0_00_00000000;
+      default: out_controls <= 'x; // sysverilog allows this
+    endcase
 endmodule
 
 module opcode_pla(input logic [7:0] opcode,
-                 output logic [7:0] out_data);
+                 output logic [(C_OP_WIDTH + 16 - 1):0] out_data);
   always_comb
   case(opcode)
-    8'h01: out_data <= 8'h11;
-    8'h02: out_data <= 8'h14;
-    default: out_data <= 8'h00;
+    8'h01: out_data <= 30'b0000_0_1_00_00_00_1_0__00000000_00000101;
+    default: out_data <= 'x;
   endcase
 endmodule

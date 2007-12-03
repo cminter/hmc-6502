@@ -13,12 +13,12 @@ module alu(input logic [7:0] a, b,
   
   assign zero = ~(&(y));
   assign negative = y[7];
-  assign overflow = 0; // TODO
+  assign overflow = a[7] ^ b[7]; // 2's complement overflow
   
   always_comb begin
     case (op)
       4'h0: {c_out, y} = a + b + c_in; // add
-      4'h1: {c_out, y} = b - a - c_in; // sub - borrow may be sketchy.
+      4'h1: {c_out, y} = b - a - c_in; // sub.
       4'h2: {c_out, y} = {1'b0, a | b}; // OR
       4'h3: {c_out, y} = {1'b0, a & b}; // AND
       4'h4: {c_out, y} = {1'b0, a ^ b}; // EOR

@@ -42,7 +42,7 @@ module datapath(input logic [7:0] data_in,
                 input logic constant_en
                 );
   
-  wire [7:0] a_s1, flag_selected_s2;
+  wire  [7:0] a_s1, flag_selected_s2;
   logic [7:0] th_s1, tl_s1, r_s2;
 
   logic [7:0] reg_a_s1, reg_b_s1;
@@ -52,13 +52,13 @@ module datapath(input logic [7:0] data_in,
   
   logic [7:0] di_s1;
   
-  wire [7:0] b_s1, b_s2;
+  wire  [7:0] b_s1, b_s2;
   
   logic [7:0] th_s2, tl_s2;
   
   logic [7:0] r_s1;
   logic [7:0] flags_s1, flags_s2;
-  logic c_in_s1, bcd_s1;
+  logic c_in_s1;
   
   // registers
   buslatch temp_high(th_in_en, th_out_en, th_s1, r_s2, a_s1, ph2, reset);
@@ -106,9 +106,7 @@ module datapath(input logic [7:0] data_in,
   mux3 #8 al_mux(pcl_next_s2, r_s2, tl_s2, al_sel, address[7:0]);
   
   // ALU and carry logic
-  assign bcd_s1 = p_s1[4];
-  
-  alu alu(a_s1, b_s1, r_s1, alu_op, c_in_s1, bcd_s1, 
+  alu alu(a_s1, b_s1, r_s1, alu_op, c_in_s1, p_s1[4], 
           flags_s1[1], flags_s1[7], flags_s1[6], flags_s1[0]);
   
   // -buffer to prevent loops
@@ -116,7 +114,7 @@ module datapath(input logic [7:0] data_in,
   latch flag_buf(flags_s1, flags_s2, ph1, reset);
   
   // -select carry source
-  latch #1 c_temp(flags_s2[0], c_temp_s1, (ph2 & c_temp_en), reset);
+  latchen #1 c_temp(flags_s2[0], c_temp_s1, ph2, c_temp_en, reset);
   mux4 #1 carry_sel_mux(p_s1[0], c_temp_s1, 1'b0, 1'b1, carry_sel, c_in_s1);
 
 endmodule

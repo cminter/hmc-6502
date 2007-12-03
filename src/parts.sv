@@ -36,6 +36,16 @@ module latch #(parameter WIDTH = 8)
       else if (clk) q <= d;
 endmodule
 
+module latchen #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0] d,
+              output logic [WIDTH-1:0] q,
+              input logic clk, en, reset);
+  
+  always_latch
+    if (reset) q <= 0;
+      else if (clk & en) q <= d;
+endmodule
+
 module flopr #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,

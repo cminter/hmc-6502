@@ -11,9 +11,12 @@ module alu(input logic [7:0] a, b,
            input logic c_in, bcd,
            output logic zero, negative, overflow, c_out);
   
-  assign zero = ~(&(y));
-  assign negative = y[7];
-  assign overflow = a[7] ^ b[7]; // 2's complement overflow
+  logic testbits;
+  assign testbits = (op === 4'ha);
+  
+  assign zero = ~(&(y)); // Z flag
+  assign negative = y[7] | (testbits & a[7]); // S flag
+  assign overflow = (a[7] ^ b[7])  | (testbits & a[6]); // 2's complement overflow, V flag
   
   always_comb begin
     case (op)
@@ -27,7 +30,7 @@ module alu(input logic [7:0] a, b,
       4'h7: {c_out, y} = {a, 1'b0}; // asl
       4'h8: {c_out, y} = {a, c_in}; // rol
       4'h9: {y, c_out} = {c_in, a}; // ror
-      4'ha: {y, c_out} = 9'b0; // test bits - TODO
+      4'ha: {y, c_out} = {1'b0, a & b}; // test bits
       4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
       default: {y, c_out} = 9'b0;
     endcase

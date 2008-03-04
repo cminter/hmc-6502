@@ -213,7 +213,7 @@ def process_block(block, next_state_num):
     block[2][-1].last_state = True
     
     print ""
-    print "// %s" % block[0]
+    print "// %s:%s" % (block[0], block[2][0].state_num)
     
     # now parse and generate the blocks
     for state in block[2]:

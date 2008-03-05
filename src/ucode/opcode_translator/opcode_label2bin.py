@@ -36,7 +36,8 @@ import re
 import sys
 import os
 
-# Number of bits in binary representation of the state:
+# Number of bits in binary representation of the state; if we can extract
+# this from the label file we shoud do so:
 NUMBITS = 8
 
 def usage():
@@ -114,12 +115,12 @@ def main():
     # Read and parse the input list.  Uses an even more magic list
     # comprehension that matches one of the values in name_dict against each
     # line and replaces it with its corresponding value.
-    # FIXME: This does not quite work: "abs" will match "abs_x" when it
-    # shoudn't.
+    # Note: this assumes that each input line has the format '^.*pat;$' in
+    # order to avoid something like 'abs' matching 'abs_x'.
     input_list = infile.readlines()
     infile.close()
     output_list = [re.sub(pat, name_dict[pat], line) for line in input_list
-            for pat in name_dict if re.search(pat, line)]
+            for pat in name_dict if re.search(pat + ';$', line)]
 
     # Write out the new file.
     outfile = open('translated_opcodes.txt', 'w')

@@ -1,0 +1,9 @@
+0_base;
+0_none;
+0_single_byte;
+0_imm;
+0_mem_ex_zpa;
+0_mem_wr_zpa;
+0_abs;
+0_indirect_x;
+0_abs_x;

@@ -142,24 +142,25 @@ F1	sbc	idy	dp	A	A	1
 8C	sty	abs	Y	_	mem	5
 
 =--=--=--=-=--=--=--=-=--=--=--=-=--=--=--=-----=--=--=--=--=
+Opcode	Instr	AddrMd	SrcA	SrcB	Dest	ALUOp
 
-00	brk	imm	
-EA	nop	imm	
-18	clc	imp
-38	sec	imp
-58	cli	imp
-78	sei	imp
-b8	clv	imp
-d8	cld	imp
-f8	sed	imp
-aa	tax	imp
-8a	txa	imp
-ca	dex	imp
-e8	inx	imp
-98	tya	imp
-a8	tay	imp
-88	dey	imp
-c8	iny	imp
+00	brk	imm	???
+EA	nop	imm	PS	_	PS	5*	-- check this
+18	clc	imp	A	A	_	1
+38	sec	imp	A	A	_	b
+58	cli	imp	???	-- how to interact with interrupt flag?
+78	sei	imp	??? -- how to interact with interrupt flag?
+b8	clv	imp	A	A	_	1
+d8	cld	imp	???
+f8	sed	imp	???
+aa	tax	imp	A	_	X	5*
+8a	txa	imp	X	_	A	5*
+ca	dex	imp	X	X	X	6
+e8	inx	imp	X	X	X	5
+98	tya	imp	Y	_	A	5*
+a8	tay	imp	A	_	Y	5*
+88	dey	imp	Y	Y	Y	6
+c8	iny	imp	Y	Y	Y	5
 10	bpl	imm
 30	bmi	imm
 50	bvc	imm
@@ -168,12 +169,14 @@ c8	iny	imp
 B0	bcs	imm
 D0	bne	imm
 f0	beq	imm
-9a	txs	imp
-ba	tsx	imp
-48	pha	imp
-68	pla	imp
-08	php	imp
-28	plp	imp
-60	rts	imp
-40	rti	imp
+9a	txs	imp	X	_	mem	5*
+ba	tsx	imp	mem	_	X	5*
+48	pha	imp A	_	mem	5*
+68	pla	imp	mem	_	A	5*
+08	php	imp	PS	_	mem	5*
+28	plp	imp	mem	_	PS	5*
+60	rts	imp	
+40	rti	imp	mem	_	PS	5* -- this is only the first half; it then needs to pull PC from memory
+
+* carry_in needs to be set to zero
 

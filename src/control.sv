@@ -18,7 +18,7 @@ parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, reset,
                output logic [7:0] op_flags,
-               output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls);
+               output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls_s1);
                
   // all controls become valid on ph1, and hold through end of ph2.
   logic [7:0] latched_opcode;
@@ -33,6 +33,8 @@ module control(input logic [7:0] data_in, p,
   logic [7:0] state, next_state, next_state_states, next_state_opcode;
   logic [7:0] next_state_branch;
   logic [1:0] next_state_sel;
+
+  logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls_s2;
   
   // opcode logic
   flopr #1 opcode_reg(last_cycle, first_cycle, ph2, reset);
@@ -42,7 +44,7 @@ module control(input logic [7:0] data_in, p,
                                          op_flags, next_state_opcode});
   
   // branch logic
-  // - p is stable 1, but shouldn't be written on the branch op.
+  // - p is stable 1, but won't be written on the branch op.
   // - the paranoid would add a latch to make it stable 2.
   assign flag_high = | (op_flags & p);
   assign branch_taken = branch_polarity ^ flag_high;
@@ -54,7 +56,7 @@ module control(input logic [7:0] data_in, p,
                          next_state_sel, next_state);
   
   // state PLA
-  flopr #8 state_flop(next_state, state, ph1, reset);
+  flopr #8 state_flop(next_state, state, ph2, reset);
   state_pla state_pla(state, {c_state, c_op_state, {last_cycle,
                                                     c_op_sel,
                                                     next_state_sel,
@@ -64,7 +66,9 @@ module control(input logic [7:0] data_in, p,
   mux2 #(C_OP_WIDTH) func_mux(c_op_state, c_op_opcode, c_op_sel, c_op_selected);
   
   // output
-  assign controls = {c_state, c_op_selected};
+  assign controls_s2 = {c_state, c_op_selected};
+  latch #(C_STATE_WIDTH + C_OP_WIDTH) controls_latch(controls_s2, controls_s1,
+                        ph1, reset);
 endmodule
 
 module state_pla(input logic [7:0] state,

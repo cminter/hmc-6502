@@ -33,8 +33,8 @@ module optest;
     // forcibly set up reset state.
     reset = 0;
     #1;
-    top.cpu.con.state_flop.q = 8'd1; // just some last state to fetch opcodes
-    top.cpu.dp.pc_high.latch.q = 8'hef;
-    top.cpu.dp.pc_low.latch.q = 8'hff;
+    top.cpu.core.con.state_flop.q = 8'd1; // just some last state to fetch opcodes
+    top.cpu.core.dp.pc_high.latch.q = 8'hef;
+    top.cpu.core.dp.pc_low.latch.q = 8'hff;
   end
 endmodule

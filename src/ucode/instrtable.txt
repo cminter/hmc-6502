@@ -28,14 +28,38 @@ Opcode	Instruction	Address Mode	Data Source	Data Target	ALU Op
 2C	bit	abs	dp	_	3
 
 C9	cmp	imm	dp	_	1
-C5	cmp	zeropage	dp	_	1
-D5	cmp	zeropage,X	dp	_	1
+C5	cmp	zpg	dp	_	1
+D5	cmp	zpx	dp	_	1
 CD	cmp	abs	dp	_	1
-DD	cmp	abs,X	dp	_	1
-D9	cmp	abs,Y	dp	_	1
-C1	cmp	indirect,X	dp	_	1
-D1	cmp	indirect,Y	dp	_	1
+DD	cmp	abx	dp	_	1
+D9	cmp	aby	dp	_	1
+C1	cmp	idx	dp	_	1
+D1	cmp	idy	dp	_	1
 
 E0	cpx	imm
 E4	cpx	zpg
-EC	cpx	
+EC	cpx	abs
+
+C0	cpy	imm
+C4	cpy	zpg
+CC	cpy	abs
+
+C6	dec	zpg
+D6	dec	zpx
+CE	dec	abs
+DE	dec	abx
+
+49	eor	imm	dp	A	4
+45	eor	zpg	dp	A	4
+55	eor	zpx	dp	A	4
+4D	eor	abs	dp	A	4
+5D	eor	abx	dp	A	4
+59	eor	aby	dp	A	4
+41	eor	idx	dp	A	4
+51	eor	idy	dp	A	4
+
+E6	inc	zpg
+F6	inc	zpx
+EE	inc	abs
+FE	inc	abx
+

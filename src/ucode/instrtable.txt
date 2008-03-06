@@ -63,6 +63,84 @@ F6	inc	zpx
 EE	inc	abs
 FE	inc	abx
 
+4c	jmp	abs
+6c	jmp	ind
+
+20	jsr	abs
+
+a9	lda	imm
+a5	lda	zpg
+b5	lda	zpx
+ad	lda	abs
+bd	lda	abx
+b9	lda	aby
+a1	lda	idx
+b1	lda	idy
+
+a2	ldx	imm
+a6	ldx	zpg
+b6	ldx	zpy
+ae	ldx	abs
+be	ldx	aby
+
+a0	ldy	imm
+a4	ldy	zpg
+b4	ldy	zpx
+ac	ldy	abs
+bc	ldy	abx
+
+4a	lsr	acc
+46	lsr	zpg
+56	lsr	zpx
+4e	lsr	abs
+5e	lsr	abx
+
+09	ora	imm
+05	ora	zpg
+15	ora	zpx
+0d	ora	abs
+1d	ora	abx
+19	ora	aby
+01	ora	idx
+11	ora	idy
+
+2a	rol	acc
+26	rol	zpg
+36	rol	zpx
+2e	rol	abs
+3e	rol	abx
+
+6a	ror	acc
+66	ror	zpg
+76	ror	zpx
+6e	ror	abs
+7e	ror	abx
+
+e9	sbc	imm
+e5	sbc	zpg
+f5	sbc	zpx
+ed	sbc	abs
+fd	sbc	abx
+f9	sbc	aby
+e1	sbc	idx
+f1	sbc	idy
+
+85	sta	zpg
+95	sta	zpx
+8d	sta	abs
+9d	sta	abx
+99	sta	aby
+81	sta	idx
+91	sta	idy
+
+86	stx	zpg
+96	stx	zpy
+8e	stx	abs
+
+84	sty	zpg
+94	sty	zpx
+8c	sty	abs 
+
 =--=--=--=-=--=--=--=-=--=--=--=-=--=--=--=-----=--=--=--=--=
 
 00	brk	imm	

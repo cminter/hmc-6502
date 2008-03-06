@@ -36,6 +36,19 @@ module latch #(parameter WIDTH = 8)
       else if (clk) q <= d;
 endmodule
 
+module and8 (input logic [7:0] a,
+             input logic s,
+             output logic [7:0] y);
+  assign y[0] = a[0] & s;
+  assign y[1] = a[1] & s;
+  assign y[2] = a[2] & s;
+  assign y[3] = a[3] & s;
+  assign y[4] = a[4] & s;
+  assign y[5] = a[5] & s;
+  assign y[6] = a[6] & s;
+  assign y[7] = a[7] & s;
+endmodule
+
 module latchen #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,

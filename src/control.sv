@@ -17,6 +17,7 @@ parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 
 module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, reset,
+               output logic [7:0] op_flags,
                output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls);
                
   // all controls become valid on ph1, and hold through end of ph2.
@@ -27,7 +28,6 @@ module control(input logic [7:0] data_in, p,
   logic [(C_OP_WIDTH - 1):0] c_op_selected;
   logic [(C_STATE_WIDTH - 1):0] c_state;
   
-  logic [7:0] op_flags;
   logic branch_polarity, flag_high, branch_taken;
   
   logic [7:0] state, next_state, next_state_states, next_state_opcode;
@@ -165,6 +165,13 @@ module state_pla(input logic [7:0] state,
       8'd056 : out_controls <= 49'b00000000001001000101101_01100111001110_000000111001;
       8'd057 : out_controls <= 49'b00000010001100000001001_01011000000000_000000111010;
       8'd058 : out_controls <= 49'b00000010101000000001101_01100111001110_100000000000;
+      
+      // branch_head:59
+      8'd059 : out_controls <= 49'b00100010101000000001001_00001000000000_100000000000;
+      
+      // branch_taken:60
+      8'd060 : out_controls <= 49'b10000010001100000000001_00000000000000_000000111101;
+      8'd061 : out_controls <= 49'b00000000101100101001001_00000000000000_100000000000;
       default: out_controls <= 'x;
     endcase
 endmodule
@@ -173,7 +180,7 @@ module opcode_pla(input logic [7:0] opcode,
                  output logic [(C_OP_WIDTH + 17 - 1):0] out_data);
   always_comb
   case(opcode)
-    8'h69: out_data <= 31'b0000_1_1_00_00_00_0_1__0_00000000_00000011;
+    8'h69: out_data <= 31'b0000_1_1_00_00_00_0_1__0_00000010_00000011;
     8'h65: out_data <= 31'b0000_1_1_00_00_00_0_1__0_00000000_00000100;
     8'h85: out_data <= 31'b0101_1_0_00_00_00_0_1__0_00000000_00000110;
     default: out_data <= 'x;

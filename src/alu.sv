@@ -14,7 +14,7 @@ module alu(input logic [7:0] a, b,
   logic testbits;
   assign testbits = (op === 4'ha);
   
-  assign zero = ~(&(y)); // Z flag
+  assign zero = (y === 8'b0); // Z flag
   assign negative = y[7] | (testbits & a[7]); // S flag
   assign overflow = (a[7] ^ b[7])  | (testbits & a[6]); // 2's complement overflow, V flag
   

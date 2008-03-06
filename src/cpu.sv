@@ -15,7 +15,7 @@ module cpu(output logic [15:0] address,
   logic th_out_en;
   logic tl_in_en;
   logic tl_out_en;
-  logic [7:0] p_in_en;
+  logic [7:0] p_in_en, op_flags;
   logic p_out_en;
   logic p_sel;
   logic reg_write_en;
@@ -39,6 +39,7 @@ module cpu(output logic [15:0] address,
   logic [1:0] carry_sel;
   logic [7:0] constant;
   logic constant_en;
+  logic flag_en;
   
   logic [7:0] p, data_in, data_out;
   
@@ -54,7 +55,9 @@ module cpu(output logic [15:0] address,
               d_in_en, d_out_sel, ah_sel, al_sel, alu_op, c_temp_en, carry_sel, constant, 
               constant_en);
               
-  control con(data_in, p, ph1, ph2, reset, {
+  and8    flag_masker(op_flags, flag_en, p_in_en);
+              
+  control con(data_in, p, ph1, ph2, reset, op_flags, {
                   th_in_en,
                   th_out_en,
                   tl_in_en,

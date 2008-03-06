@@ -1,40 +1,40 @@
-Opcode	Instruction	Address Mode	Data Source	Data Target	ALU Op
+Opcode	Instr	AddrMd	SrcA	SrcB	Dest	ALUOp
 
-69	adc	imm	dp	A	0
-65	adc	zpg	dp	A	0
-75	adc	zpx	dp	A	0
-6D	adc	abs	dp	A	0
-7D	adc	abx	dp	A	0
-79	adc	aby	dp	A	0
-61	adc	idx	dp	A	0
-71	adc	idy	dp	A	0
+69	adc	imm	dp	A	A	0
+65	adc	zpg	dp	A	A	0
+75	adc	zpx	dp	A	A	0
+6D	adc	abs	dp	A	A	0
+7D	adc	abx	dp	A	A	0
+79	adc	aby	dp	A	A	0
+61	adc	idx	dp	A	A	0
+71	adc	idy	dp	A	A	0
 
-29	and	imm	dp	A	3
-25	and	zpg	dp	A	3
-35	and	zpx	dp	A	3
-2D	and	abs	dp	A	3
-3D	and	abx	dp	A	3
-39	and	aby	dp	A	3
-21	and	idx	dp	A	3
-31	and	idy	dp	A	3
+29	and	imm	dp	A	A	3
+25	and	zpg	dp	A	A	3
+35	and	zpx	dp	A	A	3
+2D	and	abs	dp	A	A	3
+3D	and	abx	dp	A	A	3
+39	and	aby	dp	A	A	3
+21	and	idx	dp	A	A	3
+31	and	idy	dp	A	A	3
 
-0A	asl	acc	A	A	7
-06	asl	zpg	dp	A	7
-16	asl	zpx	dp	A	7
-0E	asl	abs	dp	A	7
-1E	asl	abx	dp	A	7
+0A	asl	acc	A	_	A	7
+06	asl	zpg	dp	_	A	7
+16	asl	zpx	dp	_	A	7
+0E	asl	abs	dp	_	A	7
+1E	asl	abx	dp	_	A	7
 
-24	bit	zpg	dp	_	3
-2C	bit	abs	dp	_	3
+24	bit	zpg	dp	A	_	3
+2C	bit	abs	dp	A	_	3
 
-C9	cmp	imm	dp	_	1
-C5	cmp	zpg	dp	_	1
-D5	cmp	zpx	dp	_	1
-CD	cmp	abs	dp	_	1
-DD	cmp	abx	dp	_	1
-D9	cmp	aby	dp	_	1
-C1	cmp	idx	dp	_	1
-D1	cmp	idy	dp	_	1
+C9	cmp	imm	dp	S	_	1
+C5	cmp	zpg	dp	S	_	1
+D5	cmp	zpx	dp	S	_	1
+CD	cmp	abs	dp	S	_	1
+DD	cmp	abx	dp	S	_	1
+D9	cmp	aby	dp	S	_	1
+C1	cmp	idx	dp	S	_	1
+D1	cmp	idy	dp	S	_	1
 
 E0	cpx	imm
 E4	cpx	zpg
@@ -49,14 +49,14 @@ D6	dec	zpx
 CE	dec	abs
 DE	dec	abx
 
-49	eor	imm	dp	A	4
-45	eor	zpg	dp	A	4
-55	eor	zpx	dp	A	4
-4D	eor	abs	dp	A	4
-5D	eor	abx	dp	A	4
-59	eor	aby	dp	A	4
-41	eor	idx	dp	A	4
-51	eor	idy	dp	A	4
+49	eor	imm	dp	A	A	4
+45	eor	zpg	dp	A	A	4
+55	eor	zpx	dp	A	A	4
+4D	eor	abs	dp	A	A	4
+5D	eor	abx	dp	A	A	4
+59	eor	aby	dp	A	A	4
+41	eor	idx	dp	A	A	4
+51	eor	idy	dp	A	A	4
 
 E6	inc	zpg
 F6	inc	zpx

@@ -1,0 +1,43 @@
+
+opcode_pla produces the following signals (with corresponding bits) for use in datapath:
+
+      === MISC SIGNALS ===
+4  alu_op,          (self-explanatory!)
+1  d_in_en,         (enables data from mem to be srcA?)
+      === REGISTER SIGNALS ===
+1  reg_write_en,    (allows writing to register)
+2  reg_read_addr_a, (which byte of reg is srcA)
+2  reg_read_addr_b, (which byte of reg is srcB)
+2  reg_write_addr,  (which byte of reg to write, 0-3)
+1  reg_a_en,        (enable srcA from reg)
+1  reg_b_en         (enable srcB from reg)
+
+
+USES IN DATAPATH:
+
+  // register file
+  regfile regfile(ph2, reset, reg_write_en, reg_read_addr_a, reg_read_addr_b, reg_write_addr, r_s2, reg_a_s1, reg_b_s1);
+  tristate #8 rfile_tris_a(reg_a_s1, reg_a_en, a_s1);
+  tristate #8 rfile_tris_b(reg_b_s1, reg_b_en, b_s1);
+
+*** Check out regfile in parts.sv for details!
+
+  // memory I/O
+  // -input
+  latch #8 d_in_buf(data_in, di_s1, ph2, reset);
+  tristate #8 di_tris(di_s1, d_in_en, a_s1);
+
+
+ALU CODES:
+      4'h0: {c_out, y} = a + b + c_in; // add
+      4'h1: {c_out, y} = b - a - c_in; // sub.
+      4'h2: {c_out, y} = {1'b0, a | b}; // OR
+      4'h3: {c_out, y} = {1'b0, a & b}; // AND
+      4'h4: {c_out, y} = {1'b0, a ^ b}; // EOR
+      4'h5: {c_out, y} = a + c_in; // inc
+      4'h6: {c_out, y} = a - c_in; // dec
+      4'h7: {c_out, y} = {a, 1'b0}; // asl
+      4'h8: {c_out, y} = {a, c_in}; // rol
+      4'h9: {y, c_out} = {c_in, a}; // ror
+      4'ha: {y, c_out} = {1'b0, a & b}; // test bits
+      4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)

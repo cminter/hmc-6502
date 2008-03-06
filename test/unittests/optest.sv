@@ -1,5 +1,5 @@
 // optest.sv
-// tests selected instructions
+// basic regression test
 // tbarr at cs dot hmc dot edu
 
 `timescale 1 ns / 1 ps
@@ -30,11 +30,11 @@ module optest;
     // start test
     reset = 1;
     #100;
-    // forcibly set up reset state.
     reset = 0;
-    #1;
-    top.cpu.core.con.state_flop.q = 8'd1; // just some last state to fetch opcodes
-    top.cpu.core.dp.pc_high.latch.q = 8'hef;
-    top.cpu.core.dp.pc_low.latch.q = 8'hff;
+    #500;
+    assert (top.mem.RAM[291] == 8'h0) $display ("far memory write passed");
+      else $error("far memory write failed");
+    assert (top.mem.RAM[4] == 8'd117) $display ("near memory write passed");
+      else $error("near memory write failed");
   end
 endmodule

@@ -15,6 +15,15 @@ module adderc #(parameter WIDTH = 8)
   assign {cout, y} = a + b + cin;
 endmodule
 
+module branchlogic(input logic [7:0] p, op_flags,
+                   input logic branch_polarity,
+                   output logic branch_taken);
+  
+  logic flag_high;
+  assign flag_high = | (op_flags & p);
+  assign branch_taken = branch_polarity ^ flag_high;
+endmodule
+
 module tristate #(parameter WIDTH = 8)
                 (input logic [WIDTH-1:0] in,
                  input logic enable,
@@ -29,11 +38,29 @@ endmodule
 module latch #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
+              input logic clk);
+  
+  always_latch
+      if (clk) q <= d;
+endmodule
+
+module latchr #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0] d,
+              output logic [WIDTH-1:0] q,
               input logic clk, reset);
   
   always_latch
     if (reset) q <= 0;
       else if (clk) q <= d;
+endmodule
+
+module latchen #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0] d,
+              output logic [WIDTH-1:0] q,
+              input logic clk, en);
+  
+  always_latch
+    if (clk & en) q <= d;
 endmodule
 
 module and8 (input logic [7:0] a,
@@ -49,16 +76,6 @@ module and8 (input logic [7:0] a,
   assign y[7] = a[7] & s;
 endmodule
 
-module latchen #(parameter WIDTH = 8)
-             (input logic [WIDTH-1:0] d,
-              output logic [WIDTH-1:0] q,
-              input logic clk, en, reset);
-  
-  always_latch
-    if (reset) q <= 0;
-      else if (clk & en) q <= d;
-endmodule
-
 module flopr #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
@@ -69,42 +86,43 @@ module flopr #(parameter WIDTH = 8)
     else q <= d;
 endmodule
 
-module buslatch (input logic in_enable, out_enable,
+module registerbuf (input logic in_enable, out_enable,
                  output logic [7:0] value,
                  input logic [7:0] in_bus,
                  inout [7:0] out_bus,
-                 input logic clk, reset);
+                 input logic clk);
   
   logic gated_clk;
   assign gated_clk = in_enable & clk;
   
-  latch #8 latch(in_bus, value, gated_clk, reset);
+  latch #8 latch(in_bus, value, gated_clk);
   tristate #8 tris(value, out_enable, out_bus);
 endmodule
 
-module halfadder #(parameter WIDTH = 16)
+module inc #(parameter WIDTH = 16)
                   (input logic [WIDTH-1:0] a,
-                   input logic c,
-                   output logic [WIDTH-1:0] y);
-  assign y = a + c;
+                   input logic c_in,
+                   output logic [WIDTH-1:0] y,
+                   output logic c_out);
+  assign {c_out, y} = a + c_in;
 endmodule
 
-module flaglatch (input logic [7:0] in_enable,
+module registerbufmasked (input logic [7:0] in_enable,
                   input logic out_enable,
                   output logic [7:0] value,
                   input logic [7:0] in_bus,
                   inout [7:0] out_bus,
                   input logic clk, reset);
   
-  // fanned out buslatch
-  latch #1 latch0(in_bus[0], value[0], clk & in_enable[0], reset);
-  latch #1 latch1(in_bus[1], value[1], clk & in_enable[1], reset);
-  latch #1 latch2(in_bus[2], value[2], clk & in_enable[2], reset);
-  latch #1 latch3(in_bus[3], value[3], clk & in_enable[3], reset);
-  latch #1 latch4(in_bus[4], value[4], clk & in_enable[4], reset);
-  latch #1 latch5(in_bus[5], value[5], clk & in_enable[5], reset);
-  latch #1 latch6(in_bus[6], value[6], clk & in_enable[6], reset);
-  latch #1 latch7(in_bus[7], value[7], clk & in_enable[7], reset);
+  // fanned out registerbuf
+  latchr #1 latch0(in_bus[0], value[0], clk & in_enable[0], reset);
+  latchr #1 latch1(in_bus[1], value[1], clk & in_enable[1], reset);
+  latchr #1 latch2(in_bus[2], value[2], clk & in_enable[2], reset);
+  latchr #1 latch3(in_bus[3], value[3], clk & in_enable[3], reset);
+  latchr #1 latch4(in_bus[4], value[4], clk & in_enable[4], reset);
+  latchr #1 latch5(in_bus[5], value[5], clk & in_enable[5], reset);
+  latchr #1 latch6(in_bus[6], value[6], clk & in_enable[6], reset);
+  latchr #1 latch7(in_bus[7], value[7], clk & in_enable[7], reset);
   
   tristate #8 tris(value, out_enable, out_bus);
 endmodule

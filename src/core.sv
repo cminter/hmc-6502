@@ -42,8 +42,6 @@ module core(output logic [15:0] address,
   logic constant_en;
   logic flag_en;
   
-  assign constant_en = 0;
-  
   datapath dp(data_in, data_out, address, p, ph1, ph2, reset, 
               th_in_en, th_out_en, tl_in_en, tl_out_en, p_in_en, p_out_en, p_sel, 
               reg_write_en, reg_read_addr_a, reg_read_addr_b, reg_write_addr, reg_a_en, 
@@ -73,6 +71,8 @@ module core(output logic [15:0] address,
                   carry_sel,
                   flag_en,
                   read_en,
+                  constant_en,
+                  constant,
                   alu_op,
                   d_in_en,
                   reg_write_en,

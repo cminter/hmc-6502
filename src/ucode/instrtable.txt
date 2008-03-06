@@ -141,18 +141,15 @@ F1	sbc	idy	dp	A	A	1
 94	sty	zpx	Y	_	mem	5
 8C	sty	abs	Y	_	mem	5
 
-=--=--=--=-=--=--=--=-=--=--=--=-=--=--=--=-----=--=--=--=--=
-Opcode	Instr	AddrMd	SrcA	SrcB	Dest	ALUOp
-
-00	brk	imm	???
-EA	nop	imm	PS	_	PS	5*	-- check this
+00	brk	imm	FIXME
+EA	nop	imm	A	A	_	1
 18	clc	imp	A	A	_	1
 38	sec	imp	A	A	_	b
-58	cli	imp	???	-- how to interact with interrupt flag?
-78	sei	imp	??? -- how to interact with interrupt flag?
+58	cli	imp	A	A	_	1
+78	sei	imp	A	A	_	1
 b8	clv	imp	A	A	_	1
-d8	cld	imp	???
-f8	sed	imp	???
+d8	cld	imp	A	A	_	1
+f8	sed	imp	A	A	_	1
 aa	tax	imp	A	_	X	5*
 8a	txa	imp	X	_	A	5*
 ca	dex	imp	X	X	X	6
@@ -161,22 +158,20 @@ e8	inx	imp	X	X	X	5
 a8	tay	imp	A	_	Y	5*
 88	dey	imp	Y	Y	Y	6
 c8	iny	imp	Y	Y	Y	5
-10	bpl	imm
-30	bmi	imm
-50	bvc	imm
-70	bvs	imm
-90	bcc	imm
-B0	bcs	imm
-D0	bne	imm
-f0	beq	imm
+10	bpl	imm	dp  _	PC  5*
+30	bmi	imm	dp	_	PC	5*
+50	bvc	imm dp  _	PC  5*
+70	bvs	imm	dp  _	PC  5*
+90	bcc	imm	dp  _	PC  5*
+B0	bcs	imm	dp  _	PC  5*
+D0	bne	imm	dp  _	PC  5*
+f0	beq	imm	dp  _	PC  5*
 9a	txs	imp	X	_	mem	5*
 ba	tsx	imp	mem	_	X	5*
-48	pha	imp A	_	mem	5*
+48	pha	imp	A	_	mem	5*
 68	pla	imp	mem	_	A	5*
 08	php	imp	PS	_	mem	5*
 28	plp	imp	mem	_	PS	5*
-60	rts	imp	
-40	rti	imp	mem	_	PS	5* -- this is only the first half; it then needs to pull PC from memory
 
-* carry_in needs to be set to zero
+FIXME: * carry_in needs to be set to zero
 

@@ -95,26 +95,26 @@ BC	ldy	abx	dp	_	Y	5
 4E	lsr	abs	dp	_	A	9
 5E	lsr	abx	dp	_	A	9
 
-09	ora	imm
-05	ora	zpg
-15	ora	zpx
-0d	ora	abs
-1d	ora	abx
-19	ora	aby
-01	ora	idx
-11	ora	idy
+09	ora	imm	dp	A	A	2
+05	ora	zpg	dp	A	A	2
+15	ora	zpx	dp	A	A	2
+0D	ora	abs	dp	A	A	2
+1D	ora	abx	dp	A	A	2
+19	ora	aby	dp	A	A	2
+01	ora	idx	dp	A	A	2
+11	ora	idy	dp	A	A	2
 
-2a	rol	acc
-26	rol	zpg
-36	rol	zpx
-2e	rol	abs
-3e	rol	abx
+2A	rol	acc	A	_	A	8
+26	rol	zpg	dp	_	A	8
+36	rol	zpx	dp	_	A	8
+2E	rol	abs	dp	_	A	8
+3E	rol	abx	dp	_	A	8
 
-6a	ror	acc
-66	ror	zpg
-76	ror	zpx
-6e	ror	abs
-7e	ror	abx
+6a	ror	acc	A	_	A	9
+66	ror	zpg	dp	_	A	9
+76	ror	zpx	dp	_	A	9
+6e	ror	abs	dp	_	A	9
+7e	ror	abx	dp	_	A	9
 
 E9	sbc	imm	dp	A	A	1
 E5	sbc	zpg	dp	A	A	1

@@ -89,12 +89,11 @@ B4	ldy	zpx	dp	_	Y	5
 AC	ldy	abs	dp	_	Y	5
 BC	ldy	abx	dp	_	Y	5
 
-4A	lsr	acc	A	_	A	9
+4A	lsr	acc	A	_	A	9 # ASSUMES C_IN=0
 46	lsr	zpg	dp	_	A	9
 56	lsr	zpx	dp	_	A	9
 4E	lsr	abs	dp	_	A	9
 5E	lsr	abx	dp	_	A	9
-# assumes that c_in will be 0
 
 09	ora	imm
 05	ora	zpg

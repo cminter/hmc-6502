@@ -24,30 +24,30 @@ Opcode	Instr	AddrMd	SrcA	SrcB	Dest	ALUOp
 0E	asl	abs	dp	_	A	7
 1E	asl	abx	dp	_	A	7
 
-24	bit	zpg	dp	A	_	3
-2C	bit	abs	dp	A	_	3
+24	bit	zpg	dp	A	_	A
+2C	bit	abs	dp	A	_	A
 
-C9	cmp	imm	dp	S	_	1
-C5	cmp	zpg	dp	S	_	1
-D5	cmp	zpx	dp	S	_	1
-CD	cmp	abs	dp	S	_	1
-DD	cmp	abx	dp	S	_	1
-D9	cmp	aby	dp	S	_	1
-C1	cmp	idx	dp	S	_	1
-D1	cmp	idy	dp	S	_	1
+C9	cmp	imm	dp	A	_	1
+C5	cmp	zpg	dp	A	_	1
+D5	cmp	zpx	dp	A	_	1
+CD	cmp	abs	dp	A	_	1
+DD	cmp	abx	dp	A	_	1
+D9	cmp	aby	dp	A	_	1
+C1	cmp	idx	dp	A	_	1
+D1	cmp	idy	dp	A	_	1
 
-E0	cpx	imm
-E4	cpx	zpg
-EC	cpx	abs
+E0	cpx	imm	dp	X	_	1
+E4	cpx	zpg	dp	X	_	1
+EC	cpx	abs	dp	X	_	1
 
-C0	cpy	imm
-C4	cpy	zpg
-CC	cpy	abs
+C0	cpy	imm	dp	Y	_	1
+C4	cpy	zpg	dp	Y	_	1
+CC	cpy	abs	dp	Y	_	1
 
-C6	dec	zpg
-D6	dec	zpx
-CE	dec	abs
-DE	dec	abx
+C6	dec	zpg	dp	_	mem	6
+D6	dec	zpx	dp	_	mem	6
+CE	dec	abs	dp	_	mem	6
+DE	dec	abx	dp	_	mem	6
 
 49	eor	imm	dp	A	A	4
 45	eor	zpg	dp	A	A	4
@@ -58,42 +58,43 @@ DE	dec	abx
 41	eor	idx	dp	A	A	4
 51	eor	idy	dp	A	A	4
 
-E6	inc	zpg
-F6	inc	zpx
-EE	inc	abs
-FE	inc	abx
+E6	inc	zpg	dp	_	mem	5
+F6	inc	zpx	dp	_	mem	5
+EE	inc	abs	dp	_	mem	5
+FE	inc	abx	dp	_	mem	5
 
-4c	jmp	abs
-6c	jmp	ind
+4C	jmp	abs	_	_	_	7
+6C	jmp	ind	_	_	_	7
 
-20	jsr	abs
+20	jsr	abs	_	_	_	7
 
-a9	lda	imm
-a5	lda	zpg
-b5	lda	zpx
-ad	lda	abs
-bd	lda	abx
-b9	lda	aby
-a1	lda	idx
-b1	lda	idy
+A9	lda	imm	dp	_	A	5
+A5	lda	zpg	dp	_	A	5
+B5	lda	zpx	dp	_	A	5
+AD	lda	abs	dp	_	A	5
+BD	lda	abx	dp	_	A	5
+B9	lda	aby	dp	_	A	5
+A1	lda	idx	dp	_	A	5
+B1	lda	idy	dp	_	A	5
 
-a2	ldx	imm
-a6	ldx	zpg
-b6	ldx	zpy
-ae	ldx	abs
-be	ldx	aby
+A2	ldx	imm	dp	_	X	5
+A6	ldx	zpg	dp	_	X	5
+B6	ldx	zpy	dp	_	X	5
+AE	ldx	abs	dp	_	X	5
+BE	ldx	aby	dp	_	X	5
 
-a0	ldy	imm
-a4	ldy	zpg
-b4	ldy	zpx
-ac	ldy	abs
-bc	ldy	abx
+A0	ldy	imm	dp	_	Y	5
+A4	ldy	zpg	dp	_	Y	5
+B4	ldy	zpx	dp	_	Y	5
+AC	ldy	abs	dp	_	Y	5
+BC	ldy	abx	dp	_	Y	5
 
-4a	lsr	acc
-46	lsr	zpg
-56	lsr	zpx
-4e	lsr	abs
-5e	lsr	abx
+4A	lsr	acc	A	_	A	9
+46	lsr	zpg	dp	_	A	9
+56	lsr	zpx	dp	_	A	9
+4E	lsr	abs	dp	_	A	9
+5E	lsr	abx	dp	_	A	9
+# assumes that c_in will be 0
 
 09	ora	imm
 05	ora	zpg
@@ -116,30 +117,30 @@ bc	ldy	abx
 6e	ror	abs
 7e	ror	abx
 
-e9	sbc	imm
-e5	sbc	zpg
-f5	sbc	zpx
-ed	sbc	abs
-fd	sbc	abx
-f9	sbc	aby
-e1	sbc	idx
-f1	sbc	idy
+E9	sbc	imm	dp	A	A	1
+E5	sbc	zpg	dp	A	A	1
+F5	sbc	zpx	dp	A	A	1
+ED	sbc	abs	dp	A	A	1
+FD	sbc	abx	dp	A	A	1
+F9	sbc	aby	dp	A	A	1
+E1	sbc	idx	dp	A	A	1
+F1	sbc	idy	dp	A	A	1
 
-85	sta	zpg
-95	sta	zpx
-8d	sta	abs
-9d	sta	abx
-99	sta	aby
-81	sta	idx
-91	sta	idy
+85	sta	zpg	A	_	mem	5
+95	sta	zpx	A	_	mem	5
+8D	sta	abs	A	_	mem	5
+9D	sta	abx	A	_	mem	5
+99	sta	aby	A	_	mem	5
+81	sta	idx	A	_	mem	5
+91	sta	idy	A	_	mem	5
 
-86	stx	zpg
-96	stx	zpy
-8e	stx	abs
+86	stx	zpg	X	_	mem	5
+96	stx	zpy	X	_	mem	5
+8E	stx	abs	X	_	mem	5
 
-84	sty	zpg
-94	sty	zpx
-8c	sty	abs 
+84	sty	zpg	Y	_	mem	5
+94	sty	zpx	Y	_	mem	5
+8C	sty	abs	Y	_	mem	5
 
 =--=--=--=-=--=--=--=-=--=--=--=-=--=--=--=-----=--=--=--=--=
 

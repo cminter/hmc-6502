@@ -47,6 +47,17 @@ def int2bin(n, count=8):
     """returns the binary of integer n, using count number of digits"""
     return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
 
+def hex2int(n):
+    """fairly hacky function to convert a hex number in a string to an int."""
+    hex = {'a':10, 'b':11, 'c':12, 'd':13, 'e':14, 'f':15}
+    sum = 0
+    for i in range(len(n)):
+        if hex.__contains__(n[i]):
+            sum += 16**(len(n)-i-1)*hex[n[i]]
+        else:
+            sum += 16**(len(n)-i-1)*int(n[i])
+    return sum
+
 def main():
 
     # Open the input file in a semi-robust manner.
@@ -77,7 +88,7 @@ def main():
     outfile = open('opcodes.txt', 'w')
     for line in input_list:
         opcode = line[0]
-        aluop = int2bin(line[1], 4)
+        aluop = int2bin(hex2int(line[6]), 4)
         
         outfile.write("8'h%d: out_data <= 31'b%d_%d_%d_%d_%d_%d_%d_%d__FIXME_FIXME_FIXME;\n"
                 %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,

@@ -18,8 +18,6 @@
 #       This code reads and writes to files instead of standard IO because it
 #       may be run on Windows machines and I don't know how the Windows shell
 #       handles IO redirection.
-#
-#   THIS CODE DOES NOT YET WORK.  DO NOT DEPEND ON IT YET
 
 help = """Useage: python opcode_label2bin.py infile [expected_output]
 Translation script to replace next-state names in lines of the input file with

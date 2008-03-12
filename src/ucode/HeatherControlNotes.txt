@@ -11,7 +11,10 @@ opcode_pla produces the following signals (with corresponding bits) for use in d
 2  reg_write_addr,  (which byte of reg to write, 0-3)
 1  reg_a_en,        (enable srcA from reg)
 1  reg_b_en         (enable srcB from reg)
-
+__
+1  branch_polarity  (branch on high, or branch on low?)
+8  flags            (what flags does the instruction use or set)
+8  state            (addressing mode)
 
 USES IN DATAPATH:
 

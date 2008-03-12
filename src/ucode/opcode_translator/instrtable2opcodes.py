@@ -29,7 +29,7 @@ be included in the case statement of the opcode_pla module in control.sv.
 Output lines are in the following form:
     8'hXX: out_data <= 31'b<aluop>_<d_in_en>_<reg_write_en>_
         <reg_read_addr_a>_<reg_read_addr_b>_<reg_write_addr>_
-        <reg_a_en>_<reg_b_en>__FIXME:<?>_<?>_<next_state_label>;
+        <reg_a_en>_<reg_b_en>__<branch_polarity>_<flags>_<state_label>;
 """
 
 import re
@@ -83,7 +83,6 @@ def main():
     for line in input_list:
         line[6] = line[6][0]
 
-    #FIXME: Generate the control signals.
     # Write the lines of output based on the input:
     outfile = open('opcodes.txt', 'w')
     for line in input_list:
@@ -148,7 +147,8 @@ def main():
 
         label = line[2]
 
-        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__FIXME_FIXME_%s;\n"
+        #FIXME: branch polarity and flags need work
+        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__<branch_polarity>_<flags>_%s;\n"
                 %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,
                   reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en, label))
 

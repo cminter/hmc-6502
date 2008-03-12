@@ -87,12 +87,70 @@ def main():
     # Write the lines of output based on the input:
     outfile = open('opcodes.txt', 'w')
     for line in input_list:
-        opcode = line[0]
-        aluop = int2bin(hex2int(line[6]), 4)
-        
-        outfile.write("8'h%d: out_data <= 31'b%d_%d_%d_%d_%d_%d_%d_%d__FIXME_FIXME_FIXME;\n"
+        opcode = str(line[0])
+        aluop = str(int2bin(hex2int(line[6].lower()), 4))
+        # If data comes from memory, disable register in:
+        if line[3] == 'dp':
+            d_in_en = '1'
+            reg_a_en = '0'
+            reg_read_addr_a = '00'
+        # Otherwise, set SrcA to a register:
+        elif line[3] == 'A':
+            d_in_en = '0'
+            reg_a_en = '1'
+            reg_read_addr_a = '00'
+        elif line[3] == 'X':
+            d_in_en = '0'
+            reg_a_en = '1'
+            reg_read_addr_a = '01'
+        elif line[3] == 'Y':
+            d_in_en = '0'
+            reg_a_en = '1'
+            reg_read_addr_a = '10'
+        elif line[3] == 'SP':
+            d_in_en = '0'
+            reg_a_en = '1'
+            reg_read_addr_a = '11'
+
+        # Set SrcB:
+        if line[4] == '_':
+            reg_b_en = '0'
+            reg_read_addr_b = '00'
+        elif line[4] == 'A':
+            reg_b_en = '1'
+            reg_read_addr_b = '00'
+        elif line[4] == 'X':
+            reg_b_en = '1'
+            reg_read_addr_b = '01'
+        elif line[4] == 'Y':
+            reg_b_en = '1'
+            reg_read_addr_b = '10'
+        elif line[4] == 'SP':
+            reg_b_en = '1'
+            reg_read_addr_b = '11'
+
+        # Set Dest:
+        if line[5] == 'A':
+            reg_write_en = '1'
+            reg_write_addr = '00'
+        elif line[5] == 'X':
+            reg_write_en = '1'
+            reg_write_addr = '01'
+        elif line[5] == 'Y':
+            reg_write_en = '1'
+            reg_write_addr = '10'
+        elif line[5] == 'SP':
+            reg_write_en = '1'
+            reg_write_addr = '11'
+        else:
+            reg_write_en = '0'
+            reg_write_addr = '00'
+
+        label = line[2]
+
+        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__FIXME_FIXME_%s;\n"
                 %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,
-                  reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en))
+                  reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en, label))
 
     outfile.close()
 

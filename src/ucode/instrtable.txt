@@ -167,10 +167,10 @@ B0	bcs	imm	dp	_	PC	5*
 D0	bne	imm	dp	_	PC	5*
 f0	beq	imm	dp	_	PC	5*
 9a	txs	imp	X	_	mem	5*
-ba	tsx	imp	mem	_	X	5*
+ba	tsx	imp	dp	_	X	5*
 48	pha	imp	A	_	mem	5*
-68	pla	imp	mem	_	A	5*
+68	pla	imp	dp	_	A	5*
 08	php	imp	PS	_	mem	5*
-28	plp	imp	mem	_	PS	5*
+28	plp	imp	dp	_	PS	5*
 
 FIXME: * carry_in needs to be set to zero

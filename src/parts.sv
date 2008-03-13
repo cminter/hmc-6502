@@ -76,14 +76,7 @@ endmodule
 module and8 (input logic [7:0] a,
              input logic s,
              output logic [7:0] y);
-  assign y[0] = a[0] & s;
-  assign y[1] = a[1] & s;
-  assign y[2] = a[2] & s;
-  assign y[3] = a[3] & s;
-  assign y[4] = a[4] & s;
-  assign y[5] = a[5] & s;
-  assign y[6] = a[6] & s;
-  assign y[7] = a[7] & s;
+  assign y = a & s;
 endmodule
 
 module flopr #(parameter WIDTH = 8)
@@ -122,17 +115,17 @@ module registerbufmasked (input logic [7:0] in_enable,
                   output logic [7:0] value,
                   input logic [7:0] in_bus,
                   inout [7:0] out_bus,
-                  input logic clk, reset);
+                  input logic clk);
   
   // fanned out registerbuf
-  latchr #1 latch0(in_bus[0], value[0], clk & in_enable[0], reset);
-  latchr #1 latch1(in_bus[1], value[1], clk & in_enable[1], reset);
-  latchr #1 latch2(in_bus[2], value[2], clk & in_enable[2], reset);
-  latchr #1 latch3(in_bus[3], value[3], clk & in_enable[3], reset);
-  latchr #1 latch4(in_bus[4], value[4], clk & in_enable[4], reset);
-  latchr #1 latch5(in_bus[5], value[5], clk & in_enable[5], reset);
-  latchr #1 latch6(in_bus[6], value[6], clk & in_enable[6], reset);
-  latchr #1 latch7(in_bus[7], value[7], clk & in_enable[7], reset);
+  latch #1 latch0(in_bus[0], value[0], clk & in_enable[0]);
+  latch #1 latch1(in_bus[1], value[1], clk & in_enable[1]);
+  latch #1 latch2(in_bus[2], value[2], clk & in_enable[2]);
+  latch #1 latch3(in_bus[3], value[3], clk & in_enable[3]);
+  latch #1 latch4(in_bus[4], value[4], clk & in_enable[4]);
+  latch #1 latch5(in_bus[5], value[5], clk & in_enable[5]);
+  latch #1 latch6(in_bus[6], value[6], clk & in_enable[6]);
+  latch #1 latch7(in_bus[7], value[7], clk & in_enable[7]);
   
   tristate #8 tris(value, out_enable, out_bus);
 endmodule
@@ -175,7 +168,7 @@ module mux5 #(parameter WIDTH = 8)
 endmodule
 
 // modified from MIPS project
-module regfile(input         clk, reset,
+module regfile(input         clk, 
                input         write_enable, 
                input  [1:0]  read_addr_a, read_addr_b, write_addr, 
                input  [7:0]  write_data, 
@@ -191,13 +184,7 @@ module regfile(input         clk, reset,
   // write third port as latch
 
   always_latch
-    if (reset) begin
-      reg_file[0] = 8'b0;
-      reg_file[1] = 8'b0;
-      reg_file[2] = 8'b0;
-      reg_file[3] = 8'b0;
-    end
-    else if (gated_clk) reg_file[write_addr] <= write_data;
+    if (gated_clk) reg_file[write_addr] <= write_data;
 
   assign read_data_a = reg_file[read_addr_a];
   assign read_data_b = reg_file[read_addr_b];

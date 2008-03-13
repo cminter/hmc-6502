@@ -68,14 +68,15 @@ module datapath(input logic [7:0] data_in,
   // registers
   registerbuf temp_high(th_in_en, th_out_en, th_s1, r_s2, a_s1, ph2);
   registerbuf  temp_low(tl_in_en, tl_out_en, tl_s1, r_s2, a_s1, ph2);
-  registerbufmasked flaglatch(p_in_en, p_out_en, p_s1, flag_selected_s2, b_s1, ph2, reset);
+  registerbufmasked flaglatch(p_in_en, p_out_en, p_s1, flag_selected_s2, 
+                              b_s1, ph2);
   mux2 #8 p_sel_mux(flags_s2, r_s2, p_sel, flag_selected_s2);
   
   // constant
   tristate #8 constant_tris(constant, constant_en, a_s1);
   
   // register file
-  regfile regfile(ph2, reset, reg_write_en, reg_read_addr_a, reg_read_addr_b, 
+  regfile regfile(ph2, reg_write_en, reg_read_addr_a, reg_read_addr_b, 
           reg_write_addr, r_s2, reg_a_s1, reg_b_s1);
   tristate #8 rfile_tris_a(reg_a_s1, reg_a_en, a_s1);
   tristate #8 rfile_tris_b(reg_b_s1, reg_b_en, b_s1);

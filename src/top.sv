@@ -13,7 +13,7 @@ module top(input logic ph1, ph2, reset);
   logic [15:0] address;
   wire [7:0] data;
   
-  cpu cpu(address, data, ph1, ph2, reset, read_en);
+  chip chip(address, data, ph1, ph2, reset, read_en);
   mem mem(ph1, ph2, reset, address, data, read_en);
   
 endmodule

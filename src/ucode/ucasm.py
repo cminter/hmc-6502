@@ -12,6 +12,13 @@ def int2bin(n, count=8):
     """returns the binary of integer n, using count number of digits"""
     return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
 
+def hex2bin(s):
+    try:
+        i = int(s.split('x')[1], 16)
+    except IndexError:
+        raise ParseError, "invalid hex string"
+    return int2bin(i)
+
 class Vector:
     groups = OrderedDict([('state', None),
                           ('opcode', None),
@@ -37,7 +44,9 @@ class Vector:
                            ('c_temp_en', '0'), 
                            ('carry_sel', '00'),
                            ('flag_en', '0'),
-                           ('read_en', '1')])
+                           ('read_en', '1'),
+                           ('constant_en', '0'),
+                           ('constant', '00000000')])
         self.groups['opcode'] = OrderedDict([
                            ('alu_op', '0000'),
                            ('d_in_en', '0'), 
@@ -88,7 +97,8 @@ class State:
                            'flag' : "0",
                            'pcinc' : '1',
                            'sta_src' : '00',
-                           'last_cy' : '1'}
+                           'last_cy' : '1',
+                           'nxt_src': '0'}
         self.out = Vector()
         
     def parse_line(self):
@@ -116,14 +126,18 @@ class State:
         if 'sp' == self.in_states['a_sel']:
             self.out.reg_read_addr_a = '11'
             self.out.reg_a_en = '1'
+        if '0x' in self.in_states['a_sel']:
+            self.out.constant_en = '1'
+            self.out.constant = hex2bin(self.in_states['a_sel'])
+            
         if 'x' == self.in_states['b_sel']:
             self.out.reg_read_addr_b = '01'
         if 'y' == self.in_states['b_sel']:
             self.out.reg_read_addr_b = '10'
         if 'pc_h' == self.in_states['b_sel']:
-            self.out.pch_out_en_b = '1'
+            self.out.pch_out_en = '1'
         if 'pc_l' == self.in_states['b_sel']:
-            self.out.pcl_out_en_b = '1'
+            self.out.pcl_out_en = '1'
         if 'sp' == self.in_states['wrt_en']:
             self.out.reg_write_addr = '11'
             self.out.reg_write_en = '1'
@@ -136,16 +150,19 @@ class State:
             self.out.pcl_in_en = '1'
         if 'r' == self.in_states['pc_sel']:
             self.out.pc_sel = '1'
+            
+        if 'b' == self.in_states['nxt_src']:
+            self.out.next_source = '10'
         
         # address selection
         if 'r' == self.in_states['a_h_sel']:
-            self.out.ah_sel = '001'
+            self.out.ah_sel = '001' #a1
         if 'temp' == self.in_states['a_h_sel']:
-            self.out.ah_sel = '010'
+            self.out.ah_sel = '010' #a2
         if '0' == self.in_states['a_h_sel']:
-            self.out.ah_sel = '011'
+            self.out.ah_sel = '100' #a3
         if '1' == self.in_states['a_h_sel']:
-            self.out.ah_sel = '100'
+            self.out.ah_sel = '101' #a4
         if 'r' == self.in_states['a_l_sel']:
             self.out.al_sel = '01'
         if 'temp' == self.in_states['a_l_sel']:
@@ -173,22 +190,22 @@ class State:
             
         # todo: flag selection, flag enable, branch enable
         if 'pass' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x5, 4)
+            self.out.alu_op = int2bin(0x0, 4)
             self.out.carry_sel = '10'
         if 'inc' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x5, 4)
+            self.out.alu_op = int2bin(0x0, 4)
             self.out.carry_sel = '11'
         if 'pass+t' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x5, 4)
+            self.out.alu_op = int2bin(0x0, 4)
             self.out.carry_sel = '01'
         if 'add' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x0, 4)
+            self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '10'
         if 'add+1' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x0, 4)
+            self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '11'
         if 'dec' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x6, 4)
+            self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'
             
         if 'opcode' == self.in_states['sta_src']:
@@ -209,7 +226,7 @@ def process_block(block, next_state_num):
         next_state_num += 1
         
     # go back to base state on last
-    block[2][-1].next_state = 0
+    block[2][-1].next_state = 2
     block[2][-1].last_state = True
     
     print ""

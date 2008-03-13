@@ -6,10 +6,11 @@
 // tbarr at cs dot hmc dot edu
 
 `timescale 1 ns / 1 ps
+`default_nettype none
 
 module mem(input logic ph1, ph2, reset,
 	         input logic [15:0] address,
-           inout [7:0] data,
+           inout wire [7:0] data,
            input logic read_write_sel );
 
   // 0x1000 = 4096

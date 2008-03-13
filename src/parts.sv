@@ -44,6 +44,16 @@ module latch #(parameter WIDTH = 8)
       if (clk) q <= d;
 endmodule
 
+module razorlatch #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0] d,
+              output logic [WIDTH-1:0] q,
+              input logic clk,
+              output logic error);
+  
+  always_latch
+      if (clk) q <= d;
+endmodule
+
 module latchr #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,

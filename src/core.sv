@@ -9,7 +9,7 @@ module core(output logic [15:0] address,
             input [7:0] data_in,
             output [7:0] data_out,
             input logic ph1, ph2, reset,
-            output logic read_en);
+            output logic read_en, razor_error);
   
   // giant wad of controls
   logic th_in_en;
@@ -42,7 +42,7 @@ module core(output logic [15:0] address,
   logic constant_en;
   logic flag_en;
   
-  datapath dp(data_in, data_out, address, p, ph1, ph2, reset, 
+  datapath dp(data_in, data_out, address, p, ph1, ph2, reset, razor_error,
               th_in_en, th_out_en, tl_in_en, tl_out_en, p_in_en, p_out_en, p_sel, 
               reg_write_en, reg_read_addr_a, reg_read_addr_b, reg_write_addr, reg_a_en, 
               reg_b_en, pch_in_en, pch_out_en, pcl_in_en, pcl_out_en, pc_inc_en, pc_sel, 

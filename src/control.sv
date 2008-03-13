@@ -4,6 +4,7 @@
 // tbarr at cs hmc edu
 
 `timescale 1 ns / 1 ps
+`default_nettype none
 
 // always kept in this order!
 parameter C_STATE_WIDTH = 32;
@@ -22,7 +23,7 @@ module control(input logic [7:0] data_in, p,
                
   // all controls become valid on ph1, and hold through end of ph2.
   logic [7:0] latched_opcode;
-  logic first_cycle;
+  logic first_cycle, last_cycle, c_op_sel, last_cycle_s2;
   
   logic [(C_OP_WIDTH - 1):0] c_op_state, c_op_opcode;
   logic [(C_OP_WIDTH - 1):0] c_op_selected;
@@ -31,11 +32,13 @@ module control(input logic [7:0] data_in, p,
   logic branch_polarity, branch_taken;
   
   logic [7:0] state, next_state, next_state_states, next_state_opcode;
+  logic [7:0] next_state_s2;
   logic [7:0] next_state_branch;
   logic [1:0] next_state_sel;
   
   // opcode logic
-  flopr #1 opcode_reg(last_cycle, first_cycle, ph2, reset);
+  latch #1 opcode_lat_p1(last_cycle, last_cycle_s2, ph1);
+  latch #1 opcode_lat_p2(last_cycle_s2, first_cycle, ph2);
   latchen #8 opcode_buf(data_in, latched_opcode, ph1, first_cycle);
   opcode_pla opcode_pla(latched_opcode, {c_op_opcode, branch_polarity, 
                                          op_flags, next_state_opcode});
@@ -52,7 +55,9 @@ module control(input logic [7:0] data_in, p,
                          next_state_sel, next_state);
   
   // state PLA
-  flopr #8 state_flop(next_state, state, ph2, reset);
+  latchr #8 state_lat_p1(next_state, next_state_s2, ph1, reset);
+  latchr #8 state_lat_p2(next_state_s2, state, ph2, reset);
+  
   state_pla state_pla(state, {c_state, c_op_state, {last_cycle,
                                                     c_op_sel,
                                                     next_state_sel,

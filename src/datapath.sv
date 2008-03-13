@@ -4,12 +4,14 @@
 // tbarr at cs hmc edu
 
 `timescale 1 ns / 1 ps
+`default_nettype none
 
 module datapath(input logic [7:0] data_in,
                 output logic [7:0] data_out,
                 output logic [15:0] address,
                 output logic [7:0] p_s1,
                 input logic ph1, ph2, reset,
+                output logic razor_error,
                 
                 // controls list from ucodeasm:
                 input logic th_in_en,
@@ -59,7 +61,9 @@ module datapath(input logic [7:0] data_in,
   
   logic [7:0] r_s1;
   logic [7:0] flags_s1, flags_s2;
-  logic c_in_s1;
+  logic c_in_s1, c_temp_s1;
+  
+  logic dp_error, flags_error;
   
   // registers
   registerbuf temp_high(th_in_en, th_out_en, th_s1, r_s2, a_s1, ph2);
@@ -109,8 +113,10 @@ module datapath(input logic [7:0] data_in,
           flags_s1[1], flags_s1[7], flags_s1[6], flags_s1[0]);
   
   // -buffer to prevent loops
-  latch r_buf(r_s1, r_s2, ph1);
-  latch flag_buf(flags_s1, flags_s2, ph1);
+  razorlatch #8 r_buf(r_s1, r_s2, ph1, dp_error);
+  razorlatch #8 flag_buf(flags_s1, flags_s2, ph1, flags_error);
+  
+  assign razor_error = dp_error | flags_error;
   
   // -select carry source
   latchen #1 c_temp(flags_s2[0], c_temp_s1, ph2, c_temp_en);

@@ -13,7 +13,9 @@ module top(input logic ph1, ph2, reset);
   logic [15:0] address;
   wire [7:0] data;
   
-  chip chip(address, data, ph1, ph2, reset, read_en);
+  wire razor_error;
+  
+  chip chip(address, data, ph1, ph2, reset, read_en, razor_error);
   mem mem(ph1, ph2, reset, address, data, read_en);
   
 endmodule

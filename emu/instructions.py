@@ -109,7 +109,8 @@ def ror(mac):
     
 def sbc(mac):
     # to test
-    mac.a = mac.a - mac.m - mac.get_flag(mac.C)
+    # fix: replaced mac.m with mac.d
+    mac.a = mac.a - mac.d - mac.get_flag(mac.C)
     
 def stx(mac):
     # to test

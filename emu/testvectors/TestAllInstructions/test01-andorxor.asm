@@ -1,0 +1,115 @@
+	.ORG $600
+
+start:
+	; imm
+	LDA #85
+	AND #83
+	ORA #56
+	EOR #17
+	
+	; zpg
+	STA $99
+	LDA #185
+	STA $10
+	LDA #231
+	STA $11
+	LDA #57
+	STA $12
+	LDA $99
+	AND $10
+	ORA $11
+	EOR $12
+	
+	; zpx
+	LDX #16
+	STA $99
+	LDA #188
+	STA $20
+	LDA #49
+	STA $21
+	LDA #23
+	STA $22
+	LDA $99
+	AND $10,X
+	ORA $11,X
+	EOR $12,X
+	
+	; abs
+	STA $99
+	LDA #111
+	STA $1010
+	LDA #60
+	STA $1011
+	LDA #39
+	STA $1012
+	LDA $99
+	AND $1010
+	ORA $1011
+	EOR $1012
+	
+	; abx
+	STA $99
+	LDA #138
+	STA $1020
+	LDA #71
+	STA $1021
+	LDA #143
+	STA $1022
+	LDA $99
+	AND $1010,X
+	ORA $1011,X
+	EOR $1012,X
+	
+	; aby
+	LDY #32
+	STA $99
+	LDA #115
+	STA $1030
+	LDA #42
+	STA $1031
+	LDA #241
+	STA $1032
+	LDA $99
+	AND $1010,Y
+	ORA $1011,Y
+	EOR $1012,Y
+	
+	; idx
+	STA $99
+	LDA #112
+	STA $30
+	LDA #113
+	STA $32
+	LDA #114
+	STA $34
+	LDA #197
+	STA $70
+	LDA #124
+	STA $71
+	LDA #161
+	STA $72
+	LDA $99
+	AND ($20,X)
+	ORA ($22,X)
+	EOR ($24,X)
+	
+	; idy
+	STA $99
+	LDA #96
+	STA $40
+	LDA #97
+	STA $42
+	LDA #98
+	STA $44
+	LDA #55
+	STA $80
+	LDA #35
+	STA $81
+	LDA #157
+	STA $82
+	LDA $99
+	AND ($40),Y
+	ORA ($42),Y
+	EOR ($44),Y
+	
+	STA $A9

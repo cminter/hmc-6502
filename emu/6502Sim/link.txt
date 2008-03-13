@@ -1,3 +1,0 @@
-http://home.pacbell.net/michal_k/6502.html
-
-Notice that the currect version is the non-experimental 1.1.9.21

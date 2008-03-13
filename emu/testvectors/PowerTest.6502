@@ -1,0 +1,43 @@
+# Power Regression Test
+# Heather Justice 3/12/08
+# EXPECTED RESULT: $42 = 0xCF
+#
+# LDA #$E7 (A=0xE7)
+a9
+e7
+# STA $20 ($20=0xE7)
+85
+20
+# LDA #$18 (A=0x18)
+a9
+18
+# STA $10 ($10=0x18)
+85
+10
+# EOR #$FF (A=0xE7)
+49
+ff
+# CMP $20
+c5
+20
+# BNE final (not taken)
+d0
+08
+# SBC $10 (A=0xCF)
+e5
+10
+# CMP $20
+c5
+20
+# BNE final (taken)
+d0
+02
+# EOR #$AA (shouldn't happen, would result in A=0x65)
+49
+aa
+# final:
+# STA $42 ($42=0xCF
+85
+42
+00
+00

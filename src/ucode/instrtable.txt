@@ -2,13 +2,14 @@ Opcode Instr AddrMd SrcA SrcB Dest ALUOp B_polar flags
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 N = Negative Result -- sometimes (S)ign Bit
 V = Overflow
-_ = 
+_ = Expansion Bit 
 B = Break Command
 D = Decimal Mode
 I = Interrupt Disable
 Z = Zero Result
 C = Carry
 
+FIXME: Sample opcode lines have flag mask of 02 -- why?
 69	adc	imm	dp	A	A	0	0	C3
 65	adc	zpg	dp	A	A	0	0	C3
 75	adc	zpx	dp	A	A	0	0	C3
@@ -134,21 +135,21 @@ F9	sbc	aby	dp	A	A	1	0	C3
 E1	sbc	idx	dp	A	A	1	0	C3
 F1	sbc	idy	dp	A	A	1	0	C3
 
-85	sta	zpg	A	_	mem	5	0	00
-95	sta	zpx	A	_	mem	5	0	00
-8D	sta	abs	A	_	mem	5	0	00
-9D	sta	abx	A	_	mem	5	0	00
-99	sta	aby	A	_	mem	5	0	00
-81	sta	idx	A	_	mem	5	0	00
-91	sta	idy	A	_	mem	5	0	00
+85	sta	zpg	dp	A	mem	5	0	00
+95	sta	zpx	dp	A	mem	5	0	00
+8D	sta	abs	dp	A	mem	5	0	00
+9D	sta	abx	dp	A	mem	5	0	00
+99	sta	aby	dp	A	mem	5	0	00
+81	sta	idx	dp	A	mem	5	0	00
+91	sta	idy	dp	A	mem	5	0	00
 
-86	stx	zpg	X	_	mem	5	0	00
-96	stx	zpy	X	_	mem	5	0	00
-8E	stx	abs	X	_	mem	5	0	00
+86	stx	zpg	dp	X	mem	5	0	00
+96	stx	zpy	dp	X	mem	5	0	00
+8E	stx	abs	dp	X	mem	5	0	00
 
-84	sty	zpg	Y	_	mem	5	0	00
-94	sty	zpx	Y	_	mem	5	0	00
-8C	sty	abs	Y	_	mem	5	0	00
+84	sty	zpg	dp	Y	mem	5	0	00
+94	sty	zpx	dp	Y	mem	5	0	00
+8C	sty	abs	dp	Y	mem	5	0	00
 
 FIXME: brk needs to be done
 00	brk	imm	FIXME	0	10
@@ -162,30 +163,31 @@ b8	clv	imp	A	A	_	1	0	40
 d8	cld	imp	A	A	_	1	0	08
 f8	sed	imp	A	A	_	1	0	08
 
-aa	tax	imp	A	_	X	5*	0	82
-8a	txa	imp	X	_	A	5*	0	82
+aa	tax	imp	A	_	X	5	0	82
+8a	txa	imp	X	_	A	5	0	82
 ca	dex	imp	X	X	X	6	0	82
 e8	inx	imp	X	X	X	5	0	82
-98	tya	imp	Y	_	A	5*	0	82
-a8	tay	imp	A	_	Y	5*	0	82
+98	tya	imp	Y	_	A	5	0	82
+a8	tay	imp	A	_	Y	5	0	82
 88	dey	imp	Y	Y	Y	6	0	82
 c8	iny	imp	Y	Y	Y	5	0	82
 
-10	bpl	imm	dp	_	PC	5*	0	00
-30	bmi	imm	dp	_	PC	5*	1	00
-50	bvc	imm	dp	_	PC	5*	0	00
-70	bvs	imm	dp	_	PC	5*	1	00
-90	bcc	imm	dp	_	PC	5*	0	00
-B0	bcs	imm	dp	_	PC	5*	1	00
-D0	bne	imm	dp	_	PC	5*	0	00
-f0	beq	imm	dp	_	PC	5*	1	00
+Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
+10	bpl	imm	dp	_	PC	5	0	80
+30	bmi	imm	dp	_	PC	5	1	80
+50	bvc	imm	dp	_	PC	5	0	40
+70	bvs	imm	dp	_	PC	5	1	40
+90	bcc	imm	dp	_	PC	5	0	01
+B0	bcs	imm	dp	_	PC	5	1	01
+D0	bne	imm	dp	_	PC	5	0	02
+f0	beq	imm	dp	_	PC	5	1	02
 
-FIXME: op_flags
-9a	txs	imp	X	_	mem	5*	0	00
-ba	tsx	imp	dp	_	X	5*	0	00
-48	pha	imp	A	_	mem	5*	0	00
-68	pla	imp	dp	_	A	5*	0	00
-08	php	imp	PS	_	mem	5*	0	00
-28	plp	imp	dp	_	PS	5*	0	00
+9a	txs	imp	SP	X	mem	5	0	00
+ba	tsx	imp	dp	_	X	5	0	82
+48	pha	imp	SP	A	mem	5	0	00
+68	pla	imp	dp	_	A	5	0	82
+08	php	imp	SP	PS	mem	5	0	00
+FIXME: Need to check what the AppleII's behavior is -- do we allow the
+expansion bit to be set, or not?
+28	plp	imp	dp	_	PS	5	0	FF
 
-* carry_in needs to be set to zero

@@ -16,6 +16,7 @@ __
 8  flags            (what flags does the instruction use or set)
 8  state            (addressing mode)
 
+
 USES IN DATAPATH:
 
   // register file
@@ -44,3 +45,14 @@ ALU CODES:
       4'h9: {y, c_out} = {c_in, a}; // ror
       4'ha: {y, c_out} = {1'b0, a & b}; // test bits
       4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
+
+Bitfield for flags is: [N,V,_,B,D,I,Z,C]
+    N = Negative Result -- sometimes (S)ign Bit
+    V = Overflow
+    _ = Expansion Bit
+    B = Break Command
+    D = Decimal Mode
+    I = Interrupt Disable
+    Z = Zero Result
+    C = Carry
+

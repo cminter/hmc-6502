@@ -14,13 +14,11 @@
 #       *The opcode output is system verilog in the following form:
 #           8'hXX: out_data <= 31'b<aluop>_<d_in_en>_<reg_write_en>_
 #               <reg_read_addr_a>_<reg_read_addr_b>_<reg_write_addr>_
-#               <reg_a_en>_<reg_b_en>__FIXME:<?>_<?>_<next_state_label>;
+#               <reg_a_en>_<reg_b_en>__<branch_polarity>_<flags>_<state>;
 #
 #       *This code reads and writes to files instead of standard IO because it
 #       may be run on Windows machines and I don't know how the Windows shell
 #       handles IO redirection.
-#
-#   THIS CODE DOES NOT YET WORK.  DO NOT DEPEND ON IT YET
 
 help = """Useage: python instrtable2opcodes.py infile.txt
 Script to take in a table of instructions and generate lines of verilog to

@@ -87,12 +87,14 @@ def jmp(mac):
     
 def ldx(mac):
     # to test
-    mac.a = mac.x
+    # broken: mac.a = mac.x
+    mac.x = mac.d
     
 def ldy(mac):
     # to test
-    mac.a = mac.y
-    
+    # broken: mac.a = mac.y
+    mac.y = mac.d
+
 def ora(mac):
     # to test
     mac.a = mac.a | mac.d

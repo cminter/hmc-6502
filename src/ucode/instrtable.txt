@@ -1,176 +1,191 @@
-Format:	Opcode	Instr	AddrMd	SrcA	SrcB	Dest	ALUOp
+Opcode Instr AddrMd SrcA SrcB Dest ALUOp B_polar flags
+Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
+N = Negative Result -- sometimes (S)ign Bit
+V = Overflow
+_ = 
+B = Break Command
+D = Decimal Mode
+I = Interrupt Disable
+Z = Zero Result
+C = Carry
 
-69	adc	imm	dp	A	A	0
-65	adc	zpg	dp	A	A	0
-75	adc	zpx	dp	A	A	0
-6D	adc	abs	dp	A	A	0
-7D	adc	abx	dp	A	A	0
-79	adc	aby	dp	A	A	0
-61	adc	idx	dp	A	A	0
-71	adc	idy	dp	A	A	0
+69	adc	imm	dp	A	A	0	0	C3
+65	adc	zpg	dp	A	A	0	0	C3
+75	adc	zpx	dp	A	A	0	0	C3
+6D	adc	abs	dp	A	A	0	0	C3
+7D	adc	abx	dp	A	A	0	0	C3
+79	adc	aby	dp	A	A	0	0	C3
+61	adc	idx	dp	A	A	0	0	C3
+71	adc	idy	dp	A	A	0	0	C3
 
-29	and	imm	dp	A	A	3
-25	and	zpg	dp	A	A	3
-35	and	zpx	dp	A	A	3
-2D	and	abs	dp	A	A	3
-3D	and	abx	dp	A	A	3
-39	and	aby	dp	A	A	3
-21	and	idx	dp	A	A	3
-31	and	idy	dp	A	A	3
+29	and	imm	dp	A	A	3	0	82
+25	and	zpg	dp	A	A	3	0	82
+35	and	zpx	dp	A	A	3	0	82
+2D	and	abs	dp	A	A	3	0	82
+3D	and	abx	dp	A	A	3	0	82
+39	and	aby	dp	A	A	3	0	82
+21	and	idx	dp	A	A	3	0	82
+31	and	idy	dp	A	A	3	0	82
 
-0A	asl	acc	A	_	A	7
-06	asl	zpg	dp	_	A	7
-16	asl	zpx	dp	_	A	7
-0E	asl	abs	dp	_	A	7
-1E	asl	abx	dp	_	A	7
+0A	asl	acc	A	_	A	7	0	83
+06	asl	zpg	dp	_	A	7	0	83
+16	asl	zpx	dp	_	A	7	0	83
+0E	asl	abs	dp	_	A	7	0	83
+1E	asl	abx	dp	_	A	7	0	83
 
-24	bit	zpg	dp	A	_	A
-2C	bit	abs	dp	A	_	A
+24	bit	zpg	dp	A	_	A	0	C2
+2C	bit	abs	dp	A	_	A	0	C2
 
-C9	cmp	imm	dp	A	_	1
-C5	cmp	zpg	dp	A	_	1
-D5	cmp	zpx	dp	A	_	1
-CD	cmp	abs	dp	A	_	1
-DD	cmp	abx	dp	A	_	1
-D9	cmp	aby	dp	A	_	1
-C1	cmp	idx	dp	A	_	1
-D1	cmp	idy	dp	A	_	1
+C9	cmp	imm	dp	A	_	1	0	83
+C5	cmp	zpg	dp	A	_	1	0	83
+D5	cmp	zpx	dp	A	_	1	0	83
+CD	cmp	abs	dp	A	_	1	0	83
+DD	cmp	abx	dp	A	_	1	0	83
+D9	cmp	aby	dp	A	_	1	0	83
+C1	cmp	idx	dp	A	_	1	0	83
+D1	cmp	idy	dp	A	_	1	0	83
 
-E0	cpx	imm	dp	X	_	1
-E4	cpx	zpg	dp	X	_	1
-EC	cpx	abs	dp	X	_	1
+E0	cpx	imm	dp	X	_	1	0	83
+E4	cpx	zpg	dp	X	_	1	0	83
+EC	cpx	abs	dp	X	_	1	0	83
 
-C0	cpy	imm	dp	Y	_	1
-C4	cpy	zpg	dp	Y	_	1
-CC	cpy	abs	dp	Y	_	1
+C0	cpy	imm	dp	Y	_	1	0	83
+C4	cpy	zpg	dp	Y	_	1	0	83
+CC	cpy	abs	dp	Y	_	1	0	83
 
-C6	dec	zpg	dp	_	mem	6
-D6	dec	zpx	dp	_	mem	6
-CE	dec	abs	dp	_	mem	6
-DE	dec	abx	dp	_	mem	6
+C6	dec	zpg	dp	_	mem	6	0	82
+D6	dec	zpx	dp	_	mem	6	0	82
+CE	dec	abs	dp	_	mem	6	0	82
+DE	dec	abx	dp	_	mem	6	0	82
 
-49	eor	imm	dp	A	A	4
-45	eor	zpg	dp	A	A	4
-55	eor	zpx	dp	A	A	4
-4D	eor	abs	dp	A	A	4
-5D	eor	abx	dp	A	A	4
-59	eor	aby	dp	A	A	4
-41	eor	idx	dp	A	A	4
-51	eor	idy	dp	A	A	4
+49	eor	imm	dp	A	A	4	0	82
+45	eor	zpg	dp	A	A	4	0	82
+55	eor	zpx	dp	A	A	4	0	82
+4D	eor	abs	dp	A	A	4	0	82
+5D	eor	abx	dp	A	A	4	0	82
+59	eor	aby	dp	A	A	4	0	82
+41	eor	idx	dp	A	A	4	0	82
+51	eor	idy	dp	A	A	4	0	82
 
-E6	inc	zpg	dp	_	mem	5
-F6	inc	zpx	dp	_	mem	5
-EE	inc	abs	dp	_	mem	5
-FE	inc	abx	dp	_	mem	5
+E6	inc	zpg	dp	_	mem	5	0	82
+F6	inc	zpx	dp	_	mem	5	0	82
+EE	inc	abs	dp	_	mem	5	0	82
+FE	inc	abx	dp	_	mem	5	0	82
 
-4C	jmp	abs	_	_	_	7
-6C	jmp	ind	_	_	_	7
+4C	jmp	abs	_	_	_	7	0	00
+6C	jmp	ind	_	_	_	7	0	00
 
-20	jsr	abs	_	_	_	7
+20	jsr	abs	_	_	_	7	0	00
 
-A9	lda	imm	dp	_	A	5
-A5	lda	zpg	dp	_	A	5
-B5	lda	zpx	dp	_	A	5
-AD	lda	abs	dp	_	A	5
-BD	lda	abx	dp	_	A	5
-B9	lda	aby	dp	_	A	5
-A1	lda	idx	dp	_	A	5
-B1	lda	idy	dp	_	A	5
+A9	lda	imm	dp	_	A	5	0	82
+A5	lda	zpg	dp	_	A	5	0	82
+B5	lda	zpx	dp	_	A	5	0	82
+AD	lda	abs	dp	_	A	5	0	82
+BD	lda	abx	dp	_	A	5	0	82
+B9	lda	aby	dp	_	A	5	0	82
+A1	lda	idx	dp	_	A	5	0	82
+B1	lda	idy	dp	_	A	5	0	82
 
-A2	ldx	imm	dp	_	X	5
-A6	ldx	zpg	dp	_	X	5
-B6	ldx	zpy	dp	_	X	5
-AE	ldx	abs	dp	_	X	5
-BE	ldx	aby	dp	_	X	5
+A2	ldx	imm	dp	_	X	5	0	82
+A6	ldx	zpg	dp	_	X	5	0	82
+B6	ldx	zpy	dp	_	X	5	0	82
+AE	ldx	abs	dp	_	X	5	0	82
+BE	ldx	aby	dp	_	X	5	0	82
 
-A0	ldy	imm	dp	_	Y	5
-A4	ldy	zpg	dp	_	Y	5
-B4	ldy	zpx	dp	_	Y	5
-AC	ldy	abs	dp	_	Y	5
-BC	ldy	abx	dp	_	Y	5
+A0	ldy	imm	dp	_	Y	5	0	82
+A4	ldy	zpg	dp	_	Y	5	0	82
+B4	ldy	zpx	dp	_	Y	5	0	82
+AC	ldy	abs	dp	_	Y	5	0	82
+BC	ldy	abx	dp	_	Y	5	0	82
 
-4A	lsr	acc	A	_	A	9 # ASSUMES C_IN=0
-46	lsr	zpg	dp	_	A	9
-56	lsr	zpx	dp	_	A	9
-4E	lsr	abs	dp	_	A	9
-5E	lsr	abx	dp	_	A	9
+4A	lsr	acc	A	_	A	9 # ASSUMES C_IN=0	0	83
+46	lsr	zpg	dp	_	A	9	0	83
+56	lsr	zpx	dp	_	A	9	0	83
+4E	lsr	abs	dp	_	A	9	0	83
+5E	lsr	abx	dp	_	A	9	0	83
 
-09	ora	imm	dp	A	A	2
-05	ora	zpg	dp	A	A	2
-15	ora	zpx	dp	A	A	2
-0D	ora	abs	dp	A	A	2
-1D	ora	abx	dp	A	A	2
-19	ora	aby	dp	A	A	2
-01	ora	idx	dp	A	A	2
-11	ora	idy	dp	A	A	2
+09	ora	imm	dp	A	A	2	0	82
+05	ora	zpg	dp	A	A	2	0	82
+15	ora	zpx	dp	A	A	2	0	82
+0D	ora	abs	dp	A	A	2	0	82
+1D	ora	abx	dp	A	A	2	0	82
+19	ora	aby	dp	A	A	2	0	82
+01	ora	idx	dp	A	A	2	0	82
+11	ora	idy	dp	A	A	2	0	82
 
-2A	rol	acc	A	_	A	8
-26	rol	zpg	dp	_	A	8
-36	rol	zpx	dp	_	A	8
-2E	rol	abs	dp	_	A	8
-3E	rol	abx	dp	_	A	8
+2A	rol	acc	A	_	A	8	0	83
+26	rol	zpg	dp	_	A	8	0	83
+36	rol	zpx	dp	_	A	8	0	83
+2E	rol	abs	dp	_	A	8	0	83
+3E	rol	abx	dp	_	A	8	0	83
 
-6a	ror	acc	A	_	A	9
-66	ror	zpg	dp	_	A	9
-76	ror	zpx	dp	_	A	9
-6e	ror	abs	dp	_	A	9
-7e	ror	abx	dp	_	A	9
+6a	ror	acc	A	_	A	9	0	83
+66	ror	zpg	dp	_	A	9	0	83
+76	ror	zpx	dp	_	A	9	0	83
+6e	ror	abs	dp	_	A	9	0	83
+7e	ror	abx	dp	_	A	9	0	83
 
-E9	sbc	imm	dp	A	A	1
-E5	sbc	zpg	dp	A	A	1
-F5	sbc	zpx	dp	A	A	1
-ED	sbc	abs	dp	A	A	1
-FD	sbc	abx	dp	A	A	1
-F9	sbc	aby	dp	A	A	1
-E1	sbc	idx	dp	A	A	1
-F1	sbc	idy	dp	A	A	1
+E9	sbc	imm	dp	A	A	1	0	C3
+E5	sbc	zpg	dp	A	A	1	0	C3
+F5	sbc	zpx	dp	A	A	1	0	C3
+ED	sbc	abs	dp	A	A	1	0	C3
+FD	sbc	abx	dp	A	A	1	0	C3
+F9	sbc	aby	dp	A	A	1	0	C3
+E1	sbc	idx	dp	A	A	1	0	C3
+F1	sbc	idy	dp	A	A	1	0	C3
 
-85	sta	zpg	A	_	mem	5
-95	sta	zpx	A	_	mem	5
-8D	sta	abs	A	_	mem	5
-9D	sta	abx	A	_	mem	5
-99	sta	aby	A	_	mem	5
-81	sta	idx	A	_	mem	5
-91	sta	idy	A	_	mem	5
+85	sta	zpg	A	_	mem	5	0	00
+95	sta	zpx	A	_	mem	5	0	00
+8D	sta	abs	A	_	mem	5	0	00
+9D	sta	abx	A	_	mem	5	0	00
+99	sta	aby	A	_	mem	5	0	00
+81	sta	idx	A	_	mem	5	0	00
+91	sta	idy	A	_	mem	5	0	00
 
-86	stx	zpg	X	_	mem	5
-96	stx	zpy	X	_	mem	5
-8E	stx	abs	X	_	mem	5
+86	stx	zpg	X	_	mem	5	0	00
+96	stx	zpy	X	_	mem	5	0	00
+8E	stx	abs	X	_	mem	5	0	00
 
-84	sty	zpg	Y	_	mem	5
-94	sty	zpx	Y	_	mem	5
-8C	sty	abs	Y	_	mem	5
+84	sty	zpg	Y	_	mem	5	0	00
+94	sty	zpx	Y	_	mem	5	0	00
+8C	sty	abs	Y	_	mem	5	0	00
 
-00	brk	imm	FIXME
-EA	nop	imm	A	A	_	1
-18	clc	imp	A	A	_	1
-38	sec	imp	A	A	_	b
-58	cli	imp	A	A	_	1
-78	sei	imp	A	A	_	1
-b8	clv	imp	A	A	_	1
-d8	cld	imp	A	A	_	1
-f8	sed	imp	A	A	_	1
-aa	tax	imp	A	_	X	5*
-8a	txa	imp	X	_	A	5*
-ca	dex	imp	X	X	X	6
-e8	inx	imp	X	X	X	5
-98	tya	imp	Y	_	A	5*
-a8	tay	imp	A	_	Y	5*
-88	dey	imp	Y	Y	Y	6
-c8	iny	imp	Y	Y	Y	5
-10	bpl	imm	dp	_	PC	5*
-30	bmi	imm	dp	_	PC	5*
-50	bvc	imm	dp	_	PC	5*
-70	bvs	imm	dp	_	PC	5*
-90	bcc	imm	dp	_	PC	5*
-B0	bcs	imm	dp	_	PC	5*
-D0	bne	imm	dp	_	PC	5*
-f0	beq	imm	dp	_	PC	5*
-9a	txs	imp	X	_	mem	5*
-ba	tsx	imp	dp	_	X	5*
-48	pha	imp	A	_	mem	5*
-68	pla	imp	dp	_	A	5*
-08	php	imp	PS	_	mem	5*
-28	plp	imp	dp	_	PS	5*
+FIXME: brk needs to be done
+00	brk	imm	FIXME	0	10
+EA	nop	imm	_	_	_	1	0	00
 
-FIXME: * carry_in needs to be set to zero
+18	clc	imp	A	A	_	1	0	01
+38	sec	imp	A	A	_	b	0	01
+58	cli	imp	A	A	_	1	0	04
+78	sei	imp	A	A	_	1	0	04
+b8	clv	imp	A	A	_	1	0	40
+d8	cld	imp	A	A	_	1	0	08
+f8	sed	imp	A	A	_	1	0	08
+
+aa	tax	imp	A	_	X	5*	0	82
+8a	txa	imp	X	_	A	5*	0	82
+ca	dex	imp	X	X	X	6	0	82
+e8	inx	imp	X	X	X	5	0	82
+98	tya	imp	Y	_	A	5*	0	82
+a8	tay	imp	A	_	Y	5*	0	82
+88	dey	imp	Y	Y	Y	6	0	82
+c8	iny	imp	Y	Y	Y	5	0	82
+
+10	bpl	imm	dp	_	PC	5*	0	00
+30	bmi	imm	dp	_	PC	5*	1	00
+50	bvc	imm	dp	_	PC	5*	0	00
+70	bvs	imm	dp	_	PC	5*	1	00
+90	bcc	imm	dp	_	PC	5*	0	00
+B0	bcs	imm	dp	_	PC	5*	1	00
+D0	bne	imm	dp	_	PC	5*	0	00
+f0	beq	imm	dp	_	PC	5*	1	00
+
+FIXME: op_flags
+9a	txs	imp	X	_	mem	5*	0	00
+ba	tsx	imp	dp	_	X	5*	0	00
+48	pha	imp	A	_	mem	5*	0	00
+68	pla	imp	dp	_	A	5*	0	00
+08	php	imp	PS	_	mem	5*	0	00
+28	plp	imp	dp	_	PS	5*	0	00
+
+* carry_in needs to be set to zero

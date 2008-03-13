@@ -36,9 +36,17 @@ import re
 import sys
 import os
 
-# Number of bits in binary representation of the state; if we can extract
-# this from the label file we shoud do so:
-NUMBITS = 8
+# Global Constants
+FIELDS = 9
+OPCODE = 0
+INSTR = 1
+STATE = 2
+SRCA = 3
+SRCB = 4
+DEST = 5
+ALUOP = 6
+BP = 7
+FLAGS = 8
 
 def usage():
     sys.stderr.write(help)
@@ -79,78 +87,82 @@ def main():
     # and throw away lines that do not contain 7 fields. Finally, trim the
     # last field to only one character in case it contains comments.
     input_list = [line.split('\t') for line in infile.readlines()]
-    input_list = [line for line in input_list if len(line) == 7]
+    input_list = [line for line in input_list if len(line) == FIELDS]
+
     for line in input_list:
-        line[6] = line[6][0]
+        line[ALUOP] = line[ALUOP][0]
+        line[FLAGS] = line[FLAGS][0:2]
 
     # Write the lines of output based on the input:
     outfile = open('opcodes.txt', 'w')
     for line in input_list:
-        opcode = str(line[0])
-        aluop = str(int2bin(hex2int(line[6].lower()), 4))
+        opcode = str(line[OPCODE])
+        aluop = str(int2bin(hex2int(line[ALUOP].lower()), 4))
         # If data comes from memory, disable register in:
-        if line[3] == 'dp':
+        if line[SRCA] == 'dp':
             d_in_en = '1'
             reg_a_en = '0'
             reg_read_addr_a = '00'
         # Otherwise, set SrcA to a register:
-        elif line[3] == 'A':
+        elif line[SRCA] == 'A':
             d_in_en = '0'
             reg_a_en = '1'
             reg_read_addr_a = '00'
-        elif line[3] == 'X':
+        elif line[SRCA] == 'X':
             d_in_en = '0'
             reg_a_en = '1'
             reg_read_addr_a = '01'
-        elif line[3] == 'Y':
+        elif line[SRCA] == 'Y':
             d_in_en = '0'
             reg_a_en = '1'
             reg_read_addr_a = '10'
-        elif line[3] == 'SP':
+        elif line[SRCA] == 'SP':
             d_in_en = '0'
             reg_a_en = '1'
             reg_read_addr_a = '11'
 
         # Set SrcB:
-        if line[4] == '_':
+        if line[SRCB] == '_':
             reg_b_en = '0'
             reg_read_addr_b = '00'
-        elif line[4] == 'A':
+        elif line[SRCB] == 'A':
             reg_b_en = '1'
             reg_read_addr_b = '00'
-        elif line[4] == 'X':
+        elif line[SRCB] == 'X':
             reg_b_en = '1'
             reg_read_addr_b = '01'
-        elif line[4] == 'Y':
+        elif line[SRCB] == 'Y':
             reg_b_en = '1'
             reg_read_addr_b = '10'
-        elif line[4] == 'SP':
+        elif line[SRCB] == 'SP':
             reg_b_en = '1'
             reg_read_addr_b = '11'
 
         # Set Dest:
-        if line[5] == 'A':
+        if line[DEST] == 'A':
             reg_write_en = '1'
             reg_write_addr = '00'
-        elif line[5] == 'X':
+        elif line[DEST] == 'X':
             reg_write_en = '1'
             reg_write_addr = '01'
-        elif line[5] == 'Y':
+        elif line[DEST] == 'Y':
             reg_write_en = '1'
             reg_write_addr = '10'
-        elif line[5] == 'SP':
+        elif line[DEST] == 'SP':
             reg_write_en = '1'
             reg_write_addr = '11'
         else:
             reg_write_en = '0'
             reg_write_addr = '00'
 
-        label = line[2]
+        branch_polarity = str(line[BP])
+        flags = str(int2bin(hex2int(line[FLAGS].lower()), 8))
+        label = line[STATE]
 
-        #FIXME: branch polarity and flags need work
-        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__<branch_polarity>_<flags>_%s;\n"
+        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s;\n"
                 %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,
-                  reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en, label))
+                  reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en,
+                  branch_polarity, flags, label))
 
     outfile.close()
 

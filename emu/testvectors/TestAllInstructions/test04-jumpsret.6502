@@ -1,0 +1,70 @@
+# 6502 Test #04
+# Heather Justice 3/12/08
+# Tests instructions JMP (both addressing modes) & JSR & RTS.
+# Assumes that loads & stores & ORA work with all addressing modes.
+# NOTE: Depends on addresses of instructions... Specifically, the "final"
+#   address is actually hard-coded at address $0020 (first 4 lines of code).
+#   Additionally, a JMP and JSR specify specific addresses.
+#
+# EXPECTED RESULTS: $40=0x42
+#
+# start: 
+# LDA #$7C
+a9
+7c
+# STA $20
+85
+20
+# LDA #$02
+a9
+02
+# STA $21
+85
+21
+# LDA #$00
+a9
+00
+# ORA #$03
+09
+03
+# JMP jump1
+4c
+69
+02
+# ORA #$FF ; not done
+09
+ff
+# jump1:
+# ORA #$30
+09
+30
+# JSR subr
+20
+75
+02
+# ORA #$42
+09
+42
+# JMP ($0020)
+6c
+20
+00
+# ORA #$FF ; not done
+09
+ff
+# subr:
+# STA $30
+85
+30
+# LDX $30
+a6
+30
+# LDA #$00
+a9
+00
+# RTS
+60
+# final: (as hardcoded by $0020)
+# STA $0D,X
+95
+0d

@@ -1,0 +1,156 @@
+# 6502 Test #06
+# Heather Justice 3/20/08
+# Tests instructions ADC & SBC with all addressing modes.
+# Assumes that loads & stores work with all addressing modes.
+#
+# EXPECTED RESULTS: $30=0x9D
+#
+# will result in $50=0x6A & $51=0x6B & $60=0xA1 & $61=0xA2
+a9
+6a
+85
+50
+a9
+6b
+85
+51
+a9
+a1
+85
+60
+a9
+a2
+85
+61
+# will result in A=0x50
+a9
+ff
+69
+ff
+69
+ff
+e9
+ae
+# will result in A=0x4F & X=0x50
+85
+40
+a6
+40
+75
+00
+f5
+01
+# will result in A=0x4E
+65
+60
+e5
+61
+# will result in A=0x24 & $0120=0x4E & $0121=0x4D
+8d
+20
+01
+a9
+4d
+8d
+21
+01
+a9
+23
+6d
+20
+01
+ed
+21
+01
+# will result in A=0x28 & X=0x24 & $0124=0x64 & $0125=0x62
+85
+f0
+a6
+f0
+a9
+64
+8d
+24
+01
+a9
+62
+8d
+25
+01
+a9
+26
+7d
+00
+01
+fd
+01
+01
+# will result in A=0x31 & Y=0x28 & $0128=0xE5 & $0129=0xE9
+85
+f1
+a4
+f1
+a9
+e5
+8d
+28
+01
+a9
+e9
+8d
+29
+01
+a9
+34
+79
+00
+01
+f9
+01
+01
+# will result in A=0x16 & X=0x31 & $70-$73=20,01,24,01
+85
+f2
+a6
+f2
+a9
+20
+85
+70
+a9
+01
+85
+71
+a9
+24
+85
+72
+a9
+01
+85
+73
+61
+41
+e1
+3f
+# will result in A=0x9D & Y=0x16 & $80=0xDA & $82=0xDC & $30=0x9D
+85
+f3
+a4
+f3
+a9
+da
+85
+80
+a9
+dc
+85
+82
+a9
+aa
+71
+80
+f1
+82
+85
+30

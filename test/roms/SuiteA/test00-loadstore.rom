@@ -1,0 +1,117 @@
+// 6502 Test #00
+// Heather Justice 3/11/08
+// Tests instructions LDA/LDX/LDY & STA/STX/STY with all addressing modes.
+//
+// EXPECTED RESULTS:
+//  $202A = 0x55 (decimal 85)
+//  A = 0x55, X = 0x2A, Y = 0x73
+//
+// LDA imm #85 (A=85)
+a9
+55
+// LDX imm #42 (X=42)
+a2
+2a
+// LDY imm #115 (Y=115) 
+a0
+73
+// STA zpg $81 ($81=85)
+85
+81
+// LDA zpg $81 (A=85)
+a5
+81
+// STA abs $1111 ($1111=85)
+8d
+11
+11
+// LDA abs $1111 (A=85)
+ad
+11
+11
+// STA zpx $56,X ($80=85)
+95
+56
+// LDA zpx $56,X (A=85)
+b5
+56
+// STY zpg $60 ($60=115)
+84
+60
+// STA idy ($60),Y ($E6=85)
+91
+60
+// LDA idy ($60),Y (A=85)
+B1
+60
+// STA abx $1000,X ($102A=85)
+9d
+00
+10
+// LDA abx $1000,X (A=85)
+bd
+00
+10
+// STA aby $1000,Y ($1073=85)
+99
+00
+10
+// LDA aby $1000,Y (A=85)
+b9
+00
+10
+// STA idx ($36,X) ($73=85)
+81
+36
+// LDA idx ($36,X) (A=85)
+a1
+36
+// STX zpg $50 ($50=42)
+86
+50
+// LDX zpg $60 (X=115)
+a6
+60
+// LDY zpg $50 (Y=42)
+a4
+50
+// STX abs $1113 ($1113=115)
+8e
+13
+11
+// LDX abs $1113 (X=115)
+ae
+13
+11
+// STY abs $1114 ($1114=42)
+8c
+14
+11
+// LDY abs $1114 (Y=42)
+ac
+14
+11
+// STY zpx $2D,X ($A0=42)
+94
+2D
+// STX zpy $77,Y ($A1=115)
+96
+77
+// LDY zpx $2D,X (Y=42)
+b4
+2d
+// LDX zpy $77,Y (X=115)
+b6
+77
+// LDY abx $10A0,X (Y=115)
+bc
+a0
+10
+// LDX aby $10A1,Y (X=42)
+be
+a0
+10
+// STA abx $2000,X ($202A=85)
+9d
+00
+20

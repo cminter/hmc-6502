@@ -1,0 +1,48 @@
+// 6502 Test #05
+// Heather Justice 3/15/08
+// Tests instructions for transfering values between registers
+//   (TAX, TXA, TYA, TAY, DEX, INX, DEY, INY, TXS, TSX).
+// Assumes that loads & stores work with all addressing modes.
+//
+// EXPECTED RESULTS: $40 = 0x33
+//
+// LDA #$35 (A=0x35)
+a9
+35
+// A -> X
+aa
+// X--
+ca
+// X--
+ca
+// X++
+e8
+// X -> A (A=0x34)
+8a
+// A -> Y
+a8
+// Y--
+88
+// Y--
+88
+// Y++
+c8
+// Y -> A (A=0x33)
+98
+// A -> X
+aa
+// LDA #$20 (A=0x20)
+a9
+20
+// X -> S (S=0x33)
+9a
+// LDX #$10 (X=0x10)
+a2
+10
+// S -> X (X=0x33)
+ba
+// X -> A (A=0x33)
+8a
+// STA $40 ($40=0x33)
+85
+40

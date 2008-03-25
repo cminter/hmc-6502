@@ -1,0 +1,100 @@
+// 6502 Test #02
+// Heather Justice 3/12/08
+// Tests instructions INC & DEC with all addressing modes.
+// Assumes that LDA/LDX/LDY & STA/STX/STY work with all addressing modes.
+//
+// EXPECTED RESULTS: $71=0xFF
+//
+// initial loads (A=0xFF & X=0x00)
+a9
+ff
+a2
+00
+// will result in A=0x01 & X=0x01 & $90=0x01
+85
+90
+e6
+90
+e6
+90
+a5
+90
+a6
+90
+// will result in A=0x02 & X=0x02 & $91=0x02
+95
+90
+f6
+90
+b5
+90
+a6
+91
+// will result in A=0x03 & X=0x03 & $0192=0x03
+9d
+90
+01
+ee
+92
+01
+bd
+90
+01
+ae
+92
+01
+// will result in A=0x04 & X=0x04 & $0193=0x04
+9d
+90
+01
+fe
+90
+01
+bd
+90
+01
+ae
+93
+01
+// will result in A=0x03 & X=0x03 & $0174=0x03
+9d
+70
+01
+de
+70
+01
+bd
+70
+01
+ae
+74
+01
+// will result in A=0x02 & X=0x02 & $0173=0x02 
+9d
+70
+01
+ce
+73
+01
+bd
+70
+01
+ae
+73
+01
+// will result in A=0x01 & X=0x01 & $72=0x01
+95
+70
+d6
+70
+b5
+70
+a6
+72
+// final result $71=0xFF
+95
+70
+c6
+71
+c6
+71

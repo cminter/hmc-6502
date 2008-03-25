@@ -1,0 +1,151 @@
+// 6502 Test #03
+// Heather Justice 3/12/08
+// Tests instructions INC & DEC with all addressing modes.
+// Assumes that loads & stores & ORA work with all addressing modes.
+//
+// EXPECTED RESULTS: $01DD = 0x6E
+//
+// will result in A=0x4A
+a9
+4b
+4a
+0a
+// will result in A=0x14 & $50=0x14
+85
+50
+06
+50
+06
+50
+46
+50
+a5
+50
+// will result in A=0x2E & X=0x14 & $60=2E
+a6
+50
+09
+c9
+85
+60
+16
+4c
+56
+4c
+56
+4c
+b5
+4c
+// will result in A=0x36 & X=2E & $012E=36
+a6
+60
+09
+41
+8d
+2e
+01
+5e
+00
+01
+5e
+00
+01
+1e
+00
+01
+bd
+00
+01
+// will result in A=0x5A & X=0x36 & $0136=0x5A
+ae
+2e
+01
+09
+81
+9d
+00
+01
+4e
+36
+01
+4e
+36
+01
+0e
+36
+01
+bd
+00
+01
+// now testing rol & ror...
+// will result in A=0xB4 & $70=0xB4
+2a
+2a
+6a
+85
+70
+// will result in A=0x5B & X=0xB4 & $C0=0x5B
+a6
+70
+09
+03
+95
+0C
+26
+c0
+66
+c0
+66
+c0
+b5
+0c
+// will result in A=0xB7 & X=0x5B & $D0=0xB7
+a6
+c0
+85
+d0
+36
+75
+36
+75
+76
+75
+a5
+d0
+// will result in A=0xDD & X=0xB7 & $01B7=0xDD
+a6
+d0
+9d
+00
+01
+2e
+b7
+01
+2e
+b7
+01
+2e
+b7
+01
+6e
+b7
+01
+bd
+00
+01
+// will result in X=0xDD & $01DD=0x6E
+ae
+b7
+01
+8d
+dd
+01
+3e
+00
+01
+7e
+00
+01
+7e
+00
+01

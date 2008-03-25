@@ -15,6 +15,15 @@ module adderc #(parameter WIDTH = 8)
   assign {cout, y} = a + b + cin;
 endmodule
 
+module halfadder #(parameter WIDTH = 8)
+             (input logic [WIDTH-1:0]  a,
+              input logic              cin,
+              output logic [WIDTH-1:0] y,
+              output logic             cout);
+ 
+  assign {cout, y} = a + cin;
+endmodule
+
 module branchlogic(input logic [7:0] p, op_flags,
                    input logic branch_polarity,
                    output logic branch_taken);

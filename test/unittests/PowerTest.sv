@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/SuiteP.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -33,5 +37,7 @@ module optest;
     #1000;
     assert (top.mem.RAM[66] == 8'hCF) $display ("PASSED Power Test");
       else $error("FAILED Power Test");
+    $dumpflush;
+    $stop;
   end
 endmodule

@@ -20,7 +20,10 @@ module optest;
   
   initial begin
     // for VCD file
-    $dumpfile("test/VCD/SuiteP.vcd");
+    // the file that's actually under subversion is test/VCD/SuiteP.vcd, 
+    // however it currently has a dummy name so that people can use this 
+    // testbench without clobbering the working copy of the vcd file
+    $dumpfile("test/VCD/outSuiteP.vcd");
     $dumpvars;
 
     // init ROM

@@ -1,0 +1,153 @@
+# 6502 Test #09
+# Heather Justice 3/26/08
+# Tests all other branch instructions (BPL & BMI & BVC & BVS & BCC & BCS).
+# Assumes that ADC & SBC & EOR work with all addressing modes.
+#
+# EXPECTED RESULTS: $80 = 0x1F
+#
+# prepare memory...
+# LDA #$54
+a9
+54
+# STA $32 ($32 = 0x54)
+85
+32
+# LDA #$B3
+a9
+b3
+# STA $A1 ($A1 = 0xB3)
+85
+a1
+# LDA #$87
+a9
+87
+# STA $43 ($43 = 0x87 & A = 0x87)
+85
+43
+# bpl...
+# LDX #$A1 (X = 0xA1)
+a2
+a1
+# BPL bpl1 ; not taken
+10
+02
+# LDX #$32 (X = 0x32)
+a2
+32
+# LDY $00,X (Y = 0x54)
+b4
+00
+# BPL bpl2 ; taken
+10
+04
+# LDA #$05 ; not done
+a9
+05
+# LDX $A1 ; not done
+a6
+a1
+# bmi...
+# BMI bmi1 ; not taken
+30
+02
+# SBC #$03 (A = 0x83)
+e9
+03
+# BMI bmi2 ; taken
+30
+02
+# LDA #$41 ; not done
+a9
+41
+# bvc...
+# EOR #$30 (A = 0x30)
+49
+30
+# STA $32 ($32 = 0xB3)
+85
+32
+# ADC $00,X (A = 0x67)
+75
+00
+# BVC bvc1 ; not taken
+50
+02
+# LDA #$03 (A = 0x03)
+a9
+03
+# STA $54 ($54 = 0x03)
+85
+54
+# LDX $00,Y (X = 0x03)
+b6
+00
+# ADC $51,X (A = 0x07)
+75
+51
+# BVC bvc2 ; taken
+50
+02
+# LDA #$E5 ; not done
+a9
+e5
+# bvs...
+# ADC $40,X (A = 0x8E)
+75
+40
+# BVS bvs1 ; not taken
+70
+04
+# STA $0001,Y ($55 = 0x8E)
+99
+01
+00
+# ADC $55 (A = 0x1C)
+65
+55
+# BVS bvs2 ; taken
+70
+02
+# LDA #$00
+a9
+00
+# bcc...
+# ADC #$F0 (A = 0x0D)
+69
+f0
+# BCC bcc1 ; not taken
+90
+04
+# STA $60 ($60 = 0x0D)
+85
+60
+# ADC $43 (A = 95)
+65
+43
+# BCC bcc2 ; taken
+90
+02
+# LDA #$FF
+a9
+ff
+# bcs...
+# ADC $54 (A = 0x98)
+65
+54
+# BCS bcs1 ; not taken
+b0
+04
+# ADC #$87 (A = 0x1F)
+69
+87
+# LDX $60 (X = 0x0D)
+a6
+60
+# BCS bcs2 ; taken
+b0
+02
+# LDA #$00 ; not done
+a9
+00
+# STA $73,X ($80 = 0x1F)
+94
+73

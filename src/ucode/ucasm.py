@@ -5,6 +5,8 @@
 import sys
 from odict import OrderedDict
 
+BASE_STATE = 4
+
 class ParseError(Exception):
     pass
 
@@ -141,6 +143,12 @@ class State:
         if 'sp' == self.in_states['wrt_en']:
             self.out.reg_write_addr = '11'
             self.out.reg_write_en = '1'
+        if 'p' == self.in_states['wrt_en']:
+            self.out.p_sel = '1'
+            self.out.flag_en = '1'
+        if 'a'== self.in_states['wrt_en']:
+            self.out.reg_write_addr = '00'
+            self.out.reg_write_en = '1'
         if '1' == self.in_states['pc_w_en']:
             self.out.pch_in_en = '1'
             self.out.pcl_in_en = '1'
@@ -187,6 +195,9 @@ class State:
             self.out.pc_inc_en = '1'
         if '1' == self.in_states['flag']:
             self.out.flag_en = '1'
+        if 't' == self.in_states['flag']:
+            self.out.flag_en = '0'
+            self.out.c_temp_en = '1'
             
         # todo: flag selection, flag enable, branch enable
         if 'pass' == self.in_states['alu_op']:
@@ -204,6 +215,9 @@ class State:
         if 'add+1' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '11'
+        if 'add+t' == self.in_states['alu_op']:
+            self.out.alu_op = int2bin(0x2, 4)
+            self.out.carry_sel = '01'
         if 'dec' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'
@@ -226,7 +240,7 @@ def process_block(block, next_state_num):
         next_state_num += 1
         
     # go back to base state on last
-    block[2][-1].next_state = 2
+    block[2][-1].next_state = BASE_STATE
     block[2][-1].last_state = True
     
     print ""

@@ -1,13 +1,15 @@
 # 6502.ucode
 # input for ucodeasm
-# abridged for presentation
 # tbarr at cs hmc edu, 28oct07
 
 reset:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	pcinc
+0x00	-	pass	p	p	-	-	-	-	0
+0x00	-	pass	a	0	-	-	-	-	0
 0xf0	-	pass	pc_h	10	r	-	-	1	0
 0x00	-	pass	pc_l	01	r	temp	r	0	0
 
+# ensure that base state in assembler is changed to reflect changes here.
 base:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	sta_src	last_cy
 db	-	pass	none	1	pc_n	pc_n	pc_n	0	0	opcode	0
@@ -163,7 +165,7 @@ sp	-	dec	sp	1	pc_n	pc_n	pc_n	0	0
 
 branch_head:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src
-db	pc_l	add	none	1	pc_n	pc_n	pc_n	1	t	1	0	b
+db	pc_l	add+1	none	1	pc_n	pc_n	pc_n	1	t	1	0	b
 
 # if we don't take the branch, go back to base.
 

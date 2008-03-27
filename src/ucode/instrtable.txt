@@ -10,184 +10,184 @@ Z = Zero Result
 C = Carry
 
 FIXME: Sample opcode lines have flag mask of 02 -- why?
-69	adc	imm	dp	A	A	0	0	C3
-65	adc	mem_ex_zpa	dp	A	A	0	0	C3
-75	adc	zp_x	dp	A	A	0	0	C3
-6D	adc	abs	dp	A	A	0	0	C3
-7D	adc	abx	dp	A	A	0	0	C3
-79	adc	aby	dp	A	A	0	0	C3
-61	adc	indirect_x	dp	A	A	0	0	C3
-71	adc	indirect_y	dp	A	A	0	0	C3
+69	adc	imm	dp	A	A	2	0	C3
+65	adc	mem_ex_zpa	dp	A	A	2	0	C3
+75	adc	zp_x	dp	A	A	2	0	C3
+6D	adc	abs	dp	A	A	2	0	C3
+7D	adc	abx	dp	A	A	2	0	C3
+79	adc	aby	dp	A	A	2	0	C3
+61	adc	indirect_x	dp	A	A	2	0	C3
+71	adc	indirect_y	dp	A	A	2	0	C3
 
-29	and	imm	dp	A	A	3	0	82
-25	and	mem_ex_zpa	dp	A	A	3	0	82
-35	and	zp_x	dp	A	A	3	0	82
-2D	and	abs	dp	A	A	3	0	82
-3D	and	abx	dp	A	A	3	0	82
-39	and	aby	dp	A	A	3	0	82
-21	and	indirect_x	dp	A	A	3	0	82
-31	and	indirect_y	dp	A	A	3	0	82
+29	and	imm	dp	A	A	8	0	82
+25	and	mem_ex_zpa	dp	A	A	8	0	82
+35	and	zp_x	dp	A	A	8	0	82
+2D	and	abs	dp	A	A	8	0	82
+3D	and	abx	dp	A	A	8	0	82
+39	and	aby	dp	A	A	8	0	82
+21	and	indirect_x	dp	A	A	8	0	82
+31	and	indirect_y	dp	A	A	8	0	82
 
-0A	asl	acc	A	_	A	7	0	83
-06	asl	zpg	dp	_	A	7	0	83
-16	asl	zpx	dp	_	A	7	0	83
-0E	asl	abs	dp	_	A	7	0	83
-1E	asl	abx	dp	_	A	7	0	83
+0A	asl	acc	A	_	A	5	0	83
+06	asl	zpg	dp	_	A	5	0	83
+16	asl	zpx	dp	_	A	5	0	83
+0E	asl	abs	dp	_	A	5	0	83
+1E	asl	abx	dp	_	A	5	0	83
 
-24	bit	zpg	dp	A	_	A	0	C2
-2C	bit	abs	dp	A	_	A	0	C2
+24	bit	zpg	dp	A	_	9	0	C2
+2C	bit	abs	dp	A	_	9	0	C2
 
-C9	cmp	imm	dp	A	_	1	0	83
-C5	cmp	zpg	dp	A	_	1	0	83
-D5	cmp	zpx	dp	A	_	1	0	83
-CD	cmp	abs	dp	A	_	1	0	83
-DD	cmp	abx	dp	A	_	1	0	83
-D9	cmp	aby	dp	A	_	1	0	83
-C1	cmp	idx	dp	A	_	1	0	83
-D1	cmp	idy	dp	A	_	1	0	83
+C9	cmp	imm	dp	A	_	3	0	83
+C5	cmp	zpg	dp	A	_	3	0	83
+D5	cmp	zpx	dp	A	_	3	0	83
+CD	cmp	abs	dp	A	_	3	0	83
+DD	cmp	abx	dp	A	_	3	0	83
+D9	cmp	aby	dp	A	_	3	0	83
+C1	cmp	idx	dp	A	_	3	0	83
+D1	cmp	idy	dp	A	_	3	0	83
 
-E0	cpx	imm	dp	X	_	1	0	83
-E4	cpx	zpg	dp	X	_	1	0	83
-EC	cpx	abs	dp	X	_	1	0	83
+E0	cpx	imm	dp	X	_	3	0	83
+E4	cpx	zpg	dp	X	_	3	0	83
+EC	cpx	abs	dp	X	_	3	0	83
 
-C0	cpy	imm	dp	Y	_	1	0	83
-C4	cpy	zpg	dp	Y	_	1	0	83
-CC	cpy	abs	dp	Y	_	1	0	83
+C0	cpy	imm	dp	Y	_	3	0	83
+C4	cpy	zpg	dp	Y	_	3	0	83
+CC	cpy	abs	dp	Y	_	3	0	83
 
-C6	dec	zpg	dp	_	mem	6	0	82
-D6	dec	zpx	dp	_	mem	6	0	82
-CE	dec	abs	dp	_	mem	6	0	82
-DE	dec	abx	dp	_	mem	6	0	82
+C6	dec	zpg	dp	_	mem	2	0	82
+D6	dec	zpx	dp	_	mem	2	0	82
+CE	dec	abs	dp	_	mem	2	0	82
+DE	dec	abx	dp	_	mem	2	0	82
 
-49	eor	imm	dp	A	A	4	0	82
-45	eor	zpg	dp	A	A	4	0	82
-55	eor	zpx	dp	A	A	4	0	82
-4D	eor	abs	dp	A	A	4	0	82
-5D	eor	abx	dp	A	A	4	0	82
-59	eor	aby	dp	A	A	4	0	82
-41	eor	idx	dp	A	A	4	0	82
-51	eor	idy	dp	A	A	4	0	82
+49	eor	imm	dp	A	A	A	0	82
+45	eor	zpg	dp	A	A	A	0	82
+55	eor	zpx	dp	A	A	A	0	82
+4D	eor	abs	dp	A	A	A	0	82
+5D	eor	abx	dp	A	A	A	0	82
+59	eor	aby	dp	A	A	A	0	82
+41	eor	idx	dp	A	A	A	0	82
+51	eor	idy	dp	A	A	a	0	82
 
-E6	inc	zpg	dp	_	mem	5	0	82
-F6	inc	zpx	dp	_	mem	5	0	82
-EE	inc	abs	dp	_	mem	5	0	82
-FE	inc	abx	dp	_	mem	5	0	82
+E6	inc	zpg	dp	_	mem	1	0	82
+F6	inc	zpx	dp	_	mem	1	0	82
+EE	inc	abs	dp	_	mem	1	0	82
+FE	inc	abx	dp	_	mem	1	0	82
 
-4C	jmp	abs	_	_	_	7	0	00
-6C	jmp	ind	_	_	_	7	0	00
+4C	jmp	abs	_	_	_	5	0	00
+6C	jmp	ind	_	_	_	5	0	00
 
-20	jsr	abs	_	_	_	7	0	00
+20	jsr	abs	_	_	_	5	0	00
 
-A9	lda	imm	dp	_	A	5	0	82
-A5	lda	zpg	dp	_	A	5	0	82
-B5	lda	zpx	dp	_	A	5	0	82
-AD	lda	abs	dp	_	A	5	0	82
-BD	lda	abx	dp	_	A	5	0	82
-B9	lda	aby	dp	_	A	5	0	82
-A1	lda	idx	dp	_	A	5	0	82
-B1	lda	idy	dp	_	A	5	0	82
+A9	lda	imm	dp	_	A	1	0	82
+A5	lda	zpg	dp	_	A	1	0	82
+B5	lda	zpx	dp	_	A	1	0	82
+AD	lda	abs	dp	_	A	1	0	82
+BD	lda	abx	dp	_	A	1	0	82
+B9	lda	aby	dp	_	A	1	0	82
+A1	lda	idx	dp	_	A	1	0	82
+B1	lda	idy	dp	_	A	1	0	82
 
-A2	ldx	imm	dp	_	X	5	0	82
-A6	ldx	zpg	dp	_	X	5	0	82
-B6	ldx	zpy	dp	_	X	5	0	82
-AE	ldx	abs	dp	_	X	5	0	82
-BE	ldx	aby	dp	_	X	5	0	82
+A2	ldx	imm	dp	_	X	1	0	82
+A6	ldx	zpg	dp	_	X	1	0	82
+B6	ldx	zpy	dp	_	X	1	0	82
+AE	ldx	abs	dp	_	X	1	0	82
+BE	ldx	aby	dp	_	X	1	0	82
 
-A0	ldy	imm	dp	_	Y	5	0	82
-A4	ldy	zpg	dp	_	Y	5	0	82
-B4	ldy	zpx	dp	_	Y	5	0	82
-AC	ldy	abs	dp	_	Y	5	0	82
-BC	ldy	abx	dp	_	Y	5	0	82
+A0	ldy	imm	dp	_	Y	1	0	82
+A4	ldy	zpg	dp	_	Y	1	0	82
+B4	ldy	zpx	dp	_	Y	1	0	82
+AC	ldy	abs	dp	_	Y	1	0	82
+BC	ldy	abx	dp	_	Y	1	0	82
 
-4A	lsr	acc	A	_	A	9 # ASSUMES C_IN=0	0	83
-46	lsr	zpg	dp	_	A	9	0	83
-56	lsr	zpx	dp	_	A	9	0	83
-4E	lsr	abs	dp	_	A	9	0	83
-5E	lsr	abx	dp	_	A	9	0	83
+4A	lsr	acc	A	_	A	7 # ASSUMES C_IN=0	0	83
+46	lsr	zpg	dp	_	A	7	0	83
+56	lsr	zpx	dp	_	A	7	0	83
+4E	lsr	abs	dp	_	A	7	0	83
+5E	lsr	abx	dp	_	A	7	0	83
 
-09	ora	imm	dp	A	A	2	0	82
-05	ora	zpg	dp	A	A	2	0	82
-15	ora	zpx	dp	A	A	2	0	82
-0D	ora	abs	dp	A	A	2	0	82
-1D	ora	abx	dp	A	A	2	0	82
-19	ora	aby	dp	A	A	2	0	82
-01	ora	idx	dp	A	A	2	0	82
-11	ora	idy	dp	A	A	2	0	82
+09	ora	imm	dp	A	A	4	0	82
+05	ora	zpg	dp	A	A	4	0	82
+15	ora	zpx	dp	A	A	4	0	82
+0D	ora	abs	dp	A	A	4	0	82
+1D	ora	abx	dp	A	A	4	0	82
+19	ora	aby	dp	A	A	4	0	82
+01	ora	idx	dp	A	A	4	0	82
+11	ora	idy	dp	A	A	4	0	82
 
-2A	rol	acc	A	_	A	8	0	83
-26	rol	zpg	dp	_	A	8	0	83
-36	rol	zpx	dp	_	A	8	0	83
-2E	rol	abs	dp	_	A	8	0	83
-3E	rol	abx	dp	_	A	8	0	83
+2A	rol	acc	A	_	A	6	0	83
+26	rol	zpg	dp	_	A	6	0	83
+36	rol	zpx	dp	_	A	6	0	83
+2E	rol	abs	dp	_	A	6	0	83
+3E	rol	abx	dp	_	A	6	0	83
 
-6a	ror	acc	A	_	A	9	0	83
-66	ror	zpg	dp	_	A	9	0	83
-76	ror	zpx	dp	_	A	9	0	83
-6e	ror	abs	dp	_	A	9	0	83
-7e	ror	abx	dp	_	A	9	0	83
+6a	ror	acc	A	_	A	7	0	83
+66	ror	zpg	dp	_	A	7	0	83
+76	ror	zpx	dp	_	A	7	0	83
+6e	ror	abs	dp	_	A	7	0	83
+7e	ror	abx	dp	_	A	7	0	83
 
-E9	sbc	imm	dp	A	A	1	0	C3
-E5	sbc	zpg	dp	A	A	1	0	C3
-F5	sbc	zpx	dp	A	A	1	0	C3
-ED	sbc	abs	dp	A	A	1	0	C3
-FD	sbc	abx	dp	A	A	1	0	C3
-F9	sbc	aby	dp	A	A	1	0	C3
-E1	sbc	idx	dp	A	A	1	0	C3
-F1	sbc	idy	dp	A	A	1	0	C3
+E9	sbc	imm	dp	A	A	3	0	C3
+E5	sbc	zpg	dp	A	A	3	0	C3
+F5	sbc	zpx	dp	A	A	3	0	C3
+ED	sbc	abs	dp	A	A	3	0	C3
+FD	sbc	abx	dp	A	A	3	0	C3
+F9	sbc	aby	dp	A	A	3	0	C3
+E1	sbc	idx	dp	A	A	3	0	C3
+F1	sbc	idy	dp	A	A	3	0	C3
 
-85	sta	zpg	dp	A	mem	5	0	00
-95	sta	zpx	dp	A	mem	5	0	00
-8D	sta	abs	dp	A	mem	5	0	00
-9D	sta	abx	dp	A	mem	5	0	00
-99	sta	aby	dp	A	mem	5	0	00
-81	sta	idx	dp	A	mem	5	0	00
-91	sta	idy	dp	A	mem	5	0	00
+85	sta	zpg	dp	A	mem	1	0	00
+95	sta	zpx	dp	A	mem	1	0	00
+8D	sta	abs	dp	A	mem	1	0	00
+9D	sta	abx	dp	A	mem	1	0	00
+99	sta	aby	dp	A	mem	1	0	00
+81	sta	idx	dp	A	mem	1	0	00
+91	sta	idy	dp	A	mem	1	0	00
 
-86	stx	zpg	dp	X	mem	5	0	00
-96	stx	zpy	dp	X	mem	5	0	00
-8E	stx	abs	dp	X	mem	5	0	00
+86	stx	zpg	dp	X	mem	1	0	00
+96	stx	zpy	dp	X	mem	1	0	00
+8E	stx	abs	dp	X	mem	1	0	00
 
-84	sty	zpg	dp	Y	mem	5	0	00
-94	sty	zpx	dp	Y	mem	5	0	00
-8C	sty	abs	dp	Y	mem	5	0	00
+84	sty	zpg	dp	Y	mem	1	0	00
+94	sty	zpx	dp	Y	mem	1	0	00
+8C	sty	abs	dp	Y	mem	1	0	00
 
 FIXME: brk needs to be done
-00	brk	imm	FIXME	0	10
-EA	nop	imm	_	_	_	1	0	00
+00	brk	single_byte	FIXME	0	10
+EA	nop	none	_	_	_	3	0	00
 
-18	clc	imp	A	A	_	1	0	01
-38	sec	imp	A	A	_	b	0	01
-58	cli	imp	A	A	_	1	0	04
-78	sei	imp	A	A	_	1	0	04
-b8	clv	imp	A	A	_	1	0	40
-d8	cld	imp	A	A	_	1	0	08
-f8	sed	imp	A	A	_	1	0	08
+18	clc	single_byte	A	A	_	3	0	01
+38	sec	single_byte	A	A	_	b	0	01
+58	cli	single_byte	A	A	_	3	0	04
+78	sei	single_byte	A	A	_	3	0	04
+b8	clv	single_byte	A	A	_	3	0	40
+d8	cld	single_byte	A	A	_	3	0	08
+f8	sed	single_byte	A	A	_	3	0	08
 
-aa	tax	imp	A	_	X	5	0	82
-8a	txa	imp	X	_	A	5	0	82
-ca	dex	imp	X	X	X	6	0	82
-e8	inx	imp	X	X	X	5	0	82
-98	tya	imp	Y	_	A	5	0	82
-a8	tay	imp	A	_	Y	5	0	82
-88	dey	imp	Y	Y	Y	6	0	82
-c8	iny	imp	Y	Y	Y	5	0	82
+aa	tax	single_byte	A	_	X	1	0	82
+8a	txa	single_byte	X	_	A	1	0	82
+ca	dex	FIXME	X	X	X	6	2	82
+e8	inx	FIXME	X	X	X	5	2	82
+98	tya	single_byte	Y	_	A	1	0	82
+a8	tay	single_byte	A	_	Y	1	0	82
+88	dey	FIXME	Y	Y	Y	6	2	82
+c8	iny	FIXME	Y	Y	Y	5	2	82
 
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
-10	bpl	imm	dp	_	PC	5	0	80
-30	bmi	imm	dp	_	PC	5	1	80
-50	bvc	imm	dp	_	PC	5	0	40
-70	bvs	imm	dp	_	PC	5	1	40
-90	bcc	imm	dp	_	PC	5	0	01
-B0	bcs	imm	dp	_	PC	5	1	01
-D0	bne	imm	dp	_	PC	5	0	02
-f0	beq	imm	dp	_	PC	5	1	02
+10	bpl	branch_head	dp	_	PC	1	0	80
+30	bmi	branch_head	dp	_	PC	1	1	80
+50	bvc	branch_head	dp	_	PC	1	0	40
+70	bvs	branch_head	dp	_	PC	1	1	40
+90	bcc	branch_head	dp	_	PC	1	0	01
+B0	bcs	branch_head	dp	_	PC	1	1	01
+D0	bne	branch_head	dp	_	PC	1	0	02
+f0	beq	branch_head	dp	_	PC	1	1	02
 
-9a	txs	imp	SP	X	mem	5	0	00
-ba	tsx	imp	dp	_	X	5	0	82
-48	pha	imp	SP	A	mem	5	0	00
-68	pla	imp	dp	_	A	5	0	82
-08	php	imp	SP	PS	mem	5	0	00
+9a	txs	single_byte	SP	X	mem	1	0	00
+ba	tsx	single_byte	dp	_	X	1	0	82
+48	pha	push	SP	A	mem	5	2	00
+68	pla	pull	dp	_	A	5	2	82
+08	php	push	SP	PS	mem	5	2	00
 FIXME: Need to check what the AppleII's behavior is -- do we allow the
 expansion bit to be set, or not?
-28	plp	imp	dp	_	PS	5	0	FF
+28	plp	pull	dp	_	PS	5	2	FF
 

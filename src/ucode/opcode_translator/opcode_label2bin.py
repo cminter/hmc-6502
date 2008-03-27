@@ -27,7 +27,6 @@ If the optional expected_output file is included, this is compared against
 the output of the script using diff and the result is sent to out.diff.  If
 diff does not produce output the script prints the message "The actual
 output matches the expected output." to stderr.
-
 """
 
 import re

@@ -33,18 +33,31 @@ USES IN DATAPATH:
 
 
 ALU CODES:
-      4'h0: {c_out, y} = a + b + c_in; // add
-      4'h1: {c_out, y} = b - a - c_in; // sub.
-      4'h2: {c_out, y} = {1'b0, a | b}; // OR
-      4'h3: {c_out, y} = {1'b0, a & b}; // AND
-      4'h4: {c_out, y} = {1'b0, a ^ b}; // EOR
-      4'h5: {c_out, y} = a + c_in; // inc
-      4'h6: {c_out, y} = a - c_in; // dec
-      4'h7: {c_out, y} = {a, 1'b0}; // asl
-      4'h8: {c_out, y} = {a, c_in}; // rol
-      4'h9: {y, c_out} = {c_in, a}; // ror
-      4'ha: {y, c_out} = {1'b0, a & b}; // test bits
+      4'h0: {c_out, y} = a + c_in; // inc
+      4'h1: {c_out, y} = a - c_in; // dec
+      4'h2: {c_out, y} = a + b + c_in; // add
+      4'h3: {c_out, y} = b - a - c_in; // sub.
+      4'h4: {c_out, y} = {1'b0, a | b}; // OR
+      4'h5: {c_out, y} = {a, 1'b0}; // asl
+      4'h6: {c_out, y} = {a, c_in}; // rol
+      4'h7: {y, c_out} = {c_in, a}; // ror
+      4'h8: {c_out, y} = {1'b0, a & b}; // AND
+      4'h9: {y, c_out} = {1'b0, a & b}; // test bits
+      4'ha: {c_out, y} = {1'b0, a ^ b}; // EOR
       4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
+Old-New
+	0-2
+	1-3
+	2-4
+	3-8
+	4-a
+	5-1
+	6-2
+	7-5
+	8-6
+	9-7
+	a-9
+	b-b
 
 Bitfield for flags is: [N,V,_,B,D,I,Z,C]
     N = Negative Result -- sometimes (S)ign Bit

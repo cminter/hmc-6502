@@ -3,7 +3,7 @@
 # Tests instructions LDA/LDX/LDY & STA/STX/STY with all addressing modes.
 #
 # EXPECTED RESULTS:
-#  $202A = 0x55 (decimal 85)
+#  $022A = 0x55 (decimal 85)
 #  A = 0x55, X = 0x2A, Y = 0x73
 #
 # LDA imm #85 (A=85)
@@ -18,20 +18,29 @@ a0
 # STA zpg $81 ($81=85)
 85
 81
+# A=0x7E
+a9
+7e
 # LDA zpg $81 (A=85)
 a5
 81
-# STA abs $1111 ($1111=85)
+# STA abs $0910 ($0910=85)
 8d
-11
-11
-# LDA abs $1111 (A=85)
+10
+09
+# A=0x7E
+a9
+7e
+# LDA abs $0910 (A=85)
 ad
-11
-11
+10
+09
 # STA zpx $56,X ($80=85)
 95
 56
+# A=0x7E
+a9
+7e
 # LDA zpx $56,X (A=85)
 b5
 56
@@ -41,28 +50,40 @@ b5
 # STA idy ($60),Y ($E6=85)
 91
 60
+# A=0x7E
+a9
+7e
 # LDA idy ($60),Y (A=85)
 B1
 60
-# STA abx $1000,X ($102A=85)
+# STA abx $0800,X ($082A=85)
 9d
 00
-10
-# LDA abx $1000,X (A=85)
+08
+# A=0x7E
+a9
+7e
+# LDA abx $0800,X (A=85)
 bd
 00
-10
-# STA aby $1000,Y ($1073=85)
+08
+# STA aby $0800,Y ($0873=85)
 99
 00
-10
-# LDA aby $1000,Y (A=85)
+08
+# A=0x7E
+a9
+7e
+# LDA aby $0800,Y (A=85)
 b9
 00
-10
+08
 # STA idx ($36,X) ($73=85)
 81
 36
+# A=0x7E
+a9
+7e
 # LDA idx ($36,X) (A=85)
 a1
 36
@@ -75,43 +96,61 @@ a6
 # LDY zpg $50 (Y=42)
 a4
 50
-# STX abs $1113 ($1113=115)
+# STX abs $0913 ($0913=115)
 8e
 13
-11
-# LDX abs $1113 (X=115)
+09
+# X=0x22
+a2
+22
+# LDX abs $0913 (X=115)
 ae
 13
-11
-# STY abs $1114 ($1114=42)
+09
+# STY abs $0914 ($0914=42)
 8c
 14
-11
-# LDY abs $1114 (Y=42)
+09
+# Y=0x99
+a0
+99
+# LDY abs $0914 (Y=42)
 ac
 14
-11
+09
 # STY zpx $2D,X ($A0=42)
 94
 2D
 # STX zpy $77,Y ($A1=115)
 96
 77
+# Y=0x99
+a0
+99
 # LDY zpx $2D,X (Y=42)
 b4
 2d
+# X=0x22
+a2
+22
 # LDX zpy $77,Y (X=115)
 b6
 77
-# LDY abx $10A0,X (Y=115)
+# Y=0x99
+a0
+99
+# LDY abx $08A0,X (Y=115)
 bc
 a0
-10
-# LDX aby $10A1,Y (X=42)
+08
+# X=0x22
+a2
+22
+# LDX aby $08A1,Y (X=42)
 be
 a1
-10
-# STA abx $2000,X ($202A=85)
+08
+# STA abx $0200,X ($202A=85)
 9d
 00
-20
+02

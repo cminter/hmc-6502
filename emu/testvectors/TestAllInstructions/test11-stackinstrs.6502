@@ -1,0 +1,39 @@
+# 6502 Test #11
+# Heather Justice 3/26/08
+# Tests stack instructions (PHA & PLA & PHP & PLP).
+# Assumes that loads & stores (all addressing modes).
+# Also assumes ADC (all addressing modes) and all flag instructions work.
+#
+# EXPECTED RESULTS: $30 = 0x22
+#
+# LDA #$28 (A = 0x28)
+a9
+28
+# SEC
+38
+# SED
+f8
+# PHP
+08
+# CLD
+d8
+# CLC
+18
+# PLP
+28
+# ADC #$00 (A = 0x29)
+69
+00
+# ADC #$93 (A = 0x22)
+69
+93
+# PHA
+48
+# LDA #$00 (A = 0x00)
+a9
+00
+# PLA (A = 0x22)
+68
+# STA $30 ($30 = 0x22)
+85
+30

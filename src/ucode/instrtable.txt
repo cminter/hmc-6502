@@ -14,8 +14,8 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 65	adc	mem_ex_zpa	dp	A	A	2	0	C3
 75	adc	zp_x	dp	A	A	2	0	C3
 6D	adc	abs	dp	A	A	2	0	C3
-7D	adc	abx	dp	A	A	2	0	C3
-79	adc	aby	dp	A	A	2	0	C3
+7D	adc	abs_x	dp	A	A	2	0	C3
+79	adc	abs_y	dp	A	A	2	0	C3
 61	adc	indirect_x	dp	A	A	2	0	C3
 71	adc	indirect_y	dp	A	A	2	0	C3
 
@@ -23,115 +23,115 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 25	and	mem_ex_zpa	dp	A	A	8	0	82
 35	and	zp_x	dp	A	A	8	0	82
 2D	and	abs	dp	A	A	8	0	82
-3D	and	abx	dp	A	A	8	0	82
-39	and	aby	dp	A	A	8	0	82
+3D	and	abs_x	dp	A	A	8	0	82
+39	and	abs_y	dp	A	A	8	0	82
 21	and	indirect_x	dp	A	A	8	0	82
 31	and	indirect_y	dp	A	A	8	0	82
 
-0A	asl	acc	A	_	A	5	0	83
-06	asl	zpg	dp	_	A	5	0	83
-16	asl	zpx	dp	_	A	5	0	83
+0A	asl	accFIXME	A	_	A	5	0	83
+06	asl	zpgFIXME	dp	_	A	5	0	83
+16	asl	zp_x	dp	_	A	5	0	83
 0E	asl	abs	dp	_	A	5	0	83
-1E	asl	abx	dp	_	A	5	0	83
+1E	asl	abs_x	dp	_	A	5	0	83
 
-24	bit	zpg	dp	A	_	9	0	C2
+24	bit	zpgFIXME	dp	A	_	9	0	C2
 2C	bit	abs	dp	A	_	9	0	C2
 
 C9	cmp	imm	dp	A	_	3	0	83
-C5	cmp	zpg	dp	A	_	3	0	83
-D5	cmp	zpx	dp	A	_	3	0	83
+C5	cmp	zpgFIXME	dp	A	_	3	0	83
+D5	cmp	zp_x	dp	A	_	3	0	83
 CD	cmp	abs	dp	A	_	3	0	83
-DD	cmp	abx	dp	A	_	3	0	83
-D9	cmp	aby	dp	A	_	3	0	83
-C1	cmp	idx	dp	A	_	3	0	83
-D1	cmp	idy	dp	A	_	3	0	83
+DD	cmp	abs_x	dp	A	_	3	0	83
+D9	cmp	abs_y	dp	A	_	3	0	83
+C1	cmp	indirect_x	dp	A	_	3	0	83
+D1	cmp	indirect_y	dp	A	_	3	0	83
 
 E0	cpx	imm	dp	X	_	3	0	83
-E4	cpx	zpg	dp	X	_	3	0	83
+E4	cpx	zpgFIXME	dp	X	_	3	0	83
 EC	cpx	abs	dp	X	_	3	0	83
 
 C0	cpy	imm	dp	Y	_	3	0	83
-C4	cpy	zpg	dp	Y	_	3	0	83
+C4	cpy	zpgFIXME	dp	Y	_	3	0	83
 CC	cpy	abs	dp	Y	_	3	0	83
 
-C6	dec	zpg	dp	_	mem	1	0	82
-D6	dec	zpx	dp	_	mem	1	0	82
+C6	dec	zpgFIXME	dp	_	mem	1	0	82
+D6	dec	zp_x	dp	_	mem	1	0	82
 CE	dec	abs	dp	_	mem	1	0	82
-DE	dec	abx	dp	_	mem	1	0	82
+DE	dec	abs_x	dp	_	mem	1	0	82
 
 49	eor	imm	dp	A	A	A	0	82
-45	eor	zpg	dp	A	A	A	0	82
-55	eor	zpx	dp	A	A	A	0	82
+45	eor	zpgFIXME	dp	A	A	A	0	82
+55	eor	zp_x	dp	A	A	A	0	82
 4D	eor	abs	dp	A	A	A	0	82
-5D	eor	abx	dp	A	A	A	0	82
-59	eor	aby	dp	A	A	A	0	82
-41	eor	idx	dp	A	A	A	0	82
-51	eor	idy	dp	A	A	A	0	82
+5D	eor	abs_x	dp	A	A	A	0	82
+59	eor	abs_y	dp	A	A	A	0	82
+41	eor	indirect_x	dp	A	A	A	0	82
+51	eor	indirect_y	dp	A	A	A	0	82
 
-E6	inc	zpg	dp	_	mem	0	0	82
-F6	inc	zpx	dp	_	mem	0	0	82
+E6	inc	zpgFIXME	dp	_	mem	0	0	82
+F6	inc	zp_x	dp	_	mem	0	0	82
 EE	inc	abs	dp	_	mem	0	0	82
-FE	inc	abx	dp	_	mem	0	0	82
+FE	inc	abs_x	dp	_	mem	0	0	82
 
-4C	jmp	abs	_	_	_	5	0	00
-6C	jmp	ind	_	_	_	5	0	00
+4C	jmp	jmp_abs	_	_	_	5	0	00
+6C	jmp	jmp_ind	_	_	_	5	0	00
 
-20	jsr	abs	_	_	_	5	0	00
+20	jsr	jmp_abs	_	_	_	5	0	00
 
 A9	lda	imm	dp	_	A	0	0	82
 A5	lda	mem_ex_zpa	dp	_	A	0	0	82
 B5	lda	zp_x	dp	_	A	0	0	82
 AD	lda	abs	dp	_	A	0	0	82
 BD	lda	abs_x	dp	_	A	0	0	82
-B9	lda	aby	dp	_	A	0	0	82
+B9	lda	abs_y	dp	_	A	0	0	82
 A1	lda	indirect_x	dp	_	A	0	0	82
 B1	lda	indirect_y	dp	_	A	0	0	82
 
 A2	ldx	imm	dp	_	X	0	0	82
 A6	ldx	mem_ex_zpa	dp	_	X	0	0	82
-B6	ldx	zpy	dp	_	X	0	0	82
+B6	ldx	zp_y	dp	_	X	0	0	82
 AE	ldx	abs	dp	_	X	0	0	82
-BE	ldx	aby	dp	_	X	0	0	82
+BE	ldx	abs_y	dp	_	X	0	0	82
 
 A0	ldy	imm	dp	_	Y	0	0	82
 A4	ldy	mem_ex_zpa	dp	_	Y	0	0	82
 B4	ldy	zp_x	dp	_	Y	0	0	82
 AC	ldy	abs	dp	_	Y	0	0	82
-BC	ldy	abx	dp	_	Y	0	0	82
+BC	ldy	abs_x	dp	_	Y	0	0	82
 
-4A	lsr	acc	A	_	A	7 # ASSUMES C_IN=0	0	83
-46	lsr	zpg	dp	_	A	7	0	83
-56	lsr	zpx	dp	_	A	7	0	83
+4A	lsr	accFIXME	A	_	A	7 # ASSUMES C_IN=0	0	83
+46	lsr	zpgFIXME	dp	_	A	7	0	83
+56	lsr	zp_x	dp	_	A	7	0	83
 4E	lsr	abs	dp	_	A	7	0	83
-5E	lsr	abx	dp	_	A	7	0	83
+5E	lsr	abs_x	dp	_	A	7	0	83
 
 09	ora	imm	dp	A	A	4	0	82
-05	ora	zpg	dp	A	A	4	0	82
-15	ora	zpx	dp	A	A	4	0	82
+05	ora	zpgFIXME	dp	A	A	4	0	82
+15	ora	zp_x	dp	A	A	4	0	82
 0D	ora	abs	dp	A	A	4	0	82
-1D	ora	abx	dp	A	A	4	0	82
-19	ora	aby	dp	A	A	4	0	82
-01	ora	idx	dp	A	A	4	0	82
-11	ora	idy	dp	A	A	4	0	82
+1D	ora	abs_x	dp	A	A	4	0	82
+19	ora	abs_y	dp	A	A	4	0	82
+01	ora	indirect_x	dp	A	A	4	0	82
+11	ora	indirect_y	dp	A	A	4	0	82
 
-2A	rol	acc	A	_	A	6	0	83
-26	rol	zpg	dp	_	A	6	0	83
-36	rol	zpx	dp	_	A	6	0	83
+2A	rol	accFIXME	A	_	A	6	0	83
+26	rol	zpgFIXME	dp	_	A	6	0	83
+36	rol	zp_x	dp	_	A	6	0	83
 2E	rol	abs	dp	_	A	6	0	83
-3E	rol	abx	dp	_	A	6	0	83
+3E	rol	abs_x	dp	_	A	6	0	83
 
-6a	ror	acc	A	_	A	7	0	83
-66	ror	zpg	dp	_	A	7	0	83
-76	ror	zpx	dp	_	A	7	0	83
+6a	ror	accFIXME	A	_	A	7	0	83
+66	ror	zpgFIXME	dp	_	A	7	0	83
+76	ror	zp_x	dp	_	A	7	0	83
 6e	ror	abs	dp	_	A	7	0	83
-7e	ror	abx	dp	_	A	7	0	83
+7e	ror	abs_x	dp	_	A	7	0	83
 
 E9	sbc	imm	dp	A	A	3	0	C3
 E5	sbc	mem_ex_zpa	dp	A	A	3	0	C3
 F5	sbc	zp_x	dp	A	A	3	0	C3
 ED	sbc	abs	dp	A	A	3	0	C3
 FD	sbc	abs_x	dp	A	A	3	0	C3
-F9	sbc	aby	dp	A	A	3	0	C3
+F9	sbc	abs_y	dp	A	A	3	0	C3
 E1	sbc	indirect_x	dp	A	A	3	0	C3
 F1	sbc	indirect_y	dp	A	A	3	0	C3
 
@@ -139,12 +139,12 @@ F1	sbc	indirect_y	dp	A	A	3	0	C3
 95	sta	zp_x	dp	A	mem	0	0	00
 8D	sta	mem_wr_abs	dp	A	mem	0	0	00
 9D	sta	abs_x	dp	A	mem	0	0	00
-99	sta	aby	dp	A	mem	0	0	00
+99	sta	abs_y	dp	A	mem	0	0	00
 81	sta	indirect_x	dp	A	mem	0	0	00
 91	sta	indirect_y	dp	A	mem	0	0	00
 
 86	stx	mem_ex_zpa	dp	X	mem	0	0	00
-96	stx	zpy	dp	X	mem	0	0	00
+96	stx	zp_y	dp	X	mem	0	0	00
 8E	stx	abs	dp	X	mem	0	0	00
 
 84	sty	mem_ex_zpa	dp	Y	mem	0	0	00

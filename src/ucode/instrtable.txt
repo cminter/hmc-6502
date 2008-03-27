@@ -79,23 +79,23 @@ FE	inc	abx	dp	_	mem	1	0	82
 20	jsr	abs	_	_	_	5	0	00
 
 A9	lda	imm	dp	_	A	1	0	82
-A5	lda	zpg	dp	_	A	1	0	82
-B5	lda	zpx	dp	_	A	1	0	82
+A5	lda	mem_ex_zpa	dp	_	A	1	0	82
+B5	lda	zp_x	dp	_	A	1	0	82
 AD	lda	abs	dp	_	A	1	0	82
-BD	lda	abx	dp	_	A	1	0	82
+BD	lda	abs_x	dp	_	A	1	0	82
 B9	lda	aby	dp	_	A	1	0	82
-A1	lda	idx	dp	_	A	1	0	82
-B1	lda	idy	dp	_	A	1	0	82
+A1	lda	indirect_x	dp	_	A	1	0	82
+B1	lda	indirect_y	dp	_	A	1	0	82
 
 A2	ldx	imm	dp	_	X	1	0	82
-A6	ldx	zpg	dp	_	X	1	0	82
+A6	ldx	mem_ex_zpa	dp	_	X	1	0	82
 B6	ldx	zpy	dp	_	X	1	0	82
 AE	ldx	abs	dp	_	X	1	0	82
 BE	ldx	aby	dp	_	X	1	0	82
 
 A0	ldy	imm	dp	_	Y	1	0	82
-A4	ldy	zpg	dp	_	Y	1	0	82
-B4	ldy	zpx	dp	_	Y	1	0	82
+A4	ldy	mem_ex_zpa	dp	_	Y	1	0	82
+B4	ldy	zp_x	dp	_	Y	1	0	82
 AC	ldy	abs	dp	_	Y	1	0	82
 BC	ldy	abx	dp	_	Y	1	0	82
 
@@ -127,28 +127,28 @@ BC	ldy	abx	dp	_	Y	1	0	82
 7e	ror	abx	dp	_	A	7	0	83
 
 E9	sbc	imm	dp	A	A	3	0	C3
-E5	sbc	zpg	dp	A	A	3	0	C3
-F5	sbc	zpx	dp	A	A	3	0	C3
+E5	sbc	mem_ex_zpa	dp	A	A	3	0	C3
+F5	sbc	zp_x	dp	A	A	3	0	C3
 ED	sbc	abs	dp	A	A	3	0	C3
-FD	sbc	abx	dp	A	A	3	0	C3
+FD	sbc	abs_x	dp	A	A	3	0	C3
 F9	sbc	aby	dp	A	A	3	0	C3
-E1	sbc	idx	dp	A	A	3	0	C3
-F1	sbc	idy	dp	A	A	3	0	C3
+E1	sbc	indirect_x	dp	A	A	3	0	C3
+F1	sbc	indirect_y	dp	A	A	3	0	C3
 
 85	sta	zpg	dp	A	mem	1	0	00
-95	sta	zpx	dp	A	mem	1	0	00
+95	sta	mem_ex_zpa	dp	A	mem	1	0	00
 8D	sta	abs	dp	A	mem	1	0	00
-9D	sta	abx	dp	A	mem	1	0	00
+9D	sta	abs_x	dp	A	mem	1	0	00
 99	sta	aby	dp	A	mem	1	0	00
-81	sta	idx	dp	A	mem	1	0	00
-91	sta	idy	dp	A	mem	1	0	00
+81	sta	indirect_x	dp	A	mem	1	0	00
+91	sta	indirect_y	dp	A	mem	1	0	00
 
-86	stx	zpg	dp	X	mem	1	0	00
+86	stx	mem_ex_zpa	dp	X	mem	1	0	00
 96	stx	zpy	dp	X	mem	1	0	00
 8E	stx	abs	dp	X	mem	1	0	00
 
-84	sty	zpg	dp	Y	mem	1	0	00
-94	sty	zpx	dp	Y	mem	1	0	00
+84	sty	mem_ex_zpa	dp	Y	mem	1	0	00
+94	sty	zp_x	dp	Y	mem	1	0	00
 8C	sty	abs	dp	Y	mem	1	0	00
 
 FIXME: brk needs to be done

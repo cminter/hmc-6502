@@ -113,12 +113,13 @@ def main():
     # comprehension that matches one of the values in name_dict against each
     # line and replaces it with its corresponding value.
     # Note: this assumes that each input line has the format
-    # '^.*pat; //comment$' in order to avoid something like 'abs' matching
+    # '^.*[10]_pat; //comment$' in order to avoid something like 'abs' matching
     # 'abs_x'.
     input_list = infile.readlines()
     infile.close()
     output_list = [re.sub(pat, name_dict[pat], line, 1) for line in input_list
-            for pat in name_dict if re.search(pat + '; //[a-z \)\(_]+$', line)]
+            for pat in name_dict if re.search('[10]_' +
+                pat + '; //[a-z \)\(_]+$', line)]
 
     # Write out the new file.
     outfile = open('translated_opcodes.txt', 'w')

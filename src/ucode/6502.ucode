@@ -47,6 +47,12 @@ db	x	add	none	0	pc_n	0	-	1	0	0
 -	func	-	none	0	-	0	temp	0	0	b
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
+mem_wr_zpy:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
+db	y	add	none	0	pc_n	0	-	1	0	0
+-	func	-	none	0	-	0	temp	0	0	b
+db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+
 mem_wr_abs:
 # 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri

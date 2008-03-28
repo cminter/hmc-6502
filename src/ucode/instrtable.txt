@@ -143,11 +143,11 @@ F1	sbc	indirect_y	dp	A	A	3	0	C3
 81	sta	indirect_x	dp	A	mem	0	0	00
 91	sta	indirect_y	dp	A	mem	0	0	00
 
-86	stx	mem_ex_zpa	dp	X	mem	0	0	00
-96	stx	zp_y	dp	X	mem	0	0	00
+86	stx	mem_wr_zpa	dp	X	mem	0	0	00
+96	stx	mem_wr_zpy	dp	X	mem	0	0	00
 8E	stx	abs	dp	X	mem	0	0	00
 
-84	sty	mem_ex_zpa	dp	Y	mem	0	0	00
+84	sty	mem_wr_zpa	dp	Y	mem	0	0	00
 94	sty	mem_wr_zpx	dp	Y	mem	0	0	00
 8C	sty	abs	dp	Y	mem	0	0	00
 

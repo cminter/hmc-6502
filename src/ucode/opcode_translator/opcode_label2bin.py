@@ -112,12 +112,13 @@ def main():
     # Read and parse the input list.  Uses an even more magic list
     # comprehension that matches one of the values in name_dict against each
     # line and replaces it with its corresponding value.
-    # Note: this assumes that each input line has the format '^.*pat;$' in
-    # order to avoid something like 'abs' matching 'abs_x'.
+    # Note: this assumes that each input line has the format
+    # '^.*pat; //comment$' in order to avoid something like 'abs' matching
+    # 'abs_x'.
     input_list = infile.readlines()
     infile.close()
-    output_list = [re.sub(pat, name_dict[pat], line) for line in input_list
-            for pat in name_dict if re.search(pat + ';$', line)]
+    output_list = [re.sub(pat, name_dict[pat], line, 1) for line in input_list
+            for pat in name_dict if re.search(pat + '; //[a-z \)\(_]+$', line)]
 
     # Write out the new file.
     outfile = open('translated_opcodes.txt', 'w')

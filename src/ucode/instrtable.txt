@@ -29,16 +29,16 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 31	and	indirect_y	dp	A	A	8	0	82
 
 0A	asl	accFIXME	A	_	A	5	0	83
-06	asl	zpgFIXME	dp	_	A	5	0	83
+06	asl	mem_ex_zpa	dp	_	A	5	0	83
 16	asl	zp_x	dp	_	A	5	0	83
 0E	asl	abs	dp	_	A	5	0	83
 1E	asl	abs_x	dp	_	A	5	0	83
 
-24	bit	zpgFIXME	dp	A	_	9	0	C2
+24	bit	mem_ex_zpa	dp	A	_	9	0	C2
 2C	bit	abs	dp	A	_	9	0	C2
 
 C9	cmp	imm	dp	A	_	3	0	83
-C5	cmp	zpgFIXME	dp	A	_	3	0	83
+C5	cmp	mem_ex_zpa	dp	A	_	3	0	83
 D5	cmp	zp_x	dp	A	_	3	0	83
 CD	cmp	abs	dp	A	_	3	0	83
 DD	cmp	abs_x	dp	A	_	3	0	83
@@ -47,20 +47,20 @@ C1	cmp	indirect_x	dp	A	_	3	0	83
 D1	cmp	indirect_y	dp	A	_	3	0	83
 
 E0	cpx	imm	dp	X	_	3	0	83
-E4	cpx	zpgFIXME	dp	X	_	3	0	83
+E4	cpx	mem_ex_zpa	dp	X	_	3	0	83
 EC	cpx	abs	dp	X	_	3	0	83
 
 C0	cpy	imm	dp	Y	_	3	0	83
-C4	cpy	zpgFIXME	dp	Y	_	3	0	83
+C4	cpy	mem_ex_zpa	dp	Y	_	3	0	83
 CC	cpy	abs	dp	Y	_	3	0	83
 
-C6	dec	zpgFIXME	dp	_	mem	1	0	82
+C6	dec	mem_ex_zpa	dp	_	mem	1	0	82
 D6	dec	zp_x	dp	_	mem	1	0	82
 CE	dec	abs	dp	_	mem	1	0	82
 DE	dec	abs_x	dp	_	mem	1	0	82
 
 49	eor	imm	dp	A	A	A	0	82
-45	eor	zpgFIXME	dp	A	A	A	0	82
+45	eor	mem_ex_zpa	dp	A	A	A	0	82
 55	eor	zp_x	dp	A	A	A	0	82
 4D	eor	abs	dp	A	A	A	0	82
 5D	eor	abs_x	dp	A	A	A	0	82
@@ -68,7 +68,7 @@ DE	dec	abs_x	dp	_	mem	1	0	82
 41	eor	indirect_x	dp	A	A	A	0	82
 51	eor	indirect_y	dp	A	A	A	0	82
 
-E6	inc	zpgFIXME	dp	_	mem	0	0	82
+E6	inc	mem_ex_zpa	dp	_	mem	0	0	82
 F6	inc	zp_x	dp	_	mem	0	0	82
 EE	inc	abs	dp	_	mem	0	0	82
 FE	inc	abs_x	dp	_	mem	0	0	82
@@ -100,13 +100,13 @@ AC	ldy	abs	dp	_	Y	0	0	82
 BC	ldy	abs_x	dp	_	Y	0	0	82
 
 4A	lsr	accFIXME	A	_	A	7 # ASSUMES C_IN=0	0	83
-46	lsr	zpgFIXME	dp	_	A	7	0	83
+46	lsr	mem_ex_zpa	dp	_	A	7	0	83
 56	lsr	zp_x	dp	_	A	7	0	83
 4E	lsr	abs	dp	_	A	7	0	83
 5E	lsr	abs_x	dp	_	A	7	0	83
 
 09	ora	imm	dp	A	A	4	0	82
-05	ora	zpgFIXME	dp	A	A	4	0	82
+05	ora	mem_ex_zpa	dp	A	A	4	0	82
 15	ora	zp_x	dp	A	A	4	0	82
 0D	ora	abs	dp	A	A	4	0	82
 1D	ora	abs_x	dp	A	A	4	0	82
@@ -115,13 +115,13 @@ BC	ldy	abs_x	dp	_	Y	0	0	82
 11	ora	indirect_y	dp	A	A	4	0	82
 
 2A	rol	accFIXME	A	_	A	6	0	83
-26	rol	zpgFIXME	dp	_	A	6	0	83
+26	rol	mem_ex_zpa	dp	_	A	6	0	83
 36	rol	zp_x	dp	_	A	6	0	83
 2E	rol	abs	dp	_	A	6	0	83
 3E	rol	abs_x	dp	_	A	6	0	83
 
 6a	ror	accFIXME	A	_	A	7	0	83
-66	ror	zpgFIXME	dp	_	A	7	0	83
+66	ror	mem_ex_zpa	dp	_	A	7	0	83
 76	ror	zp_x	dp	_	A	7	0	83
 6e	ror	abs	dp	_	A	7	0	83
 7e	ror	abs_x	dp	_	A	7	0	83

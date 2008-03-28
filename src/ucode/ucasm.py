@@ -134,8 +134,10 @@ class State:
             
         if 'x' == self.in_states['b_sel']:
             self.out.reg_read_addr_b = '01'
+            self.out.reg_write_en = '1'
         if 'y' == self.in_states['b_sel']:
             self.out.reg_read_addr_b = '10'
+            self.out.reg_write_en = '1'
         if 'pc_h' == self.in_states['b_sel']:
             self.out.pch_out_en = '1'
         if 'pc_l' == self.in_states['b_sel']:

@@ -62,17 +62,36 @@ db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_idy:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
-# get low byte of address stored in memory
-db	-	pass	none	0	pc_n	0	r	1	0	0	0
-# add value of Y to low byte of address
-db	y	add	none	0	-	0	r	0	1	0	0
-# get high byte of address stored in memory (needs to include carry in from determining low byte...)
-th	-	inc	none	0	-	0	r	0	0	0	0
-db	-	pass+t	none	0	-	0	r	1	0	0	0
-# value to write to memory
+# IAL in over data bus
+db	-	pass	none	0	-	0	r	0	0	0	0
+# BAL in over data bus
+db	-	pass	none	0	-	pc_n	pc_n	0	1	0	0
+# IAL back in over data bus
+db	-	inc	none	0	-	0	r	0	0	0	0
+# BAH in over data bus
+db	-	pass	none	0	-	r	temp	1	0	0	0
+# [BAH, BAL] in over data bus (discard)
+tl	y	add	none	0	-	temp	r	0	1	t	0
+# [BAH, BAL+y] in over data bus (discard)
+th	-	pass+t	none	0	-	r	temp	1	0	0	0
+# [BAH+c, BAL+y] in over data bus (correct vector)
 -	func	pass	none	0	-	temp	temp	0	0	0	b
 # final state (same for all writes)
 db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+
+
+# TRASH THIS:
+# get low byte of address stored in memory
+#db	-	pass	none	0	pc_n	0	r	1	0	0	0
+# add value of Y to low byte of address
+#db	y	add	none	0	-	0	r	0	1	0	0
+# get high byte of address stored in memory (needs to include carry in from determining low byte...)
+#th	-	inc	none	0	-	0	r	0	0	0	0
+#db	-	pass+t	none	0	-	0	r	1	0	0	0
+# value to write to memory
+#-	func	pass	none	0	-	temp	temp	0	0	0	b
+# final state (same for all writes)
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 #mem_wr_idx:
 #a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri

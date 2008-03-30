@@ -5,6 +5,8 @@ start:
 	LDX #42
 	LDY #115
 	STA $81
+	LDA #$01	;
+	STA $61		;
 	LDA #$7E
 	LDA $81
 	STA $0910

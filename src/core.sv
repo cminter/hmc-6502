@@ -49,9 +49,7 @@ module core(output logic [15:0] address,
               d_in_en, d_out_sel, ah_sel, al_sel, alu_op, c_temp_en, carry_sel, constant, 
               constant_en);
               
-  and8    flag_masker(op_flags, flag_en, p_in_en);
-              
-  control con(data_in, p, ph1, ph2, reset, op_flags, {
+  control con(data_in, p, ph1, ph2, reset, p_in_en, {
                   th_in_en,
                   th_out_en,
                   tl_in_en,

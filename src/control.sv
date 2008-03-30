@@ -18,7 +18,7 @@ parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 
 module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, reset,
-               output logic [7:0] op_flags,
+               output logic [7:0] p_in_en,
                output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls_s1);
                
   // all controls become valid on ph1, and hold through end of ph2.
@@ -35,6 +35,8 @@ module control(input logic [7:0] data_in, p,
   logic [7:0] next_state_s2;
   logic [7:0] next_state_branch;
   logic [1:0] next_state_sel;
+  
+  logic [7:0] op_flags;
   
   // opcode logic
   latch #1 opcode_lat_p1(last_cycle, last_cycle_s2, ph1);
@@ -62,6 +64,8 @@ module control(input logic [7:0] data_in, p,
                                                     c_op_sel,
                                                     next_state_sel,
                                                     next_state_states}});
+  
+  and8 flag_masker(op_flags, controls_s1[24], p_in_en);
   
   // opcode specific controls
   mux2 #(C_OP_WIDTH) func_mux(c_op_state, c_op_opcode, c_op_sel, c_op_selected);

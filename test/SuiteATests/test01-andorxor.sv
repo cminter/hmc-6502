@@ -23,20 +23,6 @@ module optest;
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
     
-    top.chip.core.dp.regfile.reg_file[0] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[1] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[2] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[3] = 8'h0;
-    
-    top.chip.core.dp.flaglatch.latch0.q = 0;
-    top.chip.core.dp.flaglatch.latch1.q = 0;
-    top.chip.core.dp.flaglatch.latch2.q = 0;
-    top.chip.core.dp.flaglatch.latch3.q = 0;
-    top.chip.core.dp.flaglatch.latch4.q = 0;
-    top.chip.core.dp.flaglatch.latch5.q = 0;
-    top.chip.core.dp.flaglatch.latch6.q = 0;
-    top.chip.core.dp.flaglatch.latch7.q = 0;
-    
     // path relative to this file.
     $readmemh("test/roms/SuiteA/test01-andorxor.rom", top.mem.ROM);
     
@@ -44,7 +30,7 @@ module optest;
     reset = 1;
     #100;
     reset = 0;
-    #500;
+    #6000;
     assert (top.mem.RAM[169] == 8'hAA) $display ("PASSED Test 01 - and & or & xor");
       else $error("FAILED Test 01 - and & or & xor");
   end

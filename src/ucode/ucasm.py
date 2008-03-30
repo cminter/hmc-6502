@@ -131,7 +131,10 @@ class State:
         if '0x' in self.in_states['a_sel']:
             self.out.constant_en = '1'
             self.out.constant = hex2bin(self.in_states['a_sel'])
-            
+
+	if 'a' == self.in_states['b_sel']:
+            self.out.reg_read_addr_b = '00'
+            self.out.reg_b_en = '1'            
         if 'x' == self.in_states['b_sel']:
             self.out.reg_read_addr_b = '01'
             self.out.reg_b_en = '1'

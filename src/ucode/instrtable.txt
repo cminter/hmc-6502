@@ -28,7 +28,7 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 21	and	indirect_x	dp	A	A	8	0	82
 31	and	indirect_y	dp	A	A	8	0	82
 
-0A	asl	accFIXME	A	_	A	5	0	83
+0A	asl	acc	A	_	A	5	0	83
 06	asl	mem_ex_zpa	dp	_	A	5	0	83
 16	asl	zp_x	dp	_	A	5	0	83
 0E	asl	abs	dp	_	A	5	0	83
@@ -99,7 +99,7 @@ B4	ldy	zp_x	dp	_	Y	0	0	82
 AC	ldy	abs	dp	_	Y	0	0	82
 BC	ldy	abs_x	dp	_	Y	0	0	82
 
-4A	lsr	accFIXME	A	_	A	7 # ASSUMES C_IN=0	0	83
+4A	lsr	acc	A	_	A	7 # ASSUMES C_IN=0	0	83
 46	lsr	mem_ex_zpa	dp	_	A	7	0	83
 56	lsr	zp_x	dp	_	A	7	0	83
 4E	lsr	abs	dp	_	A	7	0	83
@@ -114,13 +114,13 @@ BC	ldy	abs_x	dp	_	Y	0	0	82
 01	ora	indirect_x	dp	A	A	4	0	82
 11	ora	indirect_y	dp	A	A	4	0	82
 
-2A	rol	accFIXME	A	_	A	6	0	83
+2A	rol	acc	A	_	A	6	0	83
 26	rol	mem_ex_zpa	dp	_	A	6	0	83
 36	rol	zp_x	dp	_	A	6	0	83
 2E	rol	abs	dp	_	A	6	0	83
 3E	rol	abs_x	dp	_	A	6	0	83
 
-6a	ror	accFIXME	A	_	A	7	0	83
+6a	ror	acc	A	_	A	7	0	83
 66	ror	mem_ex_zpa	dp	_	A	7	0	83
 76	ror	zp_x	dp	_	A	7	0	83
 6e	ror	abs	dp	_	A	7	0	83
@@ -179,8 +179,8 @@ Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 70	bvs	branch_head	dp	_	PC	0	1	40
 90	bcc	branch_head	dp	_	PC	0	0	01
 B0	bcs	branch_head	dp	_	PC	0	1	01
-D0	bne	branch_head	dp	_	PC	0	0	02
-f0	beq	branch_head	dp	_	PC	0	1	02
+D0	bne	branch_head	dp	_	PC	0	1	02
+f0	beq	branch_head	dp	_	PC	0	0	02
 
 9a	txs	single_byte	SP	X	mem	0	0	00
 ba	tsx	single_byte	dp	_	X	0	0	82

@@ -311,10 +311,12 @@ def do_file():
     # one left...
     next_state_num = process_block(current_block, next_state_num)
     
+    print "\n// state signals"
     for signal in sizevec.groups['state'].keys():
-        print "%s," % signal
+        print "//  %s," % signal
+    print "\n// op signals"
     for signal in sizevec.groups['opcode'].keys():
-        print "%s," % signal
+        print "//  %s," % signal
     
 if __name__ == "__main__":
     do_file()

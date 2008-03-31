@@ -86,7 +86,7 @@ def main():
     # amount about the format of 6502.ucode.compiled.
     name_list = name_list[4:]
     name_list = [line.strip('// ').strip() for line in name_list if
-            line.startswith('// ')]
+            re.match('^// [a-z_]+:[0-9]+$', line)]
 
     if debug: # Write the list of labels to a file.
         namelistoutfile = open('labels_list.txt', 'w')

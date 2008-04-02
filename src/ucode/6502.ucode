@@ -66,15 +66,15 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memw
 db	-	pass	none	0	-	0	r	1	0	0	0
 # Low byte comes in on data -- pass it and store in temp_low
 db	-	pass	none	0	-	pc_n	pc_n	0	1	0	0
-# Increment address of low byte to get address of high byte -- pass to address **IS ADDR CORRECT**
+# Increment address of low byte to get address of high byte -- pass to address 
 th	-	inc	none	0	-	0	r	0	0	0	0
-# Data from high byte comes in -- save in temp_high **SEEMS NOT TO WORK**
+# Data from high byte comes in -- save in temp_high
 db	-	pass	none	0	-	-	-	1	0	0	0
 # Add y to low byte and save back in low byte
 tl	y	add	none	0	-	temp	r	0	1	t	0
 # Add carry to high byte and save back in high byte
 th	-	pass+t	none	0	-	r	temp	1	0	0	0
-# Use temporary register as address and write whatever func says **Does "pass" pass b_s1?
+# Use temporary register as address and write whatever func says
 -	func	pass	none	0	-	temp	temp	0	0	0	b
 # Incremet the program counter and set the flags
 db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
@@ -151,19 +151,19 @@ indirect_y:
 # over by two cycles
 # "indirect indexed" addressing: *((*arg)+y)
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
-# IAL in over data bus
-db	-	pass	none	0	-	0	r	0	0	0
-# BAL in over data bus
-db	-	pass	none	0	-	pc_n	pc_n	0	1	0
-# IAL back in over data bus
-db	-	inc	none	0	-	0	r	0	0	0
-# BAH in over data bus
-db	-	pass	none	0	-	r	temp	1	0	0
-# [BAH, BAL] in over data bus (discard)
-tl	y	add	none	0	-	temp	r	0	1	t
-# [BAH, BAL+y] in over data bus (discard)
-th	-	pass+t	none	0	-	r	temp	1	0	0
-# [BAH+c, BAL+y] in over data bus (correct vector)
+# Address of low byte comes in over data line -- save it in temp_high and pass it to address
+db	-	pass	none	0	-	0	r	1	0	0
+# Low byte comes in on data -- pass it and store in temp_low
+db	-	pass	none	0	-	-	-	0	1	0
+# Increment address of low byte to get address of high byte -- pass to address 
+th	-	inc	none	0	-	0	r	0	0	0
+# Data from high byte comes in -- save in temp_high
+db	-	pass	none	0	-	-	-	1	0	0
+# Add y to low byte and save back in low byte
+tl	y	add	none	0	-	-	-	0	1	t
+# Add carry to high byte and save back in high byte
+th	-	pass+t	none	0	-	-	-	1	0	0
+# Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 
 # store and read-modify-write instructions look a lot like these.

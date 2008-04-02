@@ -5,8 +5,8 @@ start:
 	LDX #42
 	LDY #115
 	STA $81
-	LDA #$01	;
-	STA $61		;
+	LDA #$01
+	STA $61
 	LDA #$7E
 	LDA $81
 	STA $0910
@@ -19,12 +19,12 @@ start:
 	STA ($60),Y
 	LDA #$7E
 	LDA ($60),Y
-	STA $0800,X
+	STA $07ff,X
 	LDA #$7E
-	LDA $0800,X
-	STA $0800,Y
+	LDA $07ff,X
+	STA $07ff,Y
 	LDA #$7E
-	LDA $0800,Y
+	LDA $07ff,Y
 	STA ($36,X)
 	LDA #$7E
 	LDA ($36,X)

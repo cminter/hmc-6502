@@ -103,17 +103,24 @@ start:
 	STA $99
 	LDA #96
 	STA $40
+	LDA #$01
+	STA $41
 	LDA #97
 	STA $42
+	LDA #$01
+	STA $43
 	LDA #98
 	STA $44
+	LDA #$01
+	STA $45
 	LDA #55
-	STA $80
+	STA $0250
 	LDA #35
-	STA $81
+	STA $0251
 	LDA #157
-	STA $82
+	STA $0252
 	LDA $99
+	LDY #$F0
 	AND ($40),Y
 	ORA ($42),Y
 	EOR ($44),Y

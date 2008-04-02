@@ -123,12 +123,6 @@ db	-	pass	none	0	-	temp	r	0	0	0
 # finally, do the instruction function:
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
-#db	x	add	none	0	-	0	r	0	0
-#db	-	pass	none	0	-	0	-	1	0
-#db	x	add+1	none	0	-	0	r	0	0
-#db	-	pass	none	0	-	r	temp	0	0
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
-
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	1	pc_n	pc_n	pc_n	1	t
@@ -176,6 +170,8 @@ db	-	pass	none	0	-	-	-	1	0	0
 tl	y	add	none	0	-	-	-	0	1	t
 # Add carry to high byte and save back in high byte
 th	-	pass+t	none	0	-	-	-	1	0	0
+# Get data from address stored in temps
+db	-	pass	none	0	-	temp	temp	0	0	0
 # Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 

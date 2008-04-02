@@ -109,12 +109,25 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
 # assert onto address bus, use as high part of next fetch
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	add	none	0	-	0	r	0	0
-db	-	pass	none	0	-	0	-	1	0
-db	x	add+1	none	0	-	0	r	0	0
-db	-	pass	none	0	-	r	temp	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+# store instruction input in temp_low:
+db	-	pass	none	0	-	-	-	0	1	0
+# get memory location of high byte address:
+tl	x	add+1	none	0	-	0	r	0	0	0
+# store high byte address in temp_high:
+db	-	pass	none	0	-	-	-	1	0	0
+# get memory location of low byte address:
+tl	x	add	none	0	-	0	r	0	0	0
+# knowing result is low byte address, get data from memory:
+db	-	pass	none	0	-	temp	r	0	0	0
+# finally, do the instruction function:
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
+
+#db	x	add	none	0	-	0	r	0	0
+#db	-	pass	none	0	-	0	-	1	0
+#db	x	add+1	none	0	-	0	r	0	0
+#db	-	pass	none	0	-	r	temp	0	0
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag

@@ -78,16 +78,22 @@ start:
 	STA $99
 	LDA #112
 	STA $30
+	LDA #$01
+	STA $31
 	LDA #113
 	STA $32
+	LDA #$01
+	STA $33
 	LDA #114
 	STA $34
+        LDA #$01
+        STA $35
 	LDA #197
-	STA $70
+	STA $0170
 	LDA #124
-	STA $71
+	STA $0171
 	LDA #161
-	STA $72
+	STA $0172
 	LDA $99
 	AND ($20,X)
 	ORA ($22,X)

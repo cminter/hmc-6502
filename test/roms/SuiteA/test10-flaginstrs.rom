@@ -1,0 +1,60 @@
+// 6502 Test #10
+// Heather Justice 3/26/08
+// Tests flag instructions (CLC & SEC & CLV & CLD & SED) & NOP.
+// Assumes that loads & stores (all addressing modes) and all branches work.
+// Also assumes ADC works with all addressing modes.
+//
+// EXPECTED RESULTS: $30 = 0xCE
+//
+// LDA #$99 (A = 0x99)
+a9
+99
+// ADC #$87 (A = 0x20)
+69
+87
+// CLC
+18
+// NOP
+ea
+// BCC bcc1 ; taken
+90
+04
+// ADC #$60 ; not done
+69
+60
+// ADC #$93 ; not done
+69
+93
+// SEC
+38
+// NOP
+ea
+// BCC bcc2 ; not taken
+90
+01
+// CLV
+b8
+// BVC bvc1 ; taken
+50
+02
+// LDA #$00 ; not done
+a9
+00
+// ADC #$17 (A = 0x38)
+69
+17
+// SED
+f8
+// ADC #$95 (A = 0x33)
+69
+95
+// CLD
+d8
+// ADC #$9A (A = 0xCE)
+69
+9a
+// NOP
+ea
+// STA $30 ($30 = 0xCE)
+85
+30

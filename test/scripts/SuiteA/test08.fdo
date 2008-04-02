@@ -1,0 +1,16 @@
+## test08-cpxybit.fdo
+## vsim script to test control top CPU
+## tbarr at cs hmc edu
+
+vlib work
+vlog "src/parts.sv"
+vlog "src/control.sv"
+vlog "src/alu.sv"
+vlog "src/datapath.sv"
+vlog "src/core.sv"
+vlog "src/chip.sv"
+vlog "src/mem.sv"
+vlog "src/top.sv"
+vlog "test/SuiteATests/test08-cpxybit.sv"
+vsim -voptargs="+acc" optest
+view wave

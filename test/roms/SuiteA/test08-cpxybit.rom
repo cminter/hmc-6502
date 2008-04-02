@@ -1,0 +1,127 @@
+// 6502 Test #08
+// Heather Justice 3/25/08
+// Tests instructions CPX & CPY & BIT for all addressing modes.
+// Assumes that loads & stores (with all addressing modes) & BEQ & BNE work.
+// Also assumes that AND & ORA & EOR work with all addressing modes.
+//
+// EXPECTED RESULTS: $42 = 0xA5
+//
+// prepare memory...
+a9
+a5
+85
+20
+8d
+20
+01
+a9
+5a
+85
+21
+// cpx imm...
+// LDX #$A5 (X = 0xA5)
+a2
+a5
+// CPX #$A5
+e0
+a5
+// BEQ b1 ; taken
+f0
+02
+// LDX #$01 ; not done
+a2
+01
+// cpx zpg...
+// CPX $20
+e4
+20
+// BEQ b2 ; taken
+f0
+02
+// LDX #$02 ; not done
+a2
+02
+// cpx abs...
+// CPX $0120
+ec
+20
+01
+// BEQ b3 ; taken
+f0
+02
+// LDX #$03 ; not done
+a2
+03
+// cpy imm...
+// STX $30
+86
+30
+// LDY $30 (Y = 0xA5)
+a4
+30
+// CPY #$A5
+c0
+a5
+// BEQ b4 ; taken
+f0
+02
+// LDY #$04 ; not done
+a0
+04
+// cpy zpg...
+// CPY $20
+c4
+20
+// BEQ b5 ; taken
+f0
+02
+// LDY #$05 ; not done
+a0
+05
+// cpy abs...
+// CPY $0120
+cc
+20
+01
+// BEQ b6 ; taken
+f0
+02
+// LDY #$06 ; not done
+a0
+06
+// bit zpg...
+// STY $31
+84
+31
+// LDA $31 (A = 0xA5)
+a5
+31
+// BIT $20
+24
+20
+// BNE b7 ; taken
+d0
+02
+// LDA #$07 ; not done
+a9
+07
+// bit abs...
+// BIT $0120
+2c
+20
+01
+// BNE b8 ; taken
+d0
+02
+// LDA #$08 ; not done
+a9
+08
+// BIT $21
+24
+21
+// BNE b9 ; not taken
+d0
+02
+// STA $42 ($42 = 0xA5)
+85
+42

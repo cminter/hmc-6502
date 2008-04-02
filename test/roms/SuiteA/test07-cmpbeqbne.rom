@@ -1,0 +1,176 @@
+// 6502 Test #07
+// Heather Justice 3/25/08
+// Tests instructions CMP (all addressing modes) & BEQ & BNE.
+// Assumes that loads & stores work with all addressing modes.
+// Also assumes that AND & ORA & EOR work with all addressing modes.
+//
+// EXPECTED RESULTS: $15 = 0x7F
+//
+// prepare memory	
+a9
+ff
+8d
+30
+01
+a9
+99
+8d
+9d
+01
+a9
+db
+8d
+99
+01
+a9
+2f
+85
+32
+a9
+32
+85
+4f
+a9
+30
+85
+33
+a9
+70
+85
+af
+// A = 0x18
+a9
+18
+85
+30
+// cmp imm...
+// CMP #$18
+c9
+18
+// BEQ beq1 ; taken
+f0
+02
+// AND #$00 ; not done
+29
+00
+// cmp zpg...
+// ORA #$01 (A = 0x19)
+09
+01
+// CMP $30
+c5
+30
+// BNE bne1 ; taken
+d0
+02
+// AND #$00 ; not done
+29
+00
+// cmp abs...
+// LDX #$00 (X = 0x00)
+a2
+00
+// CMP $0130
+cd
+30
+01
+// BEQ beq2 ; not taken
+f0
+04
+// STA $40
+85
+40
+// LDX $40 (X = 0x19)
+a6
+40
+// cmp zpx...
+// CMP $27,X
+d5
+27
+// BNE bne2 ; not taken
+d0
+06
+// ORA #$84 (A = 0x9D)
+09
+84
+// STA $41
+85
+41
+// LDX $41 (X = 0x9D)
+a6
+41
+// cmp abx...
+// AND #$DB (A = 0x99)
+29
+db
+// CMP $0100,X
+dd
+00
+01
+// BEQ beq3 ; taken
+f0
+02
+// AND #$00 ; not done
+29
+00
+// cmp aby...
+// STA $42
+85
+42
+// LDY $42 (Y = 0x99)
+a4
+42
+// AND #$00 (A = 0x00)
+29
+00
+// CMP $0100,Y
+d9
+00
+01
+// BNE bne3 ; taken
+d0
+02
+// ORA #$0F ; not done
+09
+0f
+// cmp idx...
+// STA $43
+85
+43
+// LDX $43 (X = 0x00)
+a6
+43
+// ORA #$24 (A = 0x24)
+09
+24
+// CMP ($40,X)
+c1
+40
+// BEQ beq4 ; not taken
+f0
+02
+// ORA #$7F (A = 0x7F)
+09
+7f
+// cmp idy...
+// STA $44
+85
+44
+// LDY $44 (Y = 0x7F)
+a4
+44
+// EOR #$0F (A = 0x70)
+49
+0f
+// CMP ($33),Y
+d1
+33
+// BNE bne4 ; not taken
+d0
+04
+// LDA $44 (A = 0x7F)
+a5
+44
+// STA $15 ($15 = 0x7F)
+85
+15

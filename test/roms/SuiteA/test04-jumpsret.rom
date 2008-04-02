@@ -9,15 +9,15 @@
 // EXPECTED RESULTS: $40=0x42
 //
 // start: 
-// LDA #$7C
+// LDA #$24
 a9
-7c
+24
 // STA $20
 85
 20
-// LDA #$02
+// LDA #$f0
 a9
-02
+f0
 // STA $21
 85
 21
@@ -29,8 +29,8 @@ a9
 03
 // JMP jump1
 4c
-69
-02
+11
+f0
 // ORA #$FF ; not done
 09
 ff
@@ -40,8 +40,8 @@ ff
 30
 // JSR subr
 20
-75
-02
+1d
+f0
 // ORA #$42
 09
 42
@@ -53,7 +53,7 @@ ff
 09
 ff
 // subr:
-// STA $30
+// STA $30 ($30=0x33)
 85
 30
 // LDX $30

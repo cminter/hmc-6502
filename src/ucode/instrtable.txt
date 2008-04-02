@@ -165,12 +165,12 @@ f8	sed	single_byte	A	A	_	3	0	08
 
 aa	tax	single_byte	A	_	X	0	0	82
 8a	txa	single_byte	X	_	A	0	0	82
-ca	dex	FIXME	X	X	X	1	0	82
-e8	inx	FIXME	X	X	X	0	0	82
+ca	dex	single_byte	X	X	X	1	0	82
+e8	inx	single_byte	X	X	X	0	0	82
 98	tya	single_byte	Y	_	A	0	0	82
 a8	tay	single_byte	A	_	Y	0	0	82
-88	dey	FIXME	Y	Y	Y	1	0	82
-c8	iny	FIXME	Y	Y	Y	0	0	82
+88	dey	single_byte	Y	Y	Y	1	0	82
+c8	iny	single_byte	Y	Y	Y	0	0	82
 
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 10	bpl	branch_head	dp	_	PC	0	0	80

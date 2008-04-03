@@ -111,6 +111,7 @@ module control(input logic [7:0] data_in, p,
 
   latch #1 controls_state_25(c_state[25], controls_out[39], ph1);
   latch #1 controls_state_26(c_state[26], controls_out[40], ph1);
+  latch #1 controls_state_27(c_state[27], controls_out[41], ph1);
 
   latch #1 controls_state_29(c_state[29], controls_out[43], ph1);
   latch #1 controls_state_31(c_state[31], controls_out[45], ph1);
@@ -131,7 +132,7 @@ module control(input logic [7:0] data_in, p,
   assign controls_out[36] = c_state[22];
 
   assign controls_out[38] = c_state[24];
-  assign controls_out[41] = c_state[27];
+
   assign controls_out[42] = c_state[28];
   assign controls_out[44] = c_state[30];
   

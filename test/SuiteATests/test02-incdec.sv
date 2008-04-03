@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test02.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -33,5 +37,7 @@ module optest;
     #2000;
     assert (top.mem.RAM[113] == 8'hFF) $display ("PASSED Test 02 - increments & decrements");
       else $error("FAILED Test 02 - increments & decrements");
+    $dumpflush;
+    $stop;
   end
 endmodule

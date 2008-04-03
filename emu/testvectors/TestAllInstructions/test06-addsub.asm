@@ -66,8 +66,12 @@ start:
 	LDY $F3
 	LDA #$DA
 	STA $80
+	LDA #$00
+	STA $81
 	LDA #$DC
 	STA $82
+	LDA #$00
+	STA $83
 	LDA #$AA
 	ADC ($80),Y
 	SBC ($82),Y

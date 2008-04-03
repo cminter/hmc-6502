@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test01.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -33,5 +37,7 @@ module optest;
     #6900;
     assert (top.mem.RAM[169] == 8'hAA) $display ("PASSED Test 01 - and & or & xor");
       else $error("FAILED Test 01 - and & or & xor");
+    $dumpflush;
+    $stop;
   end
 endmodule

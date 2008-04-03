@@ -1,0 +1,39 @@
+// Testing ALU Subtraction with and without carry in
+// Kyle Marsh 3 April 08
+//
+
+// CLC
+18
+// LDA #$7F
+a9
+7f
+// SBC #$3C
+e9
+3c // A should now be 0x42
+
+// SEC
+38
+// LDA #$7F
+a9
+7f
+// SBC #$3C
+e9
+3c // A should now be 0x43
+
+// CLC
+18
+// LDA #$3F
+a9
+3f
+// SBC #$7C
+e9
+7c // A should now be 0xC2
+// SEC
+38
+// LDA #$3F
+a9
+3f
+// SBC #$7C
+e9
+7c // A should now be 0xC3
+

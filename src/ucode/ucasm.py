@@ -198,6 +198,8 @@ class State:
             
         if '1' == self.in_states['pcinc']:
             self.out.pc_inc_en = '1'
+        if '0' == self.in_states['pcinc']:
+            self.out.pc_inc_en = '0'
         if '1' == self.in_states['flag']:
             self.out.flag_en = '1'
         if 't' == self.in_states['flag']:

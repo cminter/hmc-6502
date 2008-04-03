@@ -21,7 +21,7 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 
 single_byte:
 # 1.0
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 func	func	func	func	0	-	pc_n	pc_n	0	1
 
 imm:
@@ -175,7 +175,7 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 # acc: (takes value in accumulator, sends it through ALU, and puts result in accumulator)
 acc:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 -	a	func	func	0	pc_n	pc_n	pc_n	0	1
 
 indirect_y:

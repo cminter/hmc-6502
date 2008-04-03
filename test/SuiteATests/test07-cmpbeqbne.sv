@@ -1,4 +1,4 @@
-// test05-reginstrs.sv
+// test07-cmpbeqbne.sv
 // basic regression test
 // tbarr at cs dot hmc dot edu
 
@@ -19,25 +19,19 @@ module optest;
   end
   
   initial begin
-    // for VCD file
-    $dumpfile("test/VCD/outSuiteA-test05.vcd");
-    $dumpvars;
-
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
     
     // path relative to this file.
-    $readmemh("test/roms/SuiteA/test05-reginstrs.rom", top.mem.ROM);
+    $readmemh("test/roms/SuiteA/test07-cmpbeqbne.rom", top.mem.ROM);
     
     // start test
     reset = 1;
     #100;
     reset = 0;
-    #900;
-    assert (top.mem.RAM[64] == 8'h33) $display ("PASSED Test 05 - register instructions");
-      else $error("FAILED Test 05 - register instructions");
-    $dumpflush;
-    $stop;
+    #3900;
+    assert (top.mem.RAM[21] == 8'h7F) $display ("PASSED Test 07 - cmp & beq & bne");
+      else $error("FAILED Test 07 - cmp & beq & bne");
   end
 endmodule

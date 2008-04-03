@@ -20,7 +20,7 @@ module optest;
   
   initial begin
     // for VCD file
-    $dumpfile("test/VCD/outSuiteA-test00.vcd");
+    $dumpfile("test/VCD/outSuiteA-test06.vcd");
     $dumpvars;
 
     // init ROM

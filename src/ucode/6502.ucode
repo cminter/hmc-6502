@@ -238,6 +238,12 @@ sp	pc_l	dec	sp	0	-	temp	temp	0	0	1	0
 tl	-	pass	pc_l	01	r	-	-	0	0	0	0
 th	-	pass	pc_h	10	r	temp	temp	0	0	0	0
 
+#rts:
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwri	pcinc
+#sp	-	inc	none	0	-	-	-	1	0	0	0
+#sp	-	inc	none	0	-	-	-	0	1	0	0
+#db	-	pass	none	1	r	temp	temp	0	0	0	1
+
 jmp_abs:
 # absolute jump
 # can't munge PC until we fetch the high part, so we write the low part back

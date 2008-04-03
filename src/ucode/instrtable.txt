@@ -165,12 +165,12 @@ f8	sed	single_byte	A	A	_	3	0	08
 
 aa	tax	single_byte	A	_	X	0	0	82
 8a	txa	single_byte	X	_	A	0	0	82
-ca	dex	single_byte	X	X	X	1	0	82
-e8	inx	single_byte	X	X	X	0	0	82
+ca	dex	dec	X	X	X	1	0	82
+e8	inx	inc	X	X	X	0	0	82
 98	tya	single_byte	Y	_	A	0	0	82
 a8	tay	single_byte	A	_	Y	0	0	82
-88	dey	single_byte	Y	Y	Y	1	0	82
-c8	iny	single_byte	Y	Y	Y	0	0	82
+88	dey	dec	Y	Y	Y	1	0	82
+c8	iny	inc	Y	Y	Y	0	0	82
 
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 10	bpl	branch_head	dp	_	PC	0	0	80
@@ -182,8 +182,8 @@ B0	bcs	branch_head	dp	_	PC	0	1	01
 D0	bne	branch_head	dp	_	PC	0	1	02
 f0	beq	branch_head	dp	_	PC	0	0	02
 
-9a	txs	single_byte	SP	X	mem	0	0	00
-ba	tsx	single_byte	dp	_	X	0	0	82
+9a	txs	single_byte	X	_	SP	0	0	00
+ba	tsx	single_byte	SP	_	X	0	0	82
 48	pha	push	SP	A	mem	0	0	00
 68	pla	pull	dp	_	A	0	0	82
 08	php	push	SP	PS	mem	0	0	00

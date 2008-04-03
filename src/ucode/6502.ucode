@@ -108,11 +108,20 @@ db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 # final state (same for all writes)
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
-#mem_wr_idx:
-#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
-# add x to input value
-#db	x	add	none	0	pc_n	0	-	0	1	0	0
-#db	-	pass	none	0	-	pc_n	pc_n		
+mem_wr_idx:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
+# store instruction input in temp_low:
+db	-	pass	none	0	-	-	-	0	1	0	0
+# get memory location of high byte address:
+tl	x	add+1	none	0	-	0	r	0	0	0	0
+# store high byte address in temp_high:
+db	-	pass	none	0	-	-	-	1	0	0	0
+# get memory location of low byte address:
+tl	x	add	none	0	-	0	r	0	0	0	0
+# knowing result is low byte address, get data for writing:
+db	func	pass	none	0	-	temp	r	0	0	0	b
+# final write state:
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 abs:
 #5.5

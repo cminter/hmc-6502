@@ -173,12 +173,12 @@ a8	tay	single_byte	A	_	Y	0	0	82
 c8	iny	inc	Y	Y	Y	0	0	82
 
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
-10	bpl	branch_head	dp	_	PC	0	0	80
-30	bmi	branch_head	dp	_	PC	0	1	80
-50	bvc	branch_head	dp	_	PC	0	0	40
-70	bvs	branch_head	dp	_	PC	0	1	40
-90	bcc	branch_head	dp	_	PC	0	0	01
-B0	bcs	branch_head	dp	_	PC	0	1	01
+10	bpl	branch_head	dp	_	PC	0	1	80
+30	bmi	branch_head	dp	_	PC	0	0	80
+50	bvc	branch_head	dp	_	PC	0	1	40
+70	bvs	branch_head	dp	_	PC	0	0	40
+90	bcc	branch_head	dp	_	PC	0	1	01
+B0	bcs	branch_head	dp	_	PC	0	0	01
 D0	bne	branch_head	dp	_	PC	0	1	02
 f0	beq	branch_head	dp	_	PC	0	0	02
 

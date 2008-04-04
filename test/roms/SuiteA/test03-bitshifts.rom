@@ -1,6 +1,6 @@
 // 6502 Test #03
 // Heather Justice 3/12/08
-// Tests instructions INC & DEC with all addressing modes.
+// Tests instructions ASL & LSR & ROL & ROR with all addressing modes.
 // Assumes that loads & stores & ORA work with all addressing modes.
 //
 // EXPECTED RESULTS: $01DD = 0x6E

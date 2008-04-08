@@ -225,6 +225,9 @@ class State:
         if 'add+t' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '01'
+        if 'cmp' == self.in_states['alu_op']:
+            self.out.alu_op = int2bin(0x3, 4)
+            self.out.carry_sel = '11'
         if 'dec' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'

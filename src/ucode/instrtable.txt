@@ -37,22 +37,22 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 24	bit	mem_ex_zpa	dp	A	_	9	0	C2
 2C	bit	abs	dp	A	_	9	0	C2
 
-C9	cmp	imm	dp	A	_	3	0	83
-C5	cmp	mem_ex_zpa	dp	A	_	3	0	83
-D5	cmp	zp_x	dp	A	_	3	0	83
-CD	cmp	abs	dp	A	_	3	0	83
-DD	cmp	abs_x	dp	A	_	3	0	83
-D9	cmp	abs_y	dp	A	_	3	0	83
-C1	cmp	indirect_x	dp	A	_	3	0	83
-D1	cmp	indirect_y	dp	A	_	3	0	83
+C9	cmp	imm_cmp	dp	A	_	3	0	83
+C5	cmp	mem_ex_zpa_cmp	dp	A	_	3	0	83
+D5	cmp	zp_x_cmp	dp	A	_	3	0	83
+CD	cmp	abs_cmp	dp	A	_	3	0	83
+DD	cmp	abs_x_cmp	dp	A	_	3	0	83
+D9	cmp	abs_y_cmp	dp	A	_	3	0	83
+C1	cmp	indirect_x_cmp	dp	A	_	3	0	83
+D1	cmp	indirect_y_cmp	dp	A	_	3	0	83
 
-E0	cpx	imm	dp	X	_	3	0	83
-E4	cpx	mem_ex_zpa	dp	X	_	3	0	83
-EC	cpx	abs	dp	X	_	3	0	83
+E0	cpx	imm_cpx	dp	X	_	3	0	83
+E4	cpx	mem_ex_zpa_cpx	dp	X	_	3	0	83
+EC	cpx	abs_cpx	dp	X	_	3	0	83
 
-C0	cpy	imm	dp	Y	_	3	0	83
-C4	cpy	mem_ex_zpa	dp	Y	_	3	0	83
-CC	cpy	abs	dp	Y	_	3	0	83
+C0	cpy	imm_cpy	dp	Y	_	3	0	83
+C4	cpy	mem_ex_zpa_cpy	dp	Y	_	3	0	83
+CC	cpy	abs_cpy	dp	Y	_	3	0	83
 
 C6	dec	mem_rw_zpa	dp	_	mem	1	0	82
 D6	dec	zp_x	dp	_	mem	1	0	82

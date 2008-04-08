@@ -18,12 +18,16 @@ module alu(input logic [7:0] a, b,
   assign negative = y[7] | (testbits & a[7]); // S flag
   assign overflow = (a[7] ^ b[7])  | (testbits & a[6]); // 2's complement overflow, V flag
   
+  logic [7:0] sub_y;
+  logic sub_c_out;
+  adderc #8 sub_adder(~a, b, c_in, sub_y, sub_c_out);
+
   always_comb begin
     case (op)
       4'h0: {c_out, y} = a + c_in; // inc
       4'h1: {c_out, y} = a - c_in; // dec
       4'h2: {c_out, y} = a + b + c_in; // add
-      4'h3: {c_out, y} = b - a - c_in; // sub.
+      4'h3: {c_out, y} = {sub_c_out, sub_y}; // sub
       4'h4: {c_out, y} = {1'b0, a | b}; // OR
       4'h5: {c_out, y} = {a, 1'b0}; // asl
       4'h6: {c_out, y} = {a, c_in}; // rol

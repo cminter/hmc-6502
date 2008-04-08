@@ -29,11 +29,40 @@ imm:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
+# imm for compares
+imm_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+imm_cpx:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+imm_cpy:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
 mem_ex_zpa:
 # 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	-	pass	none	0	pc_n	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+# mem_ex_zpa for compares
+mem_ex_zpa_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	0	pc_n	0	r	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+mem_ex_zpa_cpx:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	0	pc_n	0	r	0	0
+db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+mem_ex_zpa_cpy:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	0	pc_n	0	r	0	0
+db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
 
 mem_wr_zpa:
 # 5.6
@@ -130,6 +159,25 @@ db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
 db	-	pass	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
+# abs for compares:
+abs_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
+db	-	pass	none	0	-	r	temp	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+abs_cpx:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
+db	-	pass	none	0	-	r	temp	0	0
+db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
+abs_cpy:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
+db	-	pass	none	0	-	r	temp	0	0
+db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
 # assert onto address bus, use as high part of next fetch
@@ -147,27 +195,55 @@ db	-	pass	none	0	-	temp	r	0	0	0
 # finally, do the instruction function:
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
+# indirect_x for cmp
+indirect_x_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+db	-	pass	none	0	-	-	-	0	1	0
+tl	x	add+1	none	0	-	0	r	0	0	0
+db	-	pass	none	0	-	-	-	1	0	0
+tl	x	add	none	0	-	0	r	0	0	0
+db	-	pass	none	0	-	temp	r	0	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	0	1	
+
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	1	pc_n	pc_n	pc_n	1	t
 db	-	pass+t	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
+# abs_x for cmp
+abs_x_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t
+db	-	pass+t	none	0	-	r	temp	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
 # abs_y looks like abs_x.
-#
 abs_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	y	add	none	1	pc_n	pc_n	pc_n	1	t
 db	-	pass+t	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
+# abs_y for cmp
+abs_y_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	y	add	none	1	pc_n	pc_n	pc_n	1	t
+db	-	pass+t	none	0	-	r	temp	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
 zp_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	0	-	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
+# zp_x for compare
+zp_x_cmp:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+db	x	add	none	0	-	0	r	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+
 # zp_y looks like zp_x.
-#
 zp_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	y	add	none	0	-	0	r	0	0
@@ -212,6 +288,18 @@ th	-	pass+t	none	0	-	-	-	1	0	0
 db	-	pass	none	0	-	temp	temp	0	0	0
 # Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
+
+# indirect_y for CMP
+indirect_y:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+db	-	pass	none	0	-	0	r	1	0	0
+db	-	pass	none	0	-	-	-	0	1	0
+th	-	inc	none	0	-	0	r	0	0	0
+db	-	pass	none	0	-	-	-	1	0	0
+tl	y	add	none	0	-	-	-	0	1	t
+th	-	pass+t	none	0	-	-	-	1	0	0
+db	-	pass	none	0	-	temp	temp	0	0	0
+db	a	cmp	none	1	pc_n	pc_n	pc_n	0	0	1
 
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.

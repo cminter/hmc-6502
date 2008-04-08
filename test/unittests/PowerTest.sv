@@ -24,7 +24,8 @@ module optest;
     // however it currently has a dummy name so that people can use this 
     // testbench without clobbering the working copy of the vcd file
     $dumpfile("test/VCD/outSuiteP.vcd");
-    $dumpvars;
+    $dumpvars(1, top.chip.address, top.chip.data_in, top.chip.address, top.chip.data_out,
+                 top.chip.ph1, top.chip.ph2, top.chip.reset, top.chip.read_en, top.chip.razor_error);
 
     // init ROM
     top.mem.ROM[4093] = 8'hf0;

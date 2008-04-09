@@ -30,9 +30,9 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 
 0A	asl	acc	A	_	A	5	0	83
 06	asl	mem_rw_zpa	dp	_	mem	5	0	83
-16	asl	zp_x	dp	_	mem	5	0	83
-0E	asl	abs	dp	_	mem	5	0	83
-1E	asl	abs_x	dp	_	mem	5	0	83
+16	asl	mem_rw_zpx	dp	_	mem	5	0	83
+0E	asl	mem_rw_abs	dp	_	mem	5	0	83
+1E	asl	mem_rw_abx	dp	_	mem	5	0	83
 
 24	bit	mem_ex_zpa	dp	A	_	9	0	C2
 2C	bit	abs	dp	A	_	9	0	C2
@@ -54,10 +54,10 @@ C0	cpy	imm_oc	dp	Y	_	3	0	83
 C4	cpy	mem_ex_zpa_oc	dp	Y	_	3	0	83
 CC	cpy	abs_oc	dp	Y	_	3	0	83
 
-C6	dec	mem_rw_zpa	dp	_	mem	1	0	82
-D6	dec	zp_x	dp	_	mem	1	0	82
-CE	dec	abs	dp	_	mem	1	0	82
-DE	dec	abs_x	dp	_	mem	1	0	82
+C6	dec	mem_rw_zpa_oc	dp	_	mem	1	0	82
+D6	dec	mem_rw_zpx_oc	dp	_	mem	1	0	82
+CE	dec	mem_rw_abs_oc	dp	_	mem	1	0	82
+DE	dec	mem_rw_abx_oc	dp	_	mem	1	0	82
 
 49	eor	imm	dp	A	A	A	0	82
 45	eor	mem_ex_zpa	dp	A	A	A	0	82
@@ -68,10 +68,10 @@ DE	dec	abs_x	dp	_	mem	1	0	82
 41	eor	indirect_x	dp	A	A	A	0	82
 51	eor	indirect_y	dp	A	A	A	0	82
 
-E6	inc	mem_rw_zpa	dp	_	mem	0	0	82
-F6	inc	zp_x	dp	_	mem	0	0	82
-EE	inc	abs	dp	_	mem	0	0	82
-FE	inc	abs_x	dp	_	mem	0	0	82
+E6	inc	mem_rw_zpa_oc	dp	_	mem	0	0	82
+F6	inc	mem_rw_zpx_oc	dp	_	mem	0	0	82
+EE	inc	mem_rw_abs_oc	dp	_	mem	0	0	82
+FE	inc	mem_rw_abx_oc	dp	_	mem	0	0	82
 
 4C	jmp	jmp_abs	_	_	_	5	0	00
 6C	jmp	jmp_ind	_	_	_	5	0	00
@@ -101,9 +101,9 @@ BC	ldy	abs_x_zc	dp	-	Y	0	0	82
 
 4A	lsr	acc_zc	A	_	A	4	0	83
 46	lsr	mem_rw_zpa_zc	dp	_	mem	4	0	83
-56	lsr	zp_x_zc	dp	_	mem	4	0	83
-4E	lsr	abs_zc	dp	_	mem	4	0	83
-5E	lsr	abs_x_zc	dp	_	mem	4	0	83
+56	lsr	mem_rw_zpx_zc	dp	_	mem	4	0	83
+4E	lsr	mem_rw_abs_zc	dp	_	mem	4	0	83
+5E	lsr	mem_rw_abx_zc	dp	_	mem	4	0	83
 
 09	ora	imm	dp	A	A	7	0	82
 05	ora	mem_ex_zpa	dp	A	A	7	0	82
@@ -116,15 +116,15 @@ BC	ldy	abs_x_zc	dp	-	Y	0	0	82
 
 2A	rol	acc	A	_	A	6	0	83
 26	rol	mem_rw_zpa	dp	_	mem	6	0	83
-36	rol	zp_x	dp	_	mem	6	0	83
-2E	rol	abs	dp	_	mem	6	0	83
-3E	rol	abs_x	dp	_	mem	6	0	83
+36	rol	mem_rw_zpx	dp	_	mem	6	0	83
+2E	rol	mem_rw_abs	dp	_	mem	6	0	83
+3E	rol	mem_rw_abx	dp	_	mem	6	0	83
 
 6a	ror	acc	A	_	A	4	0	83
 66	ror	mem_rw_zpa	dp	_	mem	4	0	83
-76	ror	zp_x	dp	_	mem	4	0	83
-6e	ror	abs	dp	_	mem	4	0	83
-7e	ror	abs_x	dp	_	mem	4	0	83
+76	ror	mem_rw_zpx	dp	_	mem	4	0	83
+6e	ror	mem_rw_abs	dp	_	mem	4	0	83
+7e	ror	mem_rw_abx	dp	_	mem	4	0	83
 
 E9	sbc	imm	dp	A	A	3	0	C3
 E5	sbc	mem_ex_zpa	dp	A	A	3	0	C3

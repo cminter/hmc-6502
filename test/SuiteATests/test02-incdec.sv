@@ -34,7 +34,7 @@ module optest;
     reset = 1;
     #100;
     reset = 0;
-    #2000;
+    #2800;
     assert (top.mem.RAM[113] == 8'hFF) $display ("PASSED Test 02 - increments & decrements");
       else $error("FAILED Test 02 - increments & decrements");
     $dumpflush;

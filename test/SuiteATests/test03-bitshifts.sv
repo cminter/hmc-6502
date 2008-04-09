@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test02.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -30,8 +34,10 @@ module optest;
     reset = 1;
     #100;
     reset = 0;
-    #2000;
+    #4400;
     assert (top.mem.RAM[477] == 8'h6E) $display ("PASSED Test 03 - bitshifts");
       else $error("FAILED Test 03 - bit shifts");
+    $dumpflush;
+    $stop;
   end
 endmodule

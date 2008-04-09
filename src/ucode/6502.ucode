@@ -332,88 +332,88 @@ a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
 mem_rw_zpa:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	-	pass	none	0	pc_n	0	r	1	0	0
-db	func	func	func	0	-	0	temp	0	0	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+db	func	func	func	0	-	0	temp	0	1	r
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
 
 # mem_rw_zpa with a zero carry
 mem_rw_zpa_zc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
 db	-	pass	none	0	pc_n	0	r	1	0	0	-
-db	func	func	func	0	-	0	temp	0	0	r	0
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+db	func	func	func	0	-	0	temp	0	1	r	0
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	-
 
 # mem_rw_zpa with a one carry
 mem_rw_zpa_oc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
 db	-	pass	none	0	pc_n	0	r	1	0	0	-
-db	func	func	func	0	-	0	temp	0	0	r	1
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+db	func	func	func	0	-	0	temp	0	1	r	1
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	-
 
 mem_rw_zpx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	x	add	none	0	pc_n	0	r	1	0	0
-db	func	func	func	0	-	0	temp	0	0	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+db	func	func	func	0	-	0	temp	0	1	r
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
 
 # mem_rw_zpx with a zero carry
 mem_rw_zpx_zc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
 db	x	add	none	0	pc_n	0	r	1	0	0	-
-db	func	func	func	0	-	0	temp	0	0	r	0
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+db	func	func	func	0	-	0	temp	0	1	r	0
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	-
 
 # mem_rw_zpx with a one carry
 mem_rw_zpx_oc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
 db	x	add	none	0	pc_n	0	r	1	0	0	-
-db	func	func	func	0	-	0	temp	0	0	r	1
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+db	func	func	func	0	-	0	temp	0	1	r	1
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	-
 
 mem_rw_abs:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0
 db	-	pass	none	0	pc_n	r	temp	0	1	0	0
-db	func	func	func	0	-	temp	temp	0	0	0	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+db	func	func	func	0	-	temp	temp	0	0	1	r
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 # mem_rw_abs with a zero carry
 mem_rw_abs_zc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	c_sel
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0	-
 db	-	pass	none	0	pc_n	r	temp	0	1	0	0	-
-db	func	func	func	0	-	temp	temp	0	0	0	r	0
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0	-
+db	func	func	func	0	-	temp	temp	0	0	1	r	0
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0	-
 
 # mem_rw_abs with a one carry
 mem_rw_abs_oc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	c_sel
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0	-
 db	-	pass	none	0	pc_n	r	temp	0	1	0	0	-
-db	func	func	func	0	-	temp	temp	0	0	0	r	1
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0	-
+db	func	func	func	0	-	temp	temp	0	0	1	r	1
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0	-
 
 mem_rw_abx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri
 db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0
 db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0
-db	func	func	func	0	-	temp	temp	0	0	0	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+db	func	func	func	0	-	temp	temp	0	0	1	r
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 # mem_rw_abx with a zero carry
 mem_rw_abx_zc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	c_sel
 db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0	-
 db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0	-
-db	func	func	func	0	-	temp	temp	0	0	0	r	0
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0	-
+db	func	func	func	0	-	temp	temp	0	0	1	r	0
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0	-
 
 # mem_rw_abx with a one carry
 mem_rw_abx_oc:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	c_sel
 db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0	-
 db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0	-
-db	func	func	func	0	-	temp	temp	0	0	0	r	1
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0	-
+db	func	func	func	0	-	temp	temp	0	0	1	r	1
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0	-
 
 indirect_y:
 # over by two cycles

@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test07.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -33,5 +37,7 @@ module optest;
     #3900;
     assert (top.mem.RAM[21] == 8'h7F) $display ("PASSED Test 07 - cmp & beq & bne");
       else $error("FAILED Test 07 - cmp & beq & bne");
+    $dumpflush;
+    $stop;
   end
 endmodule

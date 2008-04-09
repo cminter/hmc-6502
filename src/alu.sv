@@ -28,10 +28,10 @@ module alu(input logic [7:0] a, b,
       4'h1: {c_out, y} = a - c_in; // dec
       4'h2: {c_out, y} = a + b + c_in; // add
       4'h3: {c_out, y} = {sub_c_out, sub_y}; // sub
-      4'h4: {c_out, y} = {1'b0, a | b}; // OR
+      4'h4: {y, c_out} = {c_in, a}; // ror
       4'h5: {c_out, y} = {a, 1'b0}; // asl
       4'h6: {c_out, y} = {a, c_in}; // rol
-      4'h7: {y, c_out} = {c_in, a}; // ror
+      4'h7: {c_out, y} = {1'b0, a | b}; // OR
       4'h8: {c_out, y} = {1'b0, a & b}; // AND
       4'h9: {y, c_out} = {1'b0, a & b}; // test bits
       4'ha: {c_out, y} = {1'b0, a ^ b}; // EOR

@@ -1,6 +1,8 @@
 	.ORG 600
 start:
 	; prepare memory	
+    LDA #$00
+    STA $34
 	LDA #$FF
 	STA $0130
 	LDA #$99

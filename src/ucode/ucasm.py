@@ -97,6 +97,7 @@ class State:
                            'tl_lat' : "0",
                            'memwri' : "0",
                            'flag' : "0",
+                           'c_sel' : "-",
                            'pcinc' : '1',
                            'sta_src' : '00',
                            'last_cy' : '1',
@@ -225,13 +226,27 @@ class State:
         if 'add+t' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '01'
-        if 'cmp' == self.in_states['alu_op']:
-            self.out.alu_op = int2bin(0x3, 4)
-            self.out.carry_sel = '11'
+#        if 'cmp' == self.in_states['alu_op']:
+#            self.out.alu_op = int2bin(0x3, 4)
+#            self.out.carry_sel = '11'
         if 'dec' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'
             
+        # carry source selection -- set by alu_op unless c_sel is present.
+        # If c_sel is present and not '-', then the carry selection made by
+        # alu_op gets overridden.
+        if '-' == self.in_states['c_sel']:
+            pass
+        if 'p' == self.in_states['c_sel']:
+            self.out.carry_sel = '00'
+        if 't' == self.in_states['c_sel']:
+            self.out.carry_sel = '01'
+        if '0' == self.in_states['c_sel']:
+            self.out.carry_sel = '10'
+        if '1' == self.in_states['c_sel']:
+            self.out.carry_sel = '11'
+
         if 'opcode' == self.in_states['sta_src']:
             self.out.next_source = '01'
         if 'func' in self.in_states.values():

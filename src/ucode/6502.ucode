@@ -24,23 +24,25 @@ single_byte:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 func	func	func	func	0	-	pc_n	pc_n	0	1
 
+# single_byte with a zero carry
+single_byte_zc:
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+func	func	func	func	0	-	pc_n	pc_n	0	1	0
+
 imm:
 # immediate addressing (5.4)
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# imm for compares
-imm_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# imm with a zero carry
+imm_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
-imm_cpx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
-
-imm_cpy:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# imm with a one carry
+imm_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
 
 mem_ex_zpa:
 # 5.6
@@ -48,21 +50,17 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	-	pass	none	0	pc_n	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# mem_ex_zpa for compares
-mem_ex_zpa_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	0	pc_n	0	r	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# mem_ex_zpa with a one carry
+mem_ex_zpa_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	-	pass	none	0	pc_n	0	r	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
 
-mem_ex_zpa_cpx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	0	pc_n	0	r	0	0
-db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
-
-mem_ex_zpa_cpy:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	0	pc_n	0	r	0	0
-db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# mem_ex_zpa with a zero carry
+mem_ex_zpa_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	-	pass	none	0	pc_n	0	r	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpa:
 # 5.6
@@ -70,11 +68,24 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	func	pass	none	0	pc_n	0	r	0	0	b
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
+# mem_wr_zpa with a zero carry
+#mem_wr_zpa_zc:
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
+#db	func	pass	none	0	pc_n	0	r	0	0	b	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+
 mem_wr_zpx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	x	add	none	0	pc_n	0	-	1	0	0
 -	func	-	none	0	-	0	temp	0	0	b
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+
+# mem_wr_zpx with a zero carry
+#mem_wr_zpx_zc:
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
+#db	x	add	none	0	pc_n	0	-	1	0	0	-
+#-	func	-	none	0	-	0	temp	0	0	b	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
 
 mem_wr_zpy:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
@@ -82,12 +93,26 @@ db	y	add	none	0	pc_n	0	-	1	0	0
 -	func	-	none	0	-	0	temp	0	0	b
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
+# mem_wr_zpy with a zero carry
+#mem_wr_zpy_zc:
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
+#db	y	add	none	0	pc_n	0	-	1	0	0	-
+#-	func	-	none	0	-	0	temp	0	0	b	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
+
 mem_wr_abs:
 # 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
 db	func	pass	none	0	-	r	temp	0	0	b
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+
+# mem_wr_abs with a zero carry
+#mem_wr_abs_zc:
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
+#db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	-
+#db	func	pass	none	0	-	r	temp	0	0	b	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
 
 
 mem_wr_abx:
@@ -123,20 +148,6 @@ th	-	pass+t	none	0	-	r	temp	1	0	0	0
 # Incremet the program counter and set the flags
 db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
-
-# TRASH THIS:
-# get low byte of address stored in memory
-#db	-	pass	none	0	pc_n	0	r	1	0	0	0
-# add value of Y to low byte of address
-#db	y	add	none	0	-	0	r	0	1	0	0
-# get high byte of address stored in memory (needs to include carry in from determining low byte...)
-#th	-	inc	none	0	-	0	r	0	0	0	0
-#db	-	pass+t	none	0	-	0	r	1	0	0	0
-# value to write to memory
-#-	func	pass	none	0	-	temp	temp	0	0	0	b
-# final state (same for all writes)
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
-
 mem_wr_idx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
 # store instruction input in temp_low:
@@ -159,24 +170,19 @@ db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
 db	-	pass	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# abs for compares:
-abs_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
-db	-	pass	none	0	-	r	temp	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# abs with a one carry:
+abs_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	-
+db	-	pass	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
 
-abs_cpx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
-db	-	pass	none	0	-	r	temp	0	0
-db	x	cmp	none	1	pc_n	pc_n	pc_n	0	1
-
-abs_cpy:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
-db	-	pass	none	0	-	r	temp	0	0
-db	y	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# abs with a zero carry:
+abs_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	-
+db	-	pass	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
@@ -195,15 +201,25 @@ db	-	pass	none	0	-	temp	r	0	0	0
 # finally, do the instruction function:
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
-# indirect_x for cmp
-indirect_x_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
-db	-	pass	none	0	-	-	-	0	1	0
-tl	x	add+1	none	0	-	0	r	0	0	0
-db	-	pass	none	0	-	-	-	1	0	0
-tl	x	add	none	0	-	0	r	0	0	0
-db	-	pass	none	0	-	temp	r	0	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	0	1	
+# indirect_x with a one carry
+indirect_x_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	c_sel
+db	-	pass	none	0	-	-	-	0	1	0	-
+tl	x	add+1	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	-	-	1	0	0	-
+tl	x	add	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	temp	r	0	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	1
+
+# indirect_x with a zero carry
+indirect_x_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	c_sel
+db	-	pass	none	0	-	-	-	0	1	0	-
+tl	x	add+1	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	-	-	1	0	0	-
+tl	x	add	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	temp	r	0	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	0
 
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
@@ -211,12 +227,19 @@ db	x	add	none	1	pc_n	pc_n	pc_n	1	t
 db	-	pass+t	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# abs_x for cmp
-abs_x_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	add	none	1	pc_n	pc_n	pc_n	1	t
-db	-	pass+t	none	0	-	r	temp	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# abs_x with a one carry
+abs_x_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
+
+# abs_x with a zero carry
+abs_x_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 # abs_y looks like abs_x.
 abs_y:
@@ -225,29 +248,48 @@ db	y	add	none	1	pc_n	pc_n	pc_n	1	t
 db	-	pass+t	none	0	-	r	temp	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# abs_y for cmp
-abs_y_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	y	add	none	1	pc_n	pc_n	pc_n	1	t
-db	-	pass+t	none	0	-	r	temp	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# abs_y with a one carry
+abs_y_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	y	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
+
+# abs_y with a zero carry
+abs_y_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	y	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 zp_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	x	add	none	0	-	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# zp_x for compare
-zp_x_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	add	none	0	-	0	r	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	1
+# zp_x with a one carry
+zp_x_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	x	add	none	0	-	0	r	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	1
+
+# zp_x with a zero carry
+zp_x_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	x	add	none	0	-	0	r	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 # zp_y looks like zp_x.
 zp_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	y	add	none	0	-	0	r	0	0
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+# zp_y with a zero carry
+zp_y_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+db	y	add	none	0	-	0	r	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	1	0
 
 inc:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
@@ -262,11 +304,23 @@ acc:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 -	a	func	func	0	pc_n	pc_n	pc_n	0	1
 
+# acc with a zero carry
+acc_zc:
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	c_sel
+-	a	func	func	0	pc_n	pc_n	pc_n	0	1	0
+
 mem_rw_zpa:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	-	pass	none	0	pc_n	0	r	1	0	0
 db	func	func	func	0	-	0	temp	0	0	r
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+
+# mem_rw_zpa with a zero carry
+mem_rw_zpa_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	c_sel
+db	-	pass	none	0	pc_n	0	r	1	0	0	-
+db	func	func	func	0	-	0	temp	0	0	r	0
+db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
 
 indirect_y:
 # over by two cycles
@@ -289,17 +343,29 @@ db	-	pass	none	0	-	temp	temp	0	0	0
 # Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
 db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 
-# indirect_y for CMP
-indirect_y_cmp:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
-db	-	pass	none	0	-	0	r	1	0	0
-db	-	pass	none	0	-	-	-	0	1	0
-th	-	inc	none	0	-	0	r	0	0	0
-db	-	pass	none	0	-	-	-	1	0	0
-tl	y	add	none	0	-	-	-	0	1	t
-th	-	pass+t	none	0	-	-	-	1	0	0
-db	-	pass	none	0	-	temp	temp	0	0	0
-db	a	cmp	none	1	pc_n	pc_n	pc_n	0	0	1
+# indirect_y with a one carry
+indirect_y_oc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	c_sel
+db	-	pass	none	0	-	0	r	1	0	0	-
+db	-	pass	none	0	-	-	-	0	1	0	-
+th	-	inc	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	-	-	1	0	0	-
+tl	y	add	none	0	-	-	-	0	1	t	-
+th	-	pass+t	none	0	-	-	-	1	0	0	-
+db	-	pass	none	0	-	temp	temp	0	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	1
+
+# indirect_y with a zero carry
+indirect_y_zc:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	c_sel
+db	-	pass	none	0	-	0	r	1	0	0	-
+db	-	pass	none	0	-	-	-	0	1	0	-
+th	-	inc	none	0	-	0	r	0	0	0	-
+db	-	pass	none	0	-	-	-	1	0	0	-
+tl	y	add	none	0	-	-	-	0	1	t	-
+th	-	pass+t	none	0	-	-	-	1	0	0	-
+db	-	pass	none	0	-	temp	temp	0	0	0	-
+db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	0
 
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.

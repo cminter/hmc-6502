@@ -37,22 +37,22 @@ FIXME: Sample opcode lines have flag mask of 02 -- why?
 24	bit	mem_ex_zpa	dp	A	_	9	0	C2
 2C	bit	abs	dp	A	_	9	0	C2
 
-C9	cmp	imm_cmp	dp	A	_	3	0	83
-C5	cmp	mem_ex_zpa_cmp	dp	A	_	3	0	83
-D5	cmp	zp_x_cmp	dp	A	_	3	0	83
-CD	cmp	abs_cmp	dp	A	_	3	0	83
-DD	cmp	abs_x_cmp	dp	A	_	3	0	83
-D9	cmp	abs_y_cmp	dp	A	_	3	0	83
-C1	cmp	indirect_x_cmp	dp	A	_	3	0	83
-D1	cmp	indirect_y_cmp	dp	A	_	3	0	83
+C9	cmp	imm_oc	dp	A	_	3	0	83
+C5	cmp	mem_ex_zpa_oc	dp	A	_	3	0	83
+D5	cmp	zp_x_oc	dp	A	_	3	0	83
+CD	cmp	abs_oc	dp	A	_	3	0	83
+DD	cmp	abs_x_oc	dp	A	_	3	0	83
+D9	cmp	abs_y_oc	dp	A	_	3	0	83
+C1	cmp	indirect_x_oc	dp	A	_	3	0	83
+D1	cmp	indirect_y_oc	dp	A	_	3	0	83
 
-E0	cpx	imm_cpx	dp	X	_	3	0	83
-E4	cpx	mem_ex_zpa_cpx	dp	X	_	3	0	83
-EC	cpx	abs_cpx	dp	X	_	3	0	83
+E0	cpx	imm_oc	dp	X	_	3	0	83
+E4	cpx	mem_ex_zpa_oc	dp	X	_	3	0	83
+EC	cpx	abs_oc	dp	X	_	3	0	83
 
-C0	cpy	imm_cpy	dp	Y	_	3	0	83
-C4	cpy	mem_ex_zpa_cpy	dp	Y	_	3	0	83
-CC	cpy	abs_cpy	dp	Y	_	3	0	83
+C0	cpy	imm_oc	dp	Y	_	3	0	83
+C4	cpy	mem_ex_zpa_oc	dp	Y	_	3	0	83
+CC	cpy	abs_oc	dp	Y	_	3	0	83
 
 C6	dec	mem_rw_zpa	dp	_	mem	1	0	82
 D6	dec	zp_x	dp	_	mem	1	0	82
@@ -78,32 +78,32 @@ FE	inc	abs_x	dp	_	mem	0	0	82
 
 20	jsr	jsr	_	_	_	5	0	00
 
-A9	lda	imm	dp	_	A	0	0	82
-A5	lda	mem_ex_zpa	dp	_	A	0	0	82
-B5	lda	zp_x	dp	_	A	0	0	82
-AD	lda	abs	dp	_	A	0	0	82
-BD	lda	abs_x	dp	_	A	0	0	82
-B9	lda	abs_y	dp	_	A	0	0	82
-A1	lda	indirect_x	dp	_	A	0	0	82
-B1	lda	indirect_y	dp	_	A	0	0	82
+A9	lda	imm_zc	dp	-	A	0	0	82
+A5	lda	mem_ex_zpa_zc	dp	-	A	0	0	82
+B5	lda	zp_x_zc	dp	-	A	0	0	82
+AD	lda	abs_zc	dp	-	A	0	0	82
+BD	lda	abs_x_zc	dp	-	A	0	0	82
+B9	lda	abs_y_zc	dp	-	A	0	0	82
+A1	lda	indirect_x_zc	dp	-	A	0	0	82
+B1	lda	indirect_y_zc	dp	-	A	0	0	82
 
-A2	ldx	imm	dp	_	X	0	0	82
-A6	ldx	mem_ex_zpa	dp	_	X	0	0	82
-B6	ldx	zp_y	dp	_	X	0	0	82
-AE	ldx	abs	dp	_	X	0	0	82
-BE	ldx	abs_y	dp	_	X	0	0	82
+A2	ldx	imm_zc	dp	-	X	0	0	82
+A6	ldx	mem_ex_zpa_zc	dp	-	X	0	0	82
+B6	ldx	zp_y_zc	dp	-	X	0	0	82
+AE	ldx	abs_zc	dp	-	X	0	0	82
+BE	ldx	abs_y_zc	dp	-	X	0	0	82
 
-A0	ldy	imm	dp	_	Y	0	0	82
-A4	ldy	mem_ex_zpa	dp	_	Y	0	0	82
-B4	ldy	zp_x	dp	_	Y	0	0	82
-AC	ldy	abs	dp	_	Y	0	0	82
-BC	ldy	abs_x	dp	_	Y	0	0	82
+A0	ldy	imm_zc	dp	-	Y	0	0	82
+A4	ldy	mem_ex_zpa_zc	dp	-	Y	0	0	82
+B4	ldy	zp_x_zc	dp	-	Y	0	0	82
+AC	ldy	abs_zc	dp	-	Y	0	0	82
+BC	ldy	abs_x_zc	dp	-	Y	0	0	82
 
-4A	lsr	acc	A	_	A	7 # ASSUMES C_IN=0	0	83
-46	lsr	mem_rw_zpa	dp	_	mem	7	0	83
-56	lsr	zp_x	dp	_	mem	7	0	83
-4E	lsr	abs	dp	_	mem	7	0	83
-5E	lsr	abs_x	dp	_	mem	7	0	83
+4A	lsr	acc_zc	A	_	A	7	0	83
+46	lsr	mem_rw_zpa_zc	dp	_	mem	7	0	83
+56	lsr	zp_x_zc	dp	_	mem	7	0	83
+4E	lsr	abs_zc	dp	_	mem	7	0	83
+5E	lsr	abs_x_zc	dp	_	mem	7	0	83
 
 09	ora	imm	dp	A	A	4	0	82
 05	ora	mem_ex_zpa	dp	A	A	4	0	82
@@ -155,20 +155,20 @@ FIXME: brk needs to be done
 00	brk	single_byte	FIXME	0	10
 EA	nop	none	_	_	_	3	0	00
 
-18	clc	single_byte	A	A	_	3	0	01
-38	sec	single_byte	A	A	_	b	0	01
-58	cli	single_byte	A	A	_	3	0	04
-78	sei	single_byte	A	A	_	3	0	04
-b8	clv	single_byte	A	A	_	3	0	40
-d8	cld	single_byte	A	A	_	3	0	08
-f8	sed	single_byte	A	A	_	3	0	08
+18	clc	single_byte	A	A	_	a	0	01
+38	sec	single_byte	-	-	_	b	0	01
+58	cli	single_byte	A	A	_	a	0	04
+78	sei	single_byte	-	-	_	b	0	04
+b8	clv	single_byte	A	A	_	a	0	40
+d8	cld	single_byte	A	A	_	a	0	08
+f8	sed	single_byte	-	-	_	b	0	08
 
-aa	tax	single_byte	A	_	X	0	0	82
-8a	txa	single_byte	X	_	A	0	0	82
+aa	tax	single_byte_zc	A	_	X	0	0	82
+8a	txa	single_byte_zc	X	_	A	0	0	82
 ca	dex	dec	X	X	X	1	0	82
 e8	inx	inc	X	X	X	0	0	82
-98	tya	single_byte	Y	_	A	0	0	82
-a8	tay	single_byte	A	_	Y	0	0	82
+98	tya	single_byte_zc	Y	_	A	0	0	82
+a8	tay	single_byte_zc	A	_	Y	0	0	82
 88	dey	dec	Y	Y	Y	1	0	82
 c8	iny	inc	Y	Y	Y	0	0	82
 
@@ -182,8 +182,8 @@ B0	bcs	branch_head	dp	_	PC	0	0	01
 D0	bne	branch_head	dp	_	PC	0	1	02
 f0	beq	branch_head	dp	_	PC	0	0	02
 
-9a	txs	single_byte	X	_	SP	0	0	00
-ba	tsx	single_byte	SP	_	X	0	0	82
+9a	txs	single_byte_zc	X	_	SP	0	0	00
+ba	tsx	single_byte_zc	SP	_	X	0	0	82
 48	pha	push	SP	A	mem	0	0	00
 68	pla	pull	dp	_	A	0	0	82
 08	php	push	SP	PS	mem	0	0	00

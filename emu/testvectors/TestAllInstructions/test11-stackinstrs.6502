@@ -4,19 +4,18 @@
 # Assumes that loads & stores (all addressing modes).
 # Also assumes ADC (all addressing modes) and all flag instructions work.
 #
-# EXPECTED RESULTS: $30 = 0x22
+# EXPECTED RESULTS: $30 = 0x29
 #
-# LDA #$28 (A = 0x28)
+# LDA #$27 (A = 0x27)
 a9
-28
+27
+# ADC #$01 (A = 0x28)
+69
+01
 # SEC
 38
-# SED
-f8
 # PHP
 08
-# CLD
-d8
 # CLC
 18
 # PLP
@@ -24,16 +23,13 @@ d8
 # ADC #$00 (A = 0x29)
 69
 00
-# ADC #$93 (A = 0x22)
-69
-93
 # PHA
 48
 # LDA #$00 (A = 0x00)
 a9
 00
-# PLA (A = 0x22)
+# PLA (A = 0x29)
 68
-# STA $30 ($30 = 0x22)
+# STA $30 ($30 = 0x29)
 85
 30

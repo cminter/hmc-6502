@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test09.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -30,8 +34,10 @@ module optest;
     reset = 1;
     #100;
     reset = 0;
-    #3900;
+    #2400;
     assert (top.mem.RAM[128] == 8'h1F) $display ("PASSED Test 09 - other branches");
       else $error("FAILED Test 09 - other branches");
+    $dumpflush;
+    $stop;
   end
 endmodule

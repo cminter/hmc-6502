@@ -16,10 +16,11 @@ bcc2:
 	BVC bvc1 ; taken
 	LDA #$00 ; not done
 bvc1: 
-	ADC #$17
-	SED
-	ADC #$95
-	CLD
-	ADC #$9A
+	ADC #$AD
+	;ADC #$17
+	;SED
+	;ADC #$95
+	;CLD
+	;ADC #$9A
 	NOP
 	STA $30

@@ -40,19 +40,9 @@ b8
 # LDA #$00 ; not done
 a9
 00
-# ADC #$17 (A = 0x38)
+# ADC #$AD (A = 0xCE)
 69
-17
-# SED
-f8
-# ADC #$95 (A = 0x33)
-69
-95
-# CLD
-d8
-# ADC #$9A (A = 0xCE)
-69
-9a
+ad
 # NOP
 ea
 # STA $30 ($30 = 0xCE)

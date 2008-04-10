@@ -1,0 +1,41 @@
+// 6502 Test #12
+// Heather Justice 4/10/08
+// Tests RTI instruction.
+// Assumes lots of other instructions work already...
+//
+// EXPECTED RESULTS: $33 = 0x42
+//
+// CLC
+18
+// LDA #$42
+a9
+42
+// BCC runstuff
+90
+04
+// STA $33
+85
+33
+// BCS end
+b0
+0a
+// runstuff:
+// LDA #$F0
+a9
+f0
+// PHA
+48
+// LDA #$02
+a9
+02
+// PHA
+48
+// SEC
+38
+// PHP
+08
+// CLC
+18
+// RTI
+40
+// end:

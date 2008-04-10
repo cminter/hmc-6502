@@ -530,11 +530,11 @@ rti:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag
 sp	-	pass	none	0	-	1	r	0	0
 db	-	pass	p	0	-	-	-	0	1
-sp	-	dec	sp	0	-	1	r	0	0
+sp	-	inc	sp	0	-	1	r	0	0
 db	-	pass	pc_l	01	r	-	-	0	0
-sp	-	dec	sp	0	-	1	r	0	0
+sp	-	inc	sp	0	-	1	r	0	0
 db	-	pass	pc_h	10	r	-	-	0	0
-sp	-	dec	sp	1	pc_n	pc_n	pc_n	0	0
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0
 
 branch_head:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src

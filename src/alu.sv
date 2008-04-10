@@ -12,7 +12,7 @@ module alu(input logic [7:0] a, b,
            output logic zero, negative, overflow, c_out);
   
   logic testbits;
-  assign testbits = (op === 4'ha);
+  assign testbits = (op === 4'h9);
   
   assign zero = (y === 8'b0); // Z flag
   assign negative = y[7] | (testbits & a[7]); // S flag

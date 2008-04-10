@@ -120,7 +120,9 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memw
 db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0
 db	-	pass+t	none	0	-	-	-	1	0	0	0
 db	func	pass	none	0	-	temp	temp	0	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0mem_wr_abs:
+db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+
+mem_wr_abs:
 # 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
@@ -133,14 +135,6 @@ db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 #db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	-
 #db	func	pass	none	0	-	r	temp	0	0	b	0
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0	-
-
-
-mem_wr_abx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
-db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0
-db	-	pass+t	none	0	-	-	-	1	0	0	0
-db	func	pass	none	0	-	temp	temp	0	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_aby:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri

@@ -23,7 +23,7 @@ tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0
 none:
 # just fetch next instruction
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
--	-	pass	none	1	pc_n	pc_n	pc_n	0	0
+-	-	pass	none	0	-	pc_n	pc_n	0	0
 
 single_byte:
 # 1.0

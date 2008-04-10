@@ -17,10 +17,5 @@ bcc2:
 	LDA #$00 ; not done
 bvc1: 
 	ADC #$AD
-	;ADC #$17
-	;SED
-	;ADC #$95
-	;CLD
-	;ADC #$9A
 	NOP
 	STA $30

@@ -153,7 +153,7 @@ F1	sbc	indirect_y	dp	A	A	3	0	C3
 
 FIXME: brk needs to be done
 00	brk	single_byte	FIXME	0	10
-EA	nop	none	_	_	_	3	0	00
+EA	nop	single_byte	_	_	_	0	0	00
 
 18	clc	single_byte	A	A	_	a	0	01
 38	sec	single_byte	-	-	_	b	0	01

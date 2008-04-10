@@ -5,7 +5,7 @@
 import sys
 from odict import OrderedDict
 
-BASE_STATE = 4
+BASE_STATE = 5
 
 class ParseError(Exception):
     pass

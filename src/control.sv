@@ -11,8 +11,8 @@ parameter C_STATE_WIDTH = 32;
 parameter C_OP_WIDTH = 14;
 parameter C_INT_WIDTH = 12; // total width of internal state signals
 
-parameter BRANCH_TAKEN_STATE = 8'd210;
-parameter BRANCH_NOT_TAKEN_STATE = 8'd4;
+parameter BRANCH_TAKEN_STATE = 8'd6;
+parameter BRANCH_NOT_TAKEN_STATE = 8'd5;
 
 parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 

@@ -480,8 +480,8 @@ jsr:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwri	pcinc
 db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	0	1
 db	-	pass	none	0	-	-	-	1	0	0	1
-sp	pc_h	dec	sp	0	-	1	r	0	0	1	0
-sp	pc_l	dec	sp	0	-	temp	temp	0	0	1	0
+sp	pc_h	dec	sp	0	-	1	r	0	0	b	0
+sp	pc_l	dec	sp	0	-	1	r	0	0	b	0
 tl	-	pass	pc_l	01	r	-	-	0	0	0	0
 th	-	pass	pc_h	10	r	temp	temp	0	0	0	0
 
@@ -515,9 +515,9 @@ rts:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc
 sp	-	pass	none	0	-	1	r	0
 db	-	pass	pc_l	01	r	-	-	0
-sp	-	dec	sp	0	-	1	r	0
+sp	-	inc	sp	0	-	1	r	0
 db	-	pass	pc_h	10	r	-	-	0
-sp	-	dec	sp	1	pc_n	pc_n	pc_n	1
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	1
 
 rti:
 # pull p, then pc, jump to pc. similar to above, but don't increment PC

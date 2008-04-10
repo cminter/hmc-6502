@@ -19,6 +19,10 @@ module optest;
   end
   
   initial begin
+    // for VCD file
+    $dumpfile("test/VCD/outSuiteA-test00.vcd");
+    $dumpvars;
+
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
@@ -30,8 +34,10 @@ module optest;
     reset = 1;
     #100;
     reset = 0;
-    #3900;
-    assert (top.mem.RAM[48] == 8'h22) $display ("PASSED Test 11 - stack instructions");
+    #800;
+    assert (top.mem.RAM[48] == 8'h29) $display ("PASSED Test 11 - stack instructions");
       else $error("FAILED Test 11 - stack instructions");
+    $dumpflush;
+    $stop;
   end
 endmodule

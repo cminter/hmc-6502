@@ -463,16 +463,28 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	0
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.
 
+# push/pull used only for accumulator; push_flags/pull_flags used for PHP/PLP
 push:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri
-sp	func	dec	sp	0	-	1	r	1
--	-	-	none	pc_n	pc_n	pc_n	pc_n	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
+sp	func	dec	sp	0	-	1	r	b	0	1
+-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
 
-pull:                                                                           
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri
-sp	-	pass	none	0	-	1	r	0
-db	-	pass	func	0	-	-	-	0
-sp	-	inc	sp	1	pc_n	pc_n	pc_n	0
+pull:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
+sp	-	pass	none	0	-	1	r	0	0	-
+db	-	pass	func	0	-	-	-	0	0	0
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
+
+push_flags:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
+sp	p	dec	sp	0	-	1	r	b	0	1
+-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
+
+pull_flags:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
+sp	-	pass	none	0	-	1	r	0	0	-
+db	-	pass	p	0	-	-	-	0	0	-
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 jsr:
 # push high order byte of pc+2, then low order byte, jump to {pcl, pch}.
@@ -484,12 +496,6 @@ sp	pc_h	dec	sp	0	-	1	r	0	0	b	0
 sp	pc_l	dec	sp	0	-	1	r	0	0	b	0
 tl	-	pass	pc_l	01	r	-	-	0	0	0	0
 th	-	pass	pc_h	10	r	temp	temp	0	0	0	0
-
-#rts:
-#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	memwri	pcinc
-#sp	-	inc	none	0	-	-	-	1	0	0	0
-#sp	-	inc	none	0	-	-	-	0	1	0	0
-#db	-	pass	none	1	r	temp	temp	0	0	0	1
 
 jmp_abs:
 # absolute jump

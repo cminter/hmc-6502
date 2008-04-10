@@ -146,6 +146,8 @@ class State:
             self.out.pch_out_en = '1'
         if 'pc_l' == self.in_states['b_sel']:
             self.out.pcl_out_en = '1'
+        if 'p' == self.in_states['b_sel']:
+            self.out.p_out_en = '1'
         if 'sp' == self.in_states['wrt_en']:
             self.out.reg_write_addr = '11'
             self.out.reg_write_en = '1'

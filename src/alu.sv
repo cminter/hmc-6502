@@ -36,7 +36,7 @@ module alu(input logic [7:0] a, b,
 
   // The whole purpose of this was to get the carry out from bits 6 and 7 to
   // produce the overflow flag:
-  assign overflow = low7_cout ^ full_cout;
+  assign overflow = (low7_cout ^ full_cout) | (testbits & a[6]);
 
 //  logic [7:0] sbc_sum;
 //  logic [6:0] sbc_low7_sum;

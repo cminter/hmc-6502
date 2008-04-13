@@ -184,8 +184,8 @@ f0	beq	branch_head	dp	_	PC	0	p	0	02
 
 9a	txs	single_byte	X	_	SP	0	0	0	00
 ba	tsx	single_byte	SP	_	X	0	0	0	82
-48	pha	push	SP	A	SP	1	p	0	00
-68	pla	pull	dp	_	A	0	p	0	82
+48	pha	push	SP	A	SP	1	1	0	00
+68	pla	pull	dp	_	A	0	0	0	82
 08	php	push_flags	SP	PS	SP	1	p	0	00
 60	rts	rts	_	_	_	0	p	0	00
 40	rti	rti	_	_	_	0	p	0	FF

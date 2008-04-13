@@ -158,7 +158,7 @@ def main():
         label = line[STATE]
         instruction = line[INSTR]
 
-        outfile.write("8'h%s: out_data <= 31'b%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s; //%s (%s)\n"
+        outfile.write("8'h%s: out_data <= 33'bzz_%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s; //%s (%s)\n"
                 %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,
                   reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en,
                   branch_polarity, flags, label, instruction, label))

@@ -38,11 +38,15 @@ module control(input logic [7:0] data_in, p,
   
   logic [7:0] op_flags;
   
+  // lines for carry_sel patch
+  logic [1:0] carry_sel_op, carry_sel_selected;
+  
   // opcode logic
   latch #1 opcode_lat_p1(last_cycle, last_cycle_s2, ph1);
   latch #1 opcode_lat_p2(last_cycle_s2, first_cycle, ph2);
   latchren #8 opcode_buf(data_in, latched_opcode, ph1, first_cycle, reset);
-  opcode_pla opcode_pla(latched_opcode, {c_op_opcode, branch_polarity, 
+  opcode_pla opcode_pla(latched_opcode, {carry_sel_op, 
+                                         c_op_opcode, branch_polarity, 
                                          op_flags, next_state_opcode});
   
   // branch logic
@@ -126,9 +130,12 @@ module control(input logic [7:0] data_in, p,
   assign controls_out[21] = c_state[07];
   assign controls_out[22] = c_state[08];
 
-  assign controls_out[25] = c_state[11];
-  assign controls_out[26] = c_state[12];
-
+  
+  // carry_sel is now selected by c_op_sel
+  mux2 #2 carry_sel_mux(c_state[12:11], carry_sel_op, c_op_sel, 
+                        carry_sel_selected);
+  assign controls_out[26:25] = carry_sel_selected;
+                        
   assign controls_out[36] = c_state[22];
 
   assign controls_out[38] = c_state[24];
@@ -149,13 +156,13 @@ module state_pla(input logic [7:0] state,
 endmodule
 
 module opcode_pla(input logic [7:0] opcode,
-                 output logic [(C_OP_WIDTH + 17 - 1):0] out_data);
+                 output logic [(C_OP_WIDTH + 17 - 1 + 2):0] out_data);
   always_comb
   case(opcode)
       `include "src/ucode/opcode_translator/translated_opcodes.txt"
 
     // NOT AUTO-GENERATED
-    8'h00: out_data <= 31'b0000_0_0_00_00_00_0_0__0_11111111_00000000; // reset
+    8'h00: out_data <= 33'bzz_0000_0_0_00_00_00_0_0__0_11111111_00000000; // reset
     default: out_data <= 'x;
   endcase
 endmodule

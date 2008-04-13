@@ -35,7 +35,7 @@ import sys
 import os
 
 # Global Constants
-FIELDS = 9
+FIELDS = 10
 OPCODE = 0
 INSTR = 1
 STATE = 2
@@ -43,8 +43,9 @@ SRCA = 3
 SRCB = 4
 DEST = 5
 ALUOP = 6
-BP = 7
-FLAGS = 8
+C_SEL = 7
+BP = 8
+FLAGS = 9
 
 def usage():
     sys.stderr.write(help)
@@ -118,6 +119,10 @@ def main():
             d_in_en = '0'
             reg_a_en = '1'
             reg_read_addr_a = '11'
+        else:
+            d_in_en = '0'
+            reg_a_en = '0'
+            reg_read_addr_a = '00'
 
         # Set SrcB:
         if line[SRCB] == '_':
@@ -153,15 +158,27 @@ def main():
             reg_write_en = '0'
             reg_write_addr = '00'
 
+        # Set Carry Select:
+        if line[C_SEL] == '0':
+            carry_select = '10'
+        elif line[C_SEL] == '1':
+            carry_select = '11'
+        elif line[C_SEL] == 'p':
+            carry_select = '00'
+        else:
+            sys.stderr.write('Bad carry select: %s\n' %line[OPCODE])
+            sys.exit(2)
+
         branch_polarity = str(line[BP])
         flags = str(int2bin(hex2int(line[FLAGS].lower()), 8))
         label = line[STATE]
         instruction = line[INSTR]
 
-        outfile.write("8'h%s: out_data <= 33'bzz_%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s; //%s (%s)\n"
-                %(opcode, aluop, d_in_en, reg_write_en, reg_read_addr_a,
-                  reg_read_addr_b, reg_write_addr, reg_a_en, reg_b_en,
-                  branch_polarity, flags, label, instruction, label))
+        outfile.write("8'h%s: out_data <= 33'b%s_%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s; //%s (%s)\n"
+                %(opcode, carry_select, aluop, d_in_en, reg_write_en,
+                  reg_read_addr_a, reg_read_addr_b, reg_write_addr,
+                  reg_a_en, reg_b_en, branch_polarity, flags, label,
+                  instruction, label))
 
     outfile.close()
 

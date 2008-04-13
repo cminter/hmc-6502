@@ -1,4 +1,4 @@
-Opcode Instr AddrMd SrcA SrcB Dest ALUOp B_polar flags
+Opcode Instr AddrMd SrcA SrcB Dest ALUOp c_sel B_polar flags
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 N = Negative Result -- sometimes (S)ign Bit
 V = Overflow
@@ -10,184 +10,184 @@ Z = Zero Result
 C = Carry
 
 FIXME: Sample opcode lines have flag mask of 02 -- why?
-69	adc	imm	dp	A	A	2	0	C3
-65	adc	mem_ex_zpa	dp	A	A	2	0	C3
-75	adc	zp_x	dp	A	A	2	0	C3
-6D	adc	abs	dp	A	A	2	0	C3
-7D	adc	abs_x	dp	A	A	2	0	C3
-79	adc	abs_y	dp	A	A	2	0	C3
-61	adc	indirect_x	dp	A	A	2	0	C3
-71	adc	indirect_y	dp	A	A	2	0	C3
+69	adc	imm	dp	A	A	2	p	0	C3
+65	adc	mem_ex_zpa	dp	A	A	2	p	0	C3
+75	adc	zp_x	dp	A	A	2	p	0	C3
+6D	adc	abs	dp	A	A	2	p	0	C3
+7D	adc	abs_x	dp	A	A	2	p	0	C3
+79	adc	abs_y	dp	A	A	2	p	0	C3
+61	adc	indirect_x	dp	A	A	2	p	0	C3
+71	adc	indirect_y	dp	A	A	2	p	0	C3
 
-29	and	imm	dp	A	A	8	0	82
-25	and	mem_ex_zpa	dp	A	A	8	0	82
-35	and	zp_x	dp	A	A	8	0	82
-2D	and	abs	dp	A	A	8	0	82
-3D	and	abs_x	dp	A	A	8	0	82
-39	and	abs_y	dp	A	A	8	0	82
-21	and	indirect_x	dp	A	A	8	0	82
-31	and	indirect_y	dp	A	A	8	0	82
+29	and	imm	dp	A	A	8	p	0	82
+25	and	mem_ex_zpa	dp	A	A	8	p	0	82
+35	and	zp_x	dp	A	A	8	p	0	82
+2D	and	abs	dp	A	A	8	p	0	82
+3D	and	abs_x	dp	A	A	8	p	0	82
+39	and	abs_y	dp	A	A	8	p	0	82
+21	and	indirect_x	dp	A	A	8	p	0	82
+31	and	indirect_y	dp	A	A	8	p	0	82
 
-0A	asl	acc	A	_	A	5	0	83
-06	asl	mem_rw_zpa	dp	_	mem	5	0	83
-16	asl	mem_rw_zpx	dp	_	mem	5	0	83
-0E	asl	mem_rw_abs	dp	_	mem	5	0	83
-1E	asl	mem_rw_abx	dp	_	mem	5	0	83
+0A	asl	acc	A	_	A	5	p	0	83
+06	asl	mem_rw_zpa	dp	_	mem	5	p	0	83
+16	asl	mem_rw_zpx	dp	_	mem	5	p	0	83
+0E	asl	mem_rw_abs	dp	_	mem	5	p	0	83
+1E	asl	mem_rw_abx	dp	_	mem	5	p	0	83
 
-24	bit	mem_ex_zpa	dp	A	_	9	0	C2
-2C	bit	abs	dp	A	_	9	0	C2
+24	bit	mem_ex_zpa	dp	A	_	9	p	0	C2
+2C	bit	abs	dp	A	_	9	p	0	C2
 
-C9	cmp	imm_oc	dp	A	_	3	0	83
-C5	cmp	mem_ex_zpa_oc	dp	A	_	3	0	83
-D5	cmp	zp_x_oc	dp	A	_	3	0	83
-CD	cmp	abs_oc	dp	A	_	3	0	83
-DD	cmp	abs_x_oc	dp	A	_	3	0	83
-D9	cmp	abs_y_oc	dp	A	_	3	0	83
-C1	cmp	indirect_x_oc	dp	A	_	3	0	83
-D1	cmp	indirect_y_oc	dp	A	_	3	0	83
+C9	cmp	imm	dp	A	_	3	1	0	83
+C5	cmp	mem_ex_zpa	dp	A	_	3	1	0	83
+D5	cmp	zp_x	dp	A	_	3	1	0	83
+CD	cmp	abs	dp	A	_	3	1	0	83
+DD	cmp	abs_x	dp	A	_	3	1	0	83
+D9	cmp	abs_y	dp	A	_	3	1	0	83
+C1	cmp	indirect_x	dp	A	_	3	1	0	83
+D1	cmp	indirect_y	dp	A	_	3	1	0	83
 
-E0	cpx	imm_oc	dp	X	_	3	0	83
-E4	cpx	mem_ex_zpa_oc	dp	X	_	3	0	83
-EC	cpx	abs_oc	dp	X	_	3	0	83
+E0	cpx	imm	dp	X	_	3	1	0	83
+E4	cpx	mem_ex_zpa	dp	X	_	3	1	0	83
+EC	cpx	abs	dp	X	_	3	1	0	83
 
-C0	cpy	imm_oc	dp	Y	_	3	0	83
-C4	cpy	mem_ex_zpa_oc	dp	Y	_	3	0	83
-CC	cpy	abs_oc	dp	Y	_	3	0	83
+C0	cpy	imm	dp	Y	_	3	1	0	83
+C4	cpy	mem_ex_zpa	dp	Y	_	3	1	0	83
+CC	cpy	abs	dp	Y	_	3	1	0	83
 
-C6	dec	mem_rw_zpa_oc	dp	_	mem	1	0	82
-D6	dec	mem_rw_zpx_oc	dp	_	mem	1	0	82
-CE	dec	mem_rw_abs_oc	dp	_	mem	1	0	82
-DE	dec	mem_rw_abx_oc	dp	_	mem	1	0	82
+C6	dec	mem_rw_zpa	dp	_	mem	1	1	0	82
+D6	dec	mem_rw_zpx	dp	_	mem	1	1	0	82
+CE	dec	mem_rw_abs	dp	_	mem	1	1	0	82
+DE	dec	mem_rw_abx	dp	_	mem	1	1	0	82
 
-49	eor	imm	dp	A	A	A	0	82
-45	eor	mem_ex_zpa	dp	A	A	A	0	82
-55	eor	zp_x	dp	A	A	A	0	82
-4D	eor	abs	dp	A	A	A	0	82
-5D	eor	abs_x	dp	A	A	A	0	82
-59	eor	abs_y	dp	A	A	A	0	82
-41	eor	indirect_x	dp	A	A	A	0	82
-51	eor	indirect_y	dp	A	A	A	0	82
+49	eor	imm	dp	A	A	A	p	0	82
+45	eor	mem_ex_zpa	dp	A	A	A	p	0	82
+55	eor	zp_x	dp	A	A	A	p	0	82
+4D	eor	abs	dp	A	A	A	p	0	82
+5D	eor	abs_x	dp	A	A	A	p	0	82
+59	eor	abs_y	dp	A	A	A	p	0	82
+41	eor	indirect_x	dp	A	A	A	p	0	82
+51	eor	indirect_y	dp	A	A	A	p	0	82
 
-E6	inc	mem_rw_zpa_oc	dp	_	mem	0	0	82
-F6	inc	mem_rw_zpx_oc	dp	_	mem	0	0	82
-EE	inc	mem_rw_abs_oc	dp	_	mem	0	0	82
-FE	inc	mem_rw_abx_oc	dp	_	mem	0	0	82
+E6	inc	mem_rw_zpa	dp	_	mem	0	1	0	82
+F6	inc	mem_rw_zpx	dp	_	mem	0	1	0	82
+EE	inc	mem_rw_abs	dp	_	mem	0	1	0	82
+FE	inc	mem_rw_abx	dp	_	mem	0	1	0	82
 
-4C	jmp	jmp_abs	_	_	_	5	0	00
-6C	jmp	jmp_ind	_	_	_	5	0	00
+4C	jmp	jmp_abs	_	_	_	5	p	0	00
+6C	jmp	jmp_ind	_	_	_	5	p	0	00
 
-20	jsr	jsr	_	_	_	5	0	00
+20	jsr	jsr	_	_	_	5	p	0	00
 
-A9	lda	imm_zc	dp	-	A	0	0	82
-A5	lda	mem_ex_zpa_zc	dp	-	A	0	0	82
-B5	lda	zp_x_zc	dp	-	A	0	0	82
-AD	lda	abs_zc	dp	-	A	0	0	82
-BD	lda	abs_x_zc	dp	-	A	0	0	82
-B9	lda	abs_y_zc	dp	-	A	0	0	82
-A1	lda	indirect_x_zc	dp	-	A	0	0	82
-B1	lda	indirect_y_zc	dp	-	A	0	0	82
+A9	lda	imm	dp	-	A	0	0	0	82
+A5	lda	mem_ex_zpa	dp	-	A	0	0	0	82
+B5	lda	zp_x	dp	-	A	0	0	0	82
+AD	lda	abs	dp	-	A	0	0	0	82
+BD	lda	abs_x	dp	-	A	0	0	0	82
+B9	lda	abs_y	dp	-	A	0	0	0	82
+A1	lda	indirect_x	dp	-	A	0	0	0	82
+B1	lda	indirect_y	dp	-	A	0	0	0	82
 
-A2	ldx	imm_zc	dp	-	X	0	0	82
-A6	ldx	mem_ex_zpa_zc	dp	-	X	0	0	82
-B6	ldx	zp_y_zc	dp	-	X	0	0	82
-AE	ldx	abs_zc	dp	-	X	0	0	82
-BE	ldx	abs_y_zc	dp	-	X	0	0	82
+A2	ldx	imm	dp	-	X	0	0	0	82
+A6	ldx	mem_ex_zpa	dp	-	X	0	0	0	82
+B6	ldx	zp_y	dp	-	X	0	0	0	82
+AE	ldx	abs	dp	-	X	0	0	0	82
+BE	ldx	abs_y	dp	-	X	0	0	0	82
 
-A0	ldy	imm_zc	dp	-	Y	0	0	82
-A4	ldy	mem_ex_zpa_zc	dp	-	Y	0	0	82
-B4	ldy	zp_x_zc	dp	-	Y	0	0	82
-AC	ldy	abs_zc	dp	-	Y	0	0	82
-BC	ldy	abs_x_zc	dp	-	Y	0	0	82
+A0	ldy	imm	dp	-	Y	0	0	0	82
+A4	ldy	mem_ex_zpa	dp	-	Y	0	0	0	82
+B4	ldy	zp_x	dp	-	Y	0	0	0	82
+AC	ldy	abs	dp	-	Y	0	0	0	82
+BC	ldy	abs_x	dp	-	Y	0	0	0	82
 
-4A	lsr	acc_zc	A	_	A	4	0	83
-46	lsr	mem_rw_zpa_zc	dp	_	mem	4	0	83
-56	lsr	mem_rw_zpx_zc	dp	_	mem	4	0	83
-4E	lsr	mem_rw_abs_zc	dp	_	mem	4	0	83
-5E	lsr	mem_rw_abx_zc	dp	_	mem	4	0	83
+4A	lsr	acc	A	_	A	4	0	0	83
+46	lsr	mem_rw_zpa	dp	_	mem	4	0	0	83
+56	lsr	mem_rw_zpx	dp	_	mem	4	0	0	83
+4E	lsr	mem_rw_abs	dp	_	mem	4	0	0	83
+5E	lsr	mem_rw_abx	dp	_	mem	4	0	0	83
 
-09	ora	imm	dp	A	A	7	0	82
-05	ora	mem_ex_zpa	dp	A	A	7	0	82
-15	ora	zp_x	dp	A	A	7	0	82
-0D	ora	abs	dp	A	A	7	0	82
-1D	ora	abs_x	dp	A	A	7	0	82
-19	ora	abs_y	dp	A	A	7	0	82
-01	ora	indirect_x	dp	A	A	7	0	82
-11	ora	indirect_y	dp	A	A	7	0	82
+09	ora	imm	dp	A	A	7	p	0	82
+05	ora	mem_ex_zpa	dp	A	A	7	p	0	82
+15	ora	zp_x	dp	A	A	7	p	0	82
+0D	ora	abs	dp	A	A	7	p	0	82
+1D	ora	abs_x	dp	A	A	7	p	0	82
+19	ora	abs_y	dp	A	A	7	p	0	82
+01	ora	indirect_x	dp	A	A	7	p	0	82
+11	ora	indirect_y	dp	A	A	7	p	0	82
 
-2A	rol	acc	A	_	A	6	0	83
-26	rol	mem_rw_zpa	dp	_	mem	6	0	83
-36	rol	mem_rw_zpx	dp	_	mem	6	0	83
-2E	rol	mem_rw_abs	dp	_	mem	6	0	83
-3E	rol	mem_rw_abx	dp	_	mem	6	0	83
+2A	rol	acc	A	_	A	6	p	0	83
+26	rol	mem_rw_zpa	dp	_	mem	6	p	0	83
+36	rol	mem_rw_zpx	dp	_	mem	6	p	0	83
+2E	rol	mem_rw_abs	dp	_	mem	6	p	0	83
+3E	rol	mem_rw_abx	dp	_	mem	6	p	0	83
 
-6a	ror	acc	A	_	A	4	0	83
-66	ror	mem_rw_zpa	dp	_	mem	4	0	83
-76	ror	mem_rw_zpx	dp	_	mem	4	0	83
-6e	ror	mem_rw_abs	dp	_	mem	4	0	83
-7e	ror	mem_rw_abx	dp	_	mem	4	0	83
+6a	ror	acc	A	_	A	4	p	0	83
+66	ror	mem_rw_zpa	dp	_	mem	4	p	0	83
+76	ror	mem_rw_zpx	dp	_	mem	4	p	0	83
+6e	ror	mem_rw_abs	dp	_	mem	4	p	0	83
+7e	ror	mem_rw_abx	dp	_	mem	4	p	0	83
 
-E9	sbc	imm	dp	A	A	3	0	C3
-E5	sbc	mem_ex_zpa	dp	A	A	3	0	C3
-F5	sbc	zp_x	dp	A	A	3	0	C3
-ED	sbc	abs	dp	A	A	3	0	C3
-FD	sbc	abs_x	dp	A	A	3	0	C3
-F9	sbc	abs_y	dp	A	A	3	0	C3
-E1	sbc	indirect_x	dp	A	A	3	0	C3
-F1	sbc	indirect_y	dp	A	A	3	0	C3
+E9	sbc	imm	dp	A	A	3	p	0	C3
+E5	sbc	mem_ex_zpa	dp	A	A	3	p	0	C3
+F5	sbc	zp_x	dp	A	A	3	p	0	C3
+ED	sbc	abs	dp	A	A	3	p	0	C3
+FD	sbc	abs_x	dp	A	A	3	p	0	C3
+F9	sbc	abs_y	dp	A	A	3	p	0	C3
+E1	sbc	indirect_x	dp	A	A	3	p	0	C3
+F1	sbc	indirect_y	dp	A	A	3	p	0	C3
 
-85	sta	mem_wr_zpa	dp	A	mem	0	0	00
-95	sta	mem_wr_zpx	dp	A	mem	0	0	00
-8D	sta	mem_wr_abs	dp	A	mem	0	0	00
-9D	sta	mem_wr_abx	dp	A	mem	0	0	00
-99	sta	mem_wr_aby	dp	A	mem	0	0	00
-81	sta	mem_wr_idx	dp	A	mem	0	0	00
-91	sta	mem_wr_idy	dp	A	mem	0	0	00
+85	sta	mem_wr_zpa	dp	A	mem	0	p	0	00
+95	sta	mem_wr_zpx	dp	A	mem	0	p	0	00
+8D	sta	mem_wr_abs	dp	A	mem	0	p	0	00
+9D	sta	mem_wr_abx	dp	A	mem	0	p	0	00
+99	sta	mem_wr_aby	dp	A	mem	0	p	0	00
+81	sta	mem_wr_idx	dp	A	mem	0	p	0	00
+91	sta	mem_wr_idy	dp	A	mem	0	p	0	00
 
-86	stx	mem_wr_zpa	dp	X	mem	0	0	00
-96	stx	mem_wr_zpy	dp	X	mem	0	0	00
-8E	stx	mem_wr_abs	dp	X	mem	0	0	00
+86	stx	mem_wr_zpa	dp	X	mem	0	p	0	00
+96	stx	mem_wr_zpy	dp	X	mem	0	p	0	00
+8E	stx	mem_wr_abs	dp	X	mem	0	p	0	00
 
-84	sty	mem_wr_zpa	dp	Y	mem	0	0	00
-94	sty	mem_wr_zpx	dp	Y	mem	0	0	00
-8C	sty	mem_wr_abs	dp	Y	mem	0	0	00
+84	sty	mem_wr_zpa	dp	Y	mem	0	p	0	00
+94	sty	mem_wr_zpx	dp	Y	mem	0	p	0	00
+8C	sty	mem_wr_abs	dp	Y	mem	0	p	0	00
 
 FIXME: brk needs to be done
 00	brk	single_byte	FIXME	0	10
-EA	nop	single_byte	_	_	_	0	0	00
+EA	nop	single_byte	_	_	_	0	p	0	00
 
-18	clc	single_byte	A	A	_	a	0	01
-38	sec	single_byte	-	-	_	b	0	01
-58	cli	single_byte	A	A	_	a	0	04
-78	sei	single_byte	-	-	_	b	0	04
-b8	clv	single_byte	A	A	_	a	0	40
-d8	cld	single_byte	A	A	_	a	0	08
-f8	sed	single_byte	-	-	_	b	0	08
+18	clc	single_byte	A	A	_	a	p	0	01
+38	sec	single_byte	-	-	_	b	p	0	01
+58	cli	single_byte	A	A	_	a	p	0	04
+78	sei	single_byte	-	-	_	b	p	0	04
+b8	clv	single_byte	A	A	_	a	p	0	40
+d8	cld	single_byte	A	A	_	a	p	0	08
+f8	sed	single_byte	-	-	_	b	p	0	08
 
-aa	tax	single_byte_zc	A	_	X	0	0	82
-8a	txa	single_byte_zc	X	_	A	0	0	82
-ca	dex	dec	X	X	X	1	0	82
-e8	inx	inc	X	X	X	0	0	82
-98	tya	single_byte_zc	Y	_	A	0	0	82
-a8	tay	single_byte_zc	A	_	Y	0	0	82
-88	dey	dec	Y	Y	Y	1	0	82
-c8	iny	inc	Y	Y	Y	0	0	82
+aa	tax	single_byte	A	_	X	0	0	0	82
+8a	txa	single_byte	X	_	A	0	0	0	82
+ca	dex	dec	X	X	X	1	p	0	82
+e8	inx	inc	X	X	X	0	p	0	82
+98	tya	single_byte	Y	_	A	0	0	0	82
+a8	tay	single_byte	A	_	Y	0	0	0	82
+88	dey	dec	Y	Y	Y	1	p	0	82
+c8	iny	inc	Y	Y	Y	0	p	0	82
 
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
-10	bpl	branch_head	dp	_	PC	0	1	80
-30	bmi	branch_head	dp	_	PC	0	0	80
-50	bvc	branch_head	dp	_	PC	0	1	40
-70	bvs	branch_head	dp	_	PC	0	0	40
-90	bcc	branch_head	dp	_	PC	0	1	01
-B0	bcs	branch_head	dp	_	PC	0	0	01
-D0	bne	branch_head	dp	_	PC	0	1	02
-f0	beq	branch_head	dp	_	PC	0	0	02
+10	bpl	branch_head	dp	_	PC	0	p	1	80
+30	bmi	branch_head	dp	_	PC	0	p	0	80
+50	bvc	branch_head	dp	_	PC	0	p	1	40
+70	bvs	branch_head	dp	_	PC	0	p	0	40
+90	bcc	branch_head	dp	_	PC	0	p	1	01
+B0	bcs	branch_head	dp	_	PC	0	p	0	01
+D0	bne	branch_head	dp	_	PC	0	p	1	02
+f0	beq	branch_head	dp	_	PC	0	p	0	02
 
-9a	txs	single_byte_zc	X	_	SP	0	0	00
-ba	tsx	single_byte_zc	SP	_	X	0	0	82
-48	pha	push	SP	A	SP	1	0	00
-68	pla	pull	dp	_	A	0	0	82
-08	php	push_flags	SP	PS	SP	1	0	00
-60	rts	rts	_	_	_	0	0	00
-40	rti	rti	_	_	_	0	0	FF
-28	plp	pull_flags	dp	_	PS	0	0	FF
+9a	txs	single_byte	X	_	SP	0	0	0	00
+ba	tsx	single_byte	SP	_	X	0	0	0	82
+48	pha	push	SP	A	SP	1	p	0	00
+68	pla	pull	dp	_	A	0	p	0	82
+08	php	push_flags	SP	PS	SP	1	p	0	00
+60	rts	rts	_	_	_	0	p	0	00
+40	rti	rti	_	_	_	0	p	0	FF
+28	plp	pull_flags	dp	_	PS	0	p	0	FF
 

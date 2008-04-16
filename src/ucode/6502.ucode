@@ -1,6 +1,9 @@
 # 6502.ucode
 # input for ucodeasm
 # tbarr at cs hmc edu, 28oct07
+#
+# SPECIAL NOTE FOR NEXT STATES: last state with next_s = NEXT_STATE_NAME 
+# means that NEXT_STATE_NAME must appear *first* in this file...
 
 reset:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	pcinc
@@ -37,136 +40,139 @@ db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 mem_ex_zpa:
 # 5.6
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	0	pc_n	0	r	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	-	pass	none	0	pc_n	0	r	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+
+mem_wr_final:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
+db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpa:
 # 5.6
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	func	pass	none	0	pc_n	0	r	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	func	pass	none	0	pc_n	0	r	0	0	b	mem_wr_final
 
 mem_wr_zpx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	x	add	none	0	pc_n	0	-	1	0	0
--	func	-	none	0	-	0	temp	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	x	add	none	0	pc_n	0	-	1	0	0	-
+-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpy:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	y	add	none	0	pc_n	0	-	1	0	0
--	func	-	none	0	-	0	temp	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	y	add	none	0	pc_n	0	-	1	0	0	-
+-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_abs:
 # 5.6
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
-db	func	pass	none	0	-	r	temp	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	-
+db	func	pass	none	0	-	r	temp	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_abx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
-db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0
-db	-	pass+t	none	0	-	-	-	1	0	0	0
-db	func	pass	none	0	-	temp	temp	0	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
+db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	-
+db	-	pass+t	none	0	-	-	-	1	0	0	0	-
+db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
-mem_wr_abs:
+#mem_wr_abs:
 # 5.6
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
-db	func	pass	none	0	-	r	temp	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
+#db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
+#db	func	pass	none	0	-	r	temp	0	0	b
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_aby:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
-db	y	add	none	1	pc_n	pc_n	pc_n	0	1	t	0
-db	-	pass+t	none	0	-	-	-	1	0	0	0
-db	func	pass	none	0	-	temp	temp	0	0	0	b
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
+db	y	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	-
+db	-	pass+t	none	0	-	-	-	1	0	0	0	-
+db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_idy:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
 # Address of low byte comes in over data line -- save it in temp_high and pass it to address
-db	-	pass	none	0	-	0	r	1	0	0	0
+db	-	pass	none	0	-	0	r	1	0	0	0	-
 # Low byte comes in on data -- pass it and store in temp_low
-db	-	pass	none	0	-	pc_n	pc_n	0	1	0	0
+db	-	pass	none	0	-	pc_n	pc_n	0	1	0	0	-
 # Increment address of low byte to get address of high byte -- pass to address 
-th	-	inc	none	0	-	0	r	0	0	0	0
+th	-	inc	none	0	-	0	r	0	0	0	0	-
 # Data from high byte comes in -- save in temp_high
-db	-	pass	none	0	-	-	-	1	0	0	0
+db	-	pass	none	0	-	-	-	1	0	0	0	-
 # Add y to low byte and save back in low byte
-tl	y	add	none	0	-	temp	r	0	1	t	0
+tl	y	add	none	0	-	temp	r	0	1	t	0	-
 # Add carry to high byte and save back in high byte
-th	-	pass+t	none	0	-	r	temp	1	0	0	0
+th	-	pass+t	none	0	-	r	temp	1	0	0	0	-
 # Use temporary register as address and write whatever func says
--	func	pass	none	0	-	temp	temp	0	0	0	b
+-	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
 # Incremet the program counter and set the flags
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_idx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
 # store instruction input in temp_low:
-db	-	pass	none	0	-	-	-	0	1	0	0
+db	-	pass	none	0	-	-	-	0	1	0	0	-
 # get memory location of high byte address:
-tl	x	add+1	none	0	-	0	r	0	0	0	0
+tl	x	add+1	none	0	-	0	r	0	0	0	0	-
 # store high byte address in temp_high:
-db	-	pass	none	0	-	-	-	1	0	0	0
+db	-	pass	none	0	-	-	-	1	0	0	0	-
 # get memory location of low byte address:
-tl	x	add	none	0	-	0	r	0	0	0	0
+tl	x	add	none	0	-	0	r	0	0	0	0	-
 # knowing result is low byte address, get data for writing:
-db	func	pass	none	0	-	temp	r	0	0	0	b
+db	func	pass	none	0	-	temp	r	0	0	0	b	mem_wr_final
 # final write state:
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 abs:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0
-db	-	pass	none	0	-	r	temp	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	-
+db	-	pass	none	0	-	r	temp	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
 # assert onto address bus, use as high part of next fetch
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	next_s
 # store instruction input in temp_low:
-db	-	pass	none	0	-	-	-	0	1	0
+db	-	pass	none	0	-	-	-	0	1	0	-
 # get memory location of high byte address:
-tl	x	add+1	none	0	-	0	r	0	0	0
+tl	x	add+1	none	0	-	0	r	0	0	0	-
 # store high byte address in temp_high:
-db	-	pass	none	0	-	-	-	1	0	0
+db	-	pass	none	0	-	-	-	1	0	0	-
 # get memory location of low byte address:
-tl	x	add	none	0	-	0	r	0	0	0
+tl	x	add	none	0	-	0	r	0	0	0	-
 # knowing result is low byte address, get data from memory:
-db	-	pass	none	0	-	temp	r	0	0	0
+db	-	pass	none	0	-	temp	r	0	0	0	imm
 # finally, do the instruction function:
-db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
 abs_x:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	add	none	1	pc_n	pc_n	pc_n	1	t
-db	-	pass+t	none	0	-	r	temp	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 # abs_y looks like abs_x.
 abs_y:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	y	add	none	1	pc_n	pc_n	pc_n	1	t
-db	-	pass+t	none	0	-	r	temp	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	y	add	none	1	pc_n	pc_n	pc_n	1	t	-
+db	-	pass+t	none	0	-	r	temp	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 zp_x:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	x	add	none	0	-	0	r	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	x	add	none	0	-	0	r	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 # zp_y looks like zp_x.
 zp_y:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
-db	y	add	none	0	-	0	r	0	0
-db	func	func	func	1	pc_n	pc_n	pc_n	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	y	add	none	0	-	0	r	0	0	imm
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 inc:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
@@ -210,23 +216,23 @@ db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 indirect_y:
 # over by two cycles
 # "indirect indexed" addressing: *((*arg)+y)
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	next_s
 # Address of low byte comes in over data line -- save it in temp_high and pass it to address
-db	-	pass	none	0	-	0	r	1	0	0
+db	-	pass	none	0	-	0	r	1	0	0	-
 # Low byte comes in on data -- pass it and store in temp_low
-db	-	pass	none	0	-	-	-	0	1	0
+db	-	pass	none	0	-	-	-	0	1	0	-
 # Increment address of low byte to get address of high byte -- pass to address 
-th	-	inc	none	0	-	0	r	0	0	0
+th	-	inc	none	0	-	0	r	0	0	0	-
 # Data from high byte comes in -- save in temp_high
-db	-	pass	none	0	-	-	-	1	0	0
+db	-	pass	none	0	-	-	-	1	0	0	-
 # Add y to low byte and save back in low byte
-tl	y	add	none	0	-	-	-	0	1	t
+tl	y	add	none	0	-	-	-	0	1	t	-
 # Add carry to high byte and save back in high byte
-th	-	pass+t	none	0	-	-	-	1	0	0
+th	-	pass+t	none	0	-	-	-	1	0	0	-
 # Get data from address stored in temps
-db	-	pass	none	0	-	temp	temp	0	0	0
+db	-	pass	none	0	-	temp	temp	0	0	0	imm
 # Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
-db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
+#db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.

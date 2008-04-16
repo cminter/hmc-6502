@@ -53,16 +53,20 @@ mem_wr_zpa:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	func	pass	none	0	pc_n	0	r	0	0	b	mem_wr_final
 
+mem_wr_zpxy2:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
+
 mem_wr_zpx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
-db	x	add	none	0	pc_n	0	-	1	0	0	-
--	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
+db	x	add	none	0	pc_n	0	-	1	0	0	mem_wr_zpxy2
+#-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpy:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
-db	y	add	none	0	pc_n	0	-	1	0	0	-
--	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
+db	y	add	none	0	pc_n	0	-	1	0	0	mem_wr_zpxy2
+#-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_abs:
@@ -72,25 +76,23 @@ db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	-
 db	func	pass	none	0	-	r	temp	0	0	b	mem_wr_final
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
-mem_wr_abx:
+mem_wr_abxy2:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
-db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	-
 db	-	pass+t	none	0	-	-	-	1	0	0	0	-
 db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
-#mem_wr_abs:
-# 5.6
-#a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-#db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0
-#db	func	pass	none	0	-	r	temp	0	0	b
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
+mem_wr_abx:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
+db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	mem_wr_abxy2
+#db	-	pass+t	none	0	-	-	-	1	0	0	0	-
+#db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_aby:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
-db	y	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	-
-db	-	pass+t	none	0	-	-	-	1	0	0	0	-
-db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
+db	y	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	mem_wr_abxy2
+#db	-	pass+t	none	0	-	-	-	1	0	0	0	-
+#db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
 #db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_idy:
@@ -150,17 +152,21 @@ db	-	pass	none	0	-	temp	r	0	0	0	imm
 # finally, do the instruction function:
 #db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
+abs_xy_final:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
+db	-	pass+t	none	0	-	r	temp	0	0	imm
+
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
-db	x	add	none	1	pc_n	pc_n	pc_n	1	t	-
-db	-	pass+t	none	0	-	r	temp	0	0	imm
+db	x	add	none	1	pc_n	pc_n	pc_n	1	t	abs_xy_final
+#db	-	pass+t	none	0	-	r	temp	0	0	imm
 #db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 # abs_y looks like abs_x.
 abs_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
-db	y	add	none	1	pc_n	pc_n	pc_n	1	t	-
-db	-	pass+t	none	0	-	r	temp	0	0	imm
+db	y	add	none	1	pc_n	pc_n	pc_n	1	t	abs_xy_final
+#db	-	pass+t	none	0	-	r	temp	0	0	imm
 #db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 zp_x:
@@ -187,31 +193,43 @@ acc:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 -	a	func	func	0	pc_n	pc_n	pc_n	0	1
 
-mem_rw_zpa:
+mem_rw_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	-	pass	none	0	pc_n	0	r	1	0	0
-db	func	func	func	0	-	0	temp	0	1	r
 db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
+
+mem_rw_zp2:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
+
+mem_rw_zpa:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	-	pass	none	0	pc_n	0	r	1	0	0	mem_rw_zp2
+#db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
 
 mem_rw_zpx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
-db	x	add	none	0	pc_n	0	r	1	0	0
-db	func	func	func	0	-	0	temp	0	1	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
+db	x	add	none	0	pc_n	0	r	1	0	0	mem_rw_zp2
+#db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
+
+mem_rw_ab2:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
+db	func	func	func	0	-	temp	temp	0	0	1	r	mem_rw_final
 
 mem_rw_abs:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri
-db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0
-db	-	pass	none	0	pc_n	r	temp	0	1	0	0
-db	func	func	func	0	-	temp	temp	0	0	1	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0	-
+db	-	pass	none	0	pc_n	r	temp	0	1	0	0	mem_rw_ab2
+#db	func	func	func	0	-	temp	temp	0	0	1	r	mem_rw_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 mem_rw_abx:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri
-db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0
-db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0
-db	func	func	func	0	-	temp	temp	0	0	1	r
-db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
+db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0	-
+db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0	mem_rw_ab2
+#db	func	func	func	0	-	temp	temp	0	0	1	r	mem_rw_final
+#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 indirect_y:
 # over by two cycles
@@ -237,28 +255,36 @@ db	-	pass	none	0	-	temp	temp	0	0	0	imm
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.
 
+push_final:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
+-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
+
 # push/pull used only for accumulator; push_flags/pull_flags used for PHP/PLP
 push:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
+sp	func	dec	sp	0	-	1	r	b	0	1	push_final
+#-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
+
+pull_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
-sp	func	dec	sp	0	-	1	r	b	0	1
--	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
+sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 pull:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
-sp	-	pass	none	0	-	1	r	0	0	-
-db	-	pass	func	0	-	-	-	0	0	0
-sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
+sp	-	pass	none	0	-	1	r	0	0	-	-
+db	-	pass	func	0	-	-	-	0	0	0	pull_final
+#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 push_flags:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
-sp	p	dec	sp	0	-	1	r	b	0	1
--	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
+sp	p	dec	sp	0	-	1	r	b	0	1	push_final
+#-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
 
 pull_flags:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
-sp	-	pass	none	0	-	1	r	0	0	-
-db	-	pass	p	0	-	-	-	0	0	-
-sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
+sp	-	pass	none	0	-	1	r	0	0	-	-
+db	-	pass	p	0	-	-	-	0	0	-	pull_final
+#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 jsr:
 # push high order byte of pc+2, then low order byte, jump to {pcl, pch}.
@@ -301,14 +327,14 @@ sp	-	inc	sp	1	pc_n	pc_n	pc_n	1
 
 rti:
 # pull p, then pc, jump to pc. similar to above, but don't increment PC
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag
-sp	-	pass	none	0	-	1	r	0	0
-db	-	pass	p	0	-	-	-	0	1
-sp	-	inc	sp	0	-	1	r	0	0
-db	-	pass	pc_l	01	r	-	-	0	0
-sp	-	inc	sp	0	-	1	r	0	0
-db	-	pass	pc_h	10	r	-	-	0	0
-sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	next_s
+sp	-	pass	none	0	-	1	r	0	0	-
+db	-	pass	p	0	-	-	-	0	1	-
+sp	-	inc	sp	0	-	1	r	0	0	-
+db	-	pass	pc_l	01	r	-	-	0	0	-
+sp	-	inc	sp	0	-	1	r	0	0	-
+db	-	pass	pc_h	10	r	-	-	0	0	pull_final
+#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0
 
 branch_head:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src

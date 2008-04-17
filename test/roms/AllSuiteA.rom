@@ -1,0 +1,2076 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// CUMULATIVE TEST OF SUITE A
+// Heather Justice
+// 4/16/08
+//
+// EXPECTED RESULTS: $0210 = 0xFF
+// Result Details:
+//   Check $0210 for result. Result 0xFF means that all tests in Suite A 
+//   [hopefully] passed. Result 0xFE means that something went really really 
+//   wrong (for example, if JMP went to someplace really wrong). Results 0x00 
+//   through 0x12 indicate the first test that was recognized to fail.
+//
+///////////////////////////////////////////////////////////////////////////////
+// 
+// SPECIAL: INITIALIZE
+//
+a9
+00
+8d
+10
+02
+a9
+55
+8d
+00
+02
+a9
+aa
+8d
+01
+02
+a9
+ff
+8d
+02
+02
+a9
+6e
+8d
+03
+02
+a9
+42
+8d
+04
+02
+a9
+33
+8d
+05
+02
+a9
+9d
+8d
+06
+02
+a9
+7f
+8d
+07
+02
+a9
+a5
+8d
+08
+02
+a9
+1f
+8d
+09
+02
+a9
+ce
+8d
+0a
+02
+a9
+29
+8d
+0b
+02
+a9
+42
+8d
+0c
+02
+a9
+// note that this one depends on other flags...
+0c
+8d
+0d
+02
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 00
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #00
+// Heather Justice 3/11/08
+// Tests instructions LDA/LDX/LDY & STA/STX/STY with all addressing modes.
+//
+// EXPECTED RESULTS:
+//  $022A = 0x55 (decimal 85)
+//  A = 0x55, X = 0x2A, Y = 0x73
+//
+// LDA imm #85 (A=85)
+a9
+55
+// LDX imm #42 (X=42)
+a2
+2a
+// LDY imm #115 (Y=115) 
+a0
+73
+// STA zpg $81 ($81=85)
+85
+81
+// LDA imm #$01 (A=01)
+a9
+01
+// STA zpg $61 ($61=01)
+85
+61
+// A=0x7E
+a9
+7e
+// LDA zpg $81 (A=85)
+a5
+81
+// STA abs $0910 ($0910=85)
+8d
+10
+09
+// A=0x7E
+a9
+7e
+// LDA abs $0910 (A=85)
+ad
+10
+09
+// STA zpx $56,X ($80=85)
+95
+56
+// A=0x7E
+a9
+7e
+// LDA zpx $56,X (A=85)
+b5
+56
+// STY zpg $60 ($60=115)
+84
+60
+// STA idy ($60),Y ($01E6=85)
+91
+60
+// A=0x7E
+a9
+7e
+// LDA idy ($60),Y (A=85)
+B1
+60
+// STA abx $07ff,X ($0829=85)
+9d
+ff
+07
+// A=0x7E
+a9
+7e
+// LDA abx $07ff,X (A=85)
+bd
+ff
+07
+// STA aby $07ff,Y ($0872=85)
+99
+ff
+07
+// A=0x7E
+a9
+7e
+// LDA aby $07ff,Y (A=85)
+b9
+ff
+07
+// STA idx ($36,X) ($0173=85)
+81
+36
+// A=0x73
+a9
+7e
+// LDA idx ($36,X) (A=85)
+a1
+36
+// STX zpg $50 ($50=42)
+86
+50
+// LDX zpg $60 (X=115)
+a6
+60
+// LDY zpg $50 (Y=42)
+a4
+50
+// STX abs $0913 ($0913=115)
+8e
+13
+09
+// X=0x22
+a2
+22
+// LDX abs $0913 (X=115)
+ae
+13
+09
+// STY abs $0914 ($0914=42)
+8c
+14
+09
+// Y=0x99
+a0
+99
+// LDY abs $0914 (Y=42)
+ac
+14
+09
+// STY zpx $2D,X ($A0=42)
+94
+2D
+// STX zpy $77,Y ($A1=115)
+96
+77
+// Y=0x99
+a0
+99
+// LDY zpx $2D,X (Y=42)
+b4
+2d
+// X=0x22
+a2
+22
+// LDX zpy $77,Y (X=115)
+b6
+77
+// Y=0x99
+a0
+99
+// LDY abx $08A0,X (Y=115)
+bc
+a0
+08
+// X=0x22
+a2
+22
+// LDX aby $08A1,Y (X=42)
+be
+a1
+08
+// STA abx $0200,X ($022A=85)
+9d
+00
+02
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 00
+//
+ad
+2a
+02
+cd
+00
+02
+f0
+03
+4c
+/// theend
+a6
+f5
+///
+a9
+fe
+8d
+10
+02
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 01
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #01
+// Heather Justice 3/12/08
+// Tests instructions AND & EOR & ORA with all addressing modes.
+// Assumes that LDA/LDX/LDY & STA/STX/STY work with all addressing modes.
+//
+// EXPECTED RESULTS: $A9 = 0xAA
+//
+// A = 0x55
+a9
+55
+// A = 0x55&0x53 = 0x51
+29
+53
+// A = 0x51|0x38 = 0x79
+09
+38
+// A = 0x79^0x11 = 0x68
+49
+11
+// Stores...
+85
+99
+a9
+b9
+85
+10
+a9
+e7
+85
+11
+a9
+39
+85
+12
+a5
+99
+// A = 0x68&0xB9 = 0x28
+25
+10
+// A = 0x48|0xE7 = 0xEF
+05
+11
+// A = 0xEF^0x39 = 0xD6
+45
+12
+// X = 0x10
+A2
+10
+// Stores...
+85
+99
+a9
+bc
+85
+20
+a9
+31
+85
+21
+a9
+17
+85
+22
+a5
+99
+// A = 0xD6&0xBC = 0x94
+35
+10
+// A = 0x94|0x31 = 0xB5
+15
+11
+// A = 0xB5^0x17 = 0xA2
+55
+12
+// Stores...
+85
+99
+a9
+6f
+8d
+10
+01
+a9
+3c
+8d
+11
+01
+a9
+27
+8d
+12
+01
+a5
+99
+// A = 0xA2&0x6F = 0x22
+2d
+10
+01
+// A = 0x22|0x3C = 0x3E
+0d
+11
+01
+// A = 0x3E^0x27 = 0x19
+4d
+12
+01
+// Stores...
+85
+99
+a9
+8a
+8d
+20
+01
+a9
+47
+8d
+21
+01
+a9
+8f
+8d
+22
+01
+a5
+99
+// A = 0x19&0x8A = 0x08
+3d
+10
+01
+// A = 0x08|0x47 = 0x4F
+1d
+11
+01
+// A = 0x47^0x8F = 0xC0
+5d
+12
+01
+// Y = 0x20
+a0
+20
+// Stores...
+85
+99
+a9
+73
+8d
+30
+01
+a9
+2a
+8d
+31
+01
+a9
+f1
+8d
+32
+01
+a5
+99
+// A = 0xC0&0x73 = 0x40
+39
+10
+01
+// A = 0x40|0x2A = 0x6A
+19
+11
+01
+// A = 0x6A^0xF1 = 0x9B
+59
+12
+01
+// Stores...
+85
+99
+a9
+70
+85
+30
+a9
+01
+85
+31
+a9
+71
+85
+32
+a9
+01
+85
+33
+a9
+72
+85
+34
+a9
+01
+85
+35
+a9
+c5
+8d
+70
+01
+a9
+7c
+8d
+71
+01
+a9
+a1
+8d
+72
+01
+a5
+99
+// A = 0x9B&0xC5 = 0x81
+21
+20
+// A = 0x81|0x7C = 0xFD
+01
+22
+// A = 0xFD^0xA1 = 0x5C
+41
+24
+// Stores...
+85
+99
+a9
+60
+85
+40
+a9
+01
+85
+41
+a9
+61
+85
+42
+a9
+01
+85
+43
+a9
+62
+85
+44
+a9
+01
+85
+45
+a9
+37
+8d
+50
+02
+a9
+23
+8d
+51
+02
+a9
+9d
+8d
+52
+02
+a5
+99
+// Y = 0xF0
+a0
+f0
+// A = 0x5C&0x37 = 0x14
+31
+40
+// A = 0x14|0x2B = 0x37
+11
+42
+// A = 0x37^0x9D = 0xAA
+51
+44
+// final store $A9 = 0xAA
+85
+a9
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 01
+//
+a5
+a9
+cd
+01
+02
+f0
+08
+a9
+01
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 02
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #02
+// Heather Justice 3/12/08
+// Tests instructions INC & DEC with all addressing modes.
+// Assumes that LDA/LDX/LDY & STA/STX/STY work with all addressing modes.
+//
+// EXPECTED RESULTS: $71=0xFF
+//
+// initial loads (A=0xFF & X=0x00)
+a9
+ff
+a2
+00
+// will result in A=0x01 & X=0x01 & $90=0x01
+85
+90
+e6
+90
+e6
+90
+a5
+90
+a6
+90
+// will result in A=0x02 & X=0x02 & $91=0x02
+95
+90
+f6
+90
+b5
+90
+a6
+91
+// will result in A=0x03 & X=0x03 & $0192=0x03
+9d
+90
+01
+ee
+92
+01
+bd
+90
+01
+ae
+92
+01
+// will result in A=0x04 & X=0x04 & $0193=0x04
+9d
+90
+01
+fe
+90
+01
+bd
+90
+01
+ae
+93
+01
+// will result in A=0x03 & X=0x03 & $0174=0x03
+9d
+70
+01
+de
+70
+01
+bd
+70
+01
+ae
+74
+01
+// will result in A=0x02 & X=0x02 & $0173=0x02 
+9d
+70
+01
+ce
+73
+01
+bd
+70
+01
+ae
+73
+01
+// will result in A=0x01 & X=0x01 & $72=0x01
+95
+70
+d6
+70
+b5
+70
+a6
+72
+// final result $71=0xFF
+95
+70
+c6
+71
+c6
+71
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 02
+//
+a5
+71
+cd
+02
+02
+f0
+08
+a9
+02
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 03
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #03
+// Heather Justice 3/12/08
+// Tests instructions ASL & LSR & ROL & ROR with all addressing modes.
+// Assumes that loads & stores & ORA work with all addressing modes.
+//
+// EXPECTED RESULTS: $01DD = 0x6E
+//
+// will result in A=0x4A
+a9
+4b
+4a
+0a
+// will result in A=0x14 & $50=0x14
+85
+50
+06
+50
+06
+50
+46
+50
+a5
+50
+// will result in A=0x2E & X=0x14 & $60=2E
+a6
+50
+09
+c9
+85
+60
+16
+4c
+56
+4c
+56
+4c
+b5
+4c
+// will result in A=0x36 & X=2E & $012E=36
+a6
+60
+09
+41
+8d
+2e
+01
+5e
+00
+01
+5e
+00
+01
+1e
+00
+01
+bd
+00
+01
+// will result in A=0x5A & X=0x36 & $0136=0x5A
+ae
+2e
+01
+09
+81
+9d
+00
+01
+4e
+36
+01
+4e
+36
+01
+0e
+36
+01
+bd
+00
+01
+// now testing rol & ror...
+// will result in A=0xB4 & $70=0xB4
+2a
+2a
+6a
+85
+70
+// will result in A=0x5B & X=0xB4 & $C0=0x5B
+a6
+70
+09
+03
+95
+0C
+26
+c0
+66
+c0
+66
+c0
+b5
+0c
+// will result in A=0xB7 & X=0x5B & $D0=0xB7
+a6
+c0
+85
+d0
+36
+75
+36
+75
+76
+75
+a5
+d0
+// will result in A=0xDD & X=0xB7 & $01B7=0xDD
+a6
+d0
+9d
+00
+01
+2e
+b7
+01
+2e
+b7
+01
+2e
+b7
+01
+6e
+b7
+01
+bd
+00
+01
+// will result in X=0xDD & $01DD=0x6E
+ae
+b7
+01
+8d
+dd
+01
+3e
+00
+01
+7e
+00
+01
+7e
+00
+01
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 03
+//
+ad
+dd
+01
+cd
+03
+02
+f0
+08
+a9
+03
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 04
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #04
+// Heather Justice 3/12/08
+// Tests instructions JMP (both addressing modes) & JSR & RTS.
+// Assumes that loads & stores & ORA work with all addressing modes.
+// NOTE: Depends on addresses of instructions... Specifically, the "final"
+//   address is actually hard-coded at address $0020 (first 4 lines of code).
+//   Additionally, a JMP and JSR specify specific addresses.
+//
+// EXPECTED RESULTS: $40=0x42
+//
+// start: 
+// LDA #$DE
+a9
+e3
+// STA $20
+85
+20
+// LDA #$F2
+a9
+f2
+// STA $21
+85
+21
+// LDA #$00
+a9
+00
+// ORA #$03
+09
+03
+// JMP jump1
+4c
+d0
+f2
+// ORA #$FF ; not done
+09
+ff
+// jump1:
+// ORA #$30
+09
+30
+// JSR subr
+20
+dc
+f2
+// ORA #$42
+09
+42
+// JMP ($0020)
+6c
+20
+00
+// ORA #$FF ; not done
+09
+ff
+// subr:
+// STA $30 ($30=0x33)
+85
+30
+// LDX $30
+a6
+30
+// LDA #$00
+a9
+00
+// RTS
+60
+// final: (as hardcoded by $0020)
+// STA $0D,X
+95
+0d
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 04
+//
+a5
+40
+cd
+04
+02
+f0
+08
+a9
+04
+8d
+10
+02
+4c
+// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 05
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #05
+// Heather Justice 3/15/08
+// Tests instructions for transfering values between registers
+//   (TAX, TXA, TYA, TAY, DEX, INX, DEY, INY, TXS, TSX).
+// Assumes that loads & stores work with all addressing modes.
+//
+// EXPECTED RESULTS: $40 = 0x33
+//
+// LDA #$35 (A=0x35)
+a9
+35
+// A -> X
+aa
+// X--
+ca
+// X--
+ca
+// X++
+e8
+// X -> A (A=0x34)
+8a
+// A -> Y
+a8
+// Y--
+88
+// Y--
+88
+// Y++
+c8
+// Y -> A (A=0x33)
+98
+// A -> X
+aa
+// LDA #$20 (A=0x20)
+a9
+20
+// X -> S (S=0x33)
+9a
+// LDX #$10 (X=0x10)
+a2
+10
+// S -> X (X=0x33)
+ba
+// X -> A (A=0x33)
+8a
+// STA $40 ($40=0x33)
+85
+40
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 05
+//
+a5
+40
+cd
+05
+02
+f0
+08
+a9
+05
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 06
+//
+// Flag setup...
+2A
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #06
+// Heather Justice 3/20/08
+// Tests instructions ADC & SBC with all addressing modes.
+// Assumes that loads & stores work with all addressing modes.
+//
+// EXPECTED RESULTS: $30=0x9D
+//
+// will result in $50=0x6A & $51=0x6B & $60=0xA1 & $61=0xA2
+a9
+6a
+85
+50
+a9
+6b
+85
+51
+a9
+a1
+85
+60
+a9
+a2
+85
+61
+// will result in A=0x50
+a9
+ff
+69
+ff
+69
+ff
+e9
+ae
+// will result in A=0x4F & X=0x50
+85
+40
+a6
+40
+75
+00
+f5
+01
+// will result in A=0x4E
+65
+60
+e5
+61
+// will result in A=0x24 & $0120=0x4E & $0121=0x4D
+8d
+20
+01
+a9
+4d
+8d
+21
+01
+a9
+23
+6d
+20
+01
+ed
+21
+01
+// will result in A=0x28 & X=0x24 & $0124=0x64 & $0125=0x62
+85
+f0
+a6
+f0
+a9
+64
+8d
+24
+01
+a9
+62
+8d
+25
+01
+a9
+26
+7d
+00
+01
+fd
+01
+01
+// will result in A=0x31 & Y=0x28 & $0128=0xE5 & $0129=0xE9
+85
+f1
+a4
+f1
+a9
+e5
+8d
+28
+01
+a9
+e9
+8d
+29
+01
+a9
+34
+79
+00
+01
+f9
+01
+01
+// will result in A=0x16 & X=0x31 & $70-$73=20,01,24,01
+85
+f2
+a6
+f2
+a9
+20
+85
+70
+a9
+01
+85
+71
+a9
+24
+85
+72
+a9
+01
+85
+73
+61
+41
+e1
+3f
+// will result in A=0x9D & Y=0x16 & $80=0xDA & $82=0xDC & $30=0x9D
+85
+f3
+a4
+f3
+a9
+da
+85
+80
+a9
+00
+85
+81
+a9
+dc
+85
+82
+a9
+00
+85
+83
+a9
+aa
+71
+80
+f1
+82
+85
+30
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 06
+//
+a5
+30
+cd
+06
+02
+f0
+08
+a9
+06
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 07
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #07
+// Heather Justice 3/25/08
+// Tests instructions CMP (all addressing modes) & BEQ & BNE.
+// Assumes that loads & stores work with all addressing modes.
+// Also assumes that AND & ORA & EOR work with all addressing modes.
+//
+// EXPECTED RESULTS: $15 = 0x7F
+//
+// prepare memory	
+a9
+00
+85
+34
+a9
+ff
+8d
+30
+01
+a9
+99
+8d
+9d
+01
+a9
+db
+8d
+99
+01
+a9
+2f
+85
+32
+a9
+32
+85
+4f
+a9
+30
+85
+33
+a9
+70
+85
+af
+// A = 0x18
+a9
+18
+85
+30
+// cmp imm...
+// CMP #$18
+c9
+18
+// BEQ beq1 ; taken
+f0
+02
+// AND #$00 ; not done
+29
+00
+// cmp zpg...
+// ORA #$01 (A = 0x19)
+09
+01
+// CMP $30
+c5
+30
+// BNE bne1 ; taken
+d0
+02
+// AND #$00 ; not done
+29
+00
+// cmp abs...
+// LDX #$00 (X = 0x00)
+a2
+00
+// CMP $0130
+cd
+30
+01
+// BEQ beq2 ; not taken
+f0
+04
+// STA $40
+85
+40
+// LDX $40 (X = 0x19)
+a6
+40
+// cmp zpx...
+// CMP $27,X
+d5
+27
+// BNE bne2 ; not taken
+d0
+06
+// ORA #$84 (A = 0x9D)
+09
+84
+// STA $41
+85
+41
+// LDX $41 (X = 0x9D)
+a6
+41
+// cmp abx...
+// AND #$DB (A = 0x99)
+29
+db
+// CMP $0100,X
+dd
+00
+01
+// BEQ beq3 ; taken
+f0
+02
+// AND #$00 ; not done
+29
+00
+// cmp aby...
+// STA $42
+85
+42
+// LDY $42 (Y = 0x99)
+a4
+42
+// AND #$00 (A = 0x00)
+29
+00
+// CMP $0100,Y
+d9
+00
+01
+// BNE bne3 ; taken
+d0
+02
+// ORA #$0F ; not done
+09
+0f
+// cmp idx...
+// STA $43
+85
+43
+// LDX $43 (X = 0x00)
+a6
+43
+// ORA #$24 (A = 0x24)
+09
+24
+// CMP ($40,X)
+c1
+40
+// BEQ beq4 ; not taken
+f0
+02
+// ORA #$7F (A = 0x7F)
+09
+7f
+// cmp idy...
+// STA $44
+85
+44
+// LDY $44 (Y = 0x7F)
+a4
+44
+// EOR #$0F (A = 0x70)
+49
+0f
+// CMP ($33),Y
+d1
+33
+// BNE bne4 ; not taken
+d0
+04
+// LDA $44 (A = 0x7F)
+a5
+44
+// STA $15 ($15 = 0x7F)
+85
+15
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 07
+//
+a5
+15
+cd
+07
+02
+f0
+08
+a9
+07
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 08
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #08
+// Heather Justice 3/25/08
+// Tests instructions CPX & CPY & BIT for all addressing modes.
+// Assumes that loads & stores (with all addressing modes) & BEQ & BNE work.
+// Also assumes that AND & ORA & EOR work with all addressing modes.
+//
+// EXPECTED RESULTS: $42 = 0xA5
+//
+// prepare memory...
+a9
+a5
+85
+20
+8d
+20
+01
+a9
+5a
+85
+21
+// cpx imm...
+// LDX #$A5 (X = 0xA5)
+a2
+a5
+// CPX #$A5
+e0
+a5
+// BEQ b1 ; taken
+f0
+02
+// LDX #$01 ; not done
+a2
+01
+// cpx zpg...
+// CPX $20
+e4
+20
+// BEQ b2 ; taken
+f0
+02
+// LDX #$02 ; not done
+a2
+02
+// cpx abs...
+// CPX $0120
+ec
+20
+01
+// BEQ b3 ; taken
+f0
+02
+// LDX #$03 ; not done
+a2
+03
+// cpy imm...
+// STX $30
+86
+30
+// LDY $30 (Y = 0xA5)
+a4
+30
+// CPY #$A5
+c0
+a5
+// BEQ b4 ; taken
+f0
+02
+// LDY #$04 ; not done
+a0
+04
+// cpy zpg...
+// CPY $20
+c4
+20
+// BEQ b5 ; taken
+f0
+02
+// LDY #$05 ; not done
+a0
+05
+// cpy abs...
+// CPY $0120
+cc
+20
+01
+// BEQ b6 ; taken
+f0
+02
+// LDY #$06 ; not done
+a0
+06
+// bit zpg...
+// STY $31
+84
+31
+// LDA $31 (A = 0xA5)
+a5
+31
+// BIT $20
+24
+20
+// BNE b7 ; taken
+d0
+02
+// LDA #$07 ; not done
+a9
+07
+// bit abs...
+// BIT $0120
+2c
+20
+01
+// BNE b8 ; taken
+d0
+02
+// LDA #$08 ; not done
+a9
+08
+// BIT $21
+24
+21
+// BNE b9 ; not taken
+d0
+02
+// STA $42 ($42 = 0xA5)
+85
+42
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 08
+//
+a5
+42
+cd
+08
+02
+f0
+08
+a9
+08
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 09
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #09
+// Heather Justice 3/26/08
+// Tests all other branch instructions (BPL & BMI & BVC & BVS & BCC & BCS).
+// Assumes that ADC & SBC & EOR work with all addressing modes.
+//
+// EXPECTED RESULTS: $80 = 0x1F
+//
+// prepare memory...
+// LDA #$54
+a9
+54
+// STA $32 ($32 = 0x54)
+85
+32
+// LDA #$B3
+a9
+b3
+// STA $A1 ($A1 = 0xB3)
+85
+a1
+// LDA #$87
+a9
+87
+// STA $43 ($43 = 0x87 & A = 0x87)
+85
+43
+// bpl...
+// LDX #$A1 (X = 0xA1)
+a2
+a1
+// BPL bpl1 ; not taken
+10
+02
+// LDX #$32 (X = 0x32)
+a2
+32
+// LDY $00,X (Y = 0x54)
+b4
+00
+// BPL bpl2 ; taken
+10
+04
+// LDA #$05 ; not done
+a9
+05
+// LDX $A1 ; not done
+a6
+a1
+// bmi...
+// BMI bmi1 ; not taken
+30
+02
+// SBC #$03 (A = 0x83)
+e9
+03
+// BMI bmi2 ; taken
+30
+02
+// LDA #$41 ; not done
+a9
+41
+// bvc...
+// EOR #$30 (A = 0xB3)
+49
+30
+// STA $32 ($32 = 0xB3)
+85
+32
+// ADC $00,X (A = 0x67)
+75
+00
+// BVC bvc1 ; not taken
+50
+02
+// LDA #$03 (A = 0x03)
+a9
+03
+// STA $54 ($54 = 0x03)
+85
+54
+// LDX $00,Y (X = 0x03)
+b6
+00
+// ADC $51,X (A = 0x07)
+75
+51
+// BVC bvc2 ; taken
+50
+02
+// LDA #$E5 ; not done
+a9
+e5
+// bvs...
+// ADC $40,X (A = 0x8E)
+75
+40
+// BVS bvs1 ; not taken
+70
+04
+// STA $0001,Y ($55 = 0x8E)
+99
+01
+00
+// ADC $55 (A = 0x1C)
+65
+55
+// BVS bvs2 ; taken
+70
+02
+// LDA #$00
+a9
+00
+// bcc...
+// ADC #$F0 (A = 0x0D)
+69
+f0
+// BCC bcc1 ; not taken
+90
+04
+// STA $60 ($60 = 0x0D)
+85
+60
+// ADC $43 (A = 95)
+65
+43
+// BCC bcc2 ; taken
+90
+02
+// LDA #$FF
+a9
+ff
+// bcs...
+// ADC $54 (A = 0x98)
+65
+54
+// BCS bcs1 ; not taken
+b0
+04
+// ADC #$87 (A = 0x1F)
+69
+87
+// LDX $60 (X = 0x0D)
+a6
+60
+// BCS bcs2 ; taken
+b0
+02
+// LDA #$00 ; not done
+a9
+00
+// STA $73,X ($80 = 0x1F)
+95
+73
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 09
+//
+a5
+80
+cd
+09
+02
+f0
+08
+a9
+09
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 10
+//
+// Flag setup...
+69
+00
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #10
+// Heather Justice 3/26/08
+// Tests flag instructions (CLC & SEC & CLV & CLD & SED) & NOP.
+// Assumes that loads & stores (all addressing modes) and all branches work.
+// Also assumes ADC works with all addressing modes.
+//
+// EXPECTED RESULTS: $30 = 0xCE
+//
+// LDA #$99 (A = 0x99)
+a9
+99
+// ADC #$87 (A = 0x20)
+69
+87
+// CLC
+18
+// NOP
+ea
+// BCC bcc1 ; taken
+90
+04
+// ADC #$60 ; not done
+69
+60
+// ADC #$93 ; not done
+69
+93
+// SEC
+38
+// NOP
+ea
+// BCC bcc2 ; not taken
+90
+01
+// CLV
+b8
+// BVC bvc1 ; taken
+50
+02
+// LDA #$00 ; not done
+a9
+00
+// ADC #$AD (A = 0xCE)
+69
+ad
+// NOP
+ea
+// STA $30 ($30 = 0xCE)
+85
+30
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 10
+//
+a5
+30
+cd
+0a
+02
+f0
+08
+a9
+0a
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 11
+//
+// Flag setup...
+69
+01
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #11
+// Heather Justice 3/26/08
+// Tests stack instructions (PHA & PLA & PHP & PLP).
+// Assumes that loads & stores (all addressing modes).
+// Also assumes ADC (all addressing modes) and all flag instructions work.
+//
+// EXPECTED RESULTS: $30 = 0x29
+//
+// LDA #$27 (A = 0x27)
+a9
+27
+// ADC #$01 (A = 0x28)
+69
+01
+// SEC
+38
+// PHP
+08
+// CLC
+18
+// PLP
+28
+// ADC #$00 (A = 0x29)
+69
+00
+// PHA
+48
+// LDA #$00 (A = 0x00)
+a9
+00
+// PLA (A = 0x29)
+68
+// STA $30 ($30 = 0x29)
+85
+30
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 11
+//
+a5
+30
+cd
+0b
+02
+f0
+08
+a9
+0b
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 12
+//
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #12
+// Heather Justice 4/10/08
+// Tests RTI instruction.
+// Assumes lots of other instructions work already...
+//
+// EXPECTED RESULTS: $33 = 0x42
+//
+// CLC
+18
+// LDA #$42
+a9
+42
+// BCC runstuff
+90
+04
+// STA $33
+85
+33
+// BCS end
+b0
+0a
+// runstuff:
+// LDA #$F5
+a9
+f5
+// PHA
+48
+// LDA #$5C
+a9
+5c
+// PHA
+48
+// SEC
+38
+// PHP
+08
+// CLC
+18
+// RTI
+40
+// end:
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 12
+//
+a5
+33
+cd
+0c
+02
+f0
+08
+a9
+0c
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// TEST 13
+//
+// Flag setup...
+69
+01
+///////////////////////////////////////////////////////////////////////////////
+// 6502 Test #13
+// Heather Justice 4/10/08
+// Tests SEI & CLI & SED & CLD.
+// Assumes prior tests pass...
+//
+// EXPECTED RESULT: $21 = 0x0C
+//
+// SEI
+78
+// SED
+f8
+// PHP
+08
+// PLA
+68
+// STA $20
+85
+20
+// CLI
+58
+// CLD
+d8
+// PHP
+08
+// PLA
+68
+// ADC $20
+65
+20
+// STA $21
+85
+21
+///////////////////////////////////////////////////////////////////////////////
+//
+// CHECK TEST 13
+//
+a5
+21
+cd
+0d
+02
+f0
+08
+a9
+0d
+8d
+10
+02
+4c
+/// theend
+a6
+f5
+///////////////////////////////////////////////////////////////////////////////
+//
+// FINAL CONFIRMATION STAGE
+//
+a9
+fe
+cd
+10
+02
+d0
+03
+ee
+10
+02
+///////////////////////////////////////////////////////////////////////////////
+//
+// theend : INFINITE LOOP!
+//
+4c
+a6
+f5

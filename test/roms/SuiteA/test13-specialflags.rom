@@ -1,0 +1,32 @@
+// 6502 Test #13
+// Heather Justice 4/10/08
+// Tests SEI & CLI & SED & CLD.
+// Assumes prior tests pass...
+//
+// EXPECTED RESULT: $21 = 0x0C
+//
+// SEI
+78
+// SED
+f8
+// PHP
+08
+// PLA
+68
+// STA $20
+85
+20
+// CLI
+58
+// CLD
+d8
+// PHP
+08
+// PLA
+68
+// ADC $20
+65
+20
+// STA $21
+85
+21

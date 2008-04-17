@@ -33,22 +33,27 @@ module alu(input logic [7:0] a, b,
   // The whole purpose of this was to get the carry out from bits 6 and 7 to
   // produce the overflow flag:
   assign overflow = (low7_cout ^ full_cout) | (testbits & a[6]);
-
+  
   always_comb begin
-    case (op)
-      4'h0: {c_out, y} = a + c_in; // inc
-      4'h1: {c_out, y} = a - c_in; // dec
-      4'h2: {c_out, y} = {full_cout, full_sum}; // add
-      4'h3: {c_out, y} = {full_cout, full_sum}; // sub
-      4'h4: {y, c_out} = {c_in, a}; // ror
-      4'h5: {c_out, y} = {a, 1'b0}; // asl
-      4'h6: {c_out, y} = {a, c_in}; // rol
-      4'h7: {c_out, y} = {1'b0, a | b}; // OR
-      4'h8: {c_out, y} = {1'b0, a & b}; // AND
-      4'h9: {y, c_out} = {1'b0, a & b}; // test bits
-      4'ha: {c_out, y} = {1'b0, a ^ b}; // EOR
-      4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
+    case (alu_tristate_controls)
+      10'b1000000000: begin
+                      case (op)
+                        4'h0: {c_out, y} = a + c_in; // inc
+                        4'h1: {c_out, y} = a - c_in; // dec
+                        4'h2: {c_out, y} = {full_cout, full_sum}; // add
+                        4'h3: {c_out, y} = {full_cout, full_sum}; // sub
+                      endcase
+                      end
+      10'b0100000000: {y, c_out} = {c_in, a}; // ror
+      10'b0010000000: {c_out, y} = {a, 1'b0}; // asl
+      10'b0001000000: {c_out, y} = {a, c_in}; // rol
+      10'b0000100000: {c_out, y} = {1'b0, a | b}; // OR
+      10'b0000010000: {c_out, y} = {1'b0, a & b}; // AND
+      10'b0000001000: {y, c_out} = {1'b0, a & b}; // test bits
+      10'b0000000100: {c_out, y} = {1'b0, a ^ b}; // EOR
+      10'b0000000010: {y, c_out} = 9'b111111111; // ones (for setting flags)
       default: {y, c_out} = 9'b0;
-    endcase
+  endcase
+  
   end
 endmodule

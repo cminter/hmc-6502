@@ -19,6 +19,7 @@ parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 module control(input logic [7:0] data_in, p,
                input logic ph1, ph2, resetb,
                output logic [7:0] p_in_en,
+               output logic [9:0] alu_tristate_controls, alu_tristate_controls_b,
                output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls_out);
                
   // all controls become valid on ph1, and hold through end of ph2.
@@ -74,9 +75,8 @@ module control(input logic [7:0] data_in, p,
   // opcode specific controls
   mux2 #(C_OP_WIDTH) func_mux(c_op_state, c_op_opcode, c_op_sel, c_op_selected);
   
-  // output
-  //latch #(C_STATE_WIDTH + C_OP_WIDTH) controls_latch({c_state, c_op_selected}, controls_s1,
-  //                      ph1);
+  // create decoded signal for ALU
+  alu_mux_controls alu_mux_generator(controls_out[13:10], alu_tristate_controls, alu_tristate_controls_b);
   
   
   latch #1 controls_op_02(c_op_selected[02], controls_out[02], ph1);
@@ -165,4 +165,28 @@ module opcode_pla(input logic [7:0] opcode,
     8'h00: out_data <= 33'bzz_0000_0_0_00_00_00_0_0__0_11111111_00000000; // reset
     default: out_data <= 'x;
   endcase
+endmodule
+
+module alu_mux_controls(input logic [3:0] op,
+	         output logic [9:0] alu_tristate_controls, alu_tristate_controls_b);    
+ 
+ assign alu_tristate_controls_b = ~alu_tristate_controls;
+           
+ always_comb begin;
+    case (op)
+      4'h0: alu_tristate_controls = 10'b1000000000;
+      4'h1: alu_tristate_controls = 10'b1000000000;
+      4'h2: alu_tristate_controls = 10'b1000000000;
+      4'h3: alu_tristate_controls = 10'b1000000000;
+      4'h4: alu_tristate_controls = 10'b0100000000;
+      4'h5: alu_tristate_controls = 10'b0010000000;
+      4'h6: alu_tristate_controls = 10'b0001000000;
+      4'h7: alu_tristate_controls = 10'b0000100000;
+      4'h8: alu_tristate_controls = 10'b0000010000;
+      4'h9: alu_tristate_controls = 10'b0000001000;
+      4'ha: alu_tristate_controls = 10'b0000000100;
+      4'hb: alu_tristate_controls = 10'b0000000010;
+      default: alu_tristate_controls = 10'b0000000001;
+    endcase
+  end
 endmodule

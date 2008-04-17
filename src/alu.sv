@@ -8,6 +8,7 @@
 module alu(input logic [7:0] a, b,
 	         output logic [7:0] y,
            input logic [3:0] op,
+           input logic [9:0] alu_tristate_controls, alu_tristate_controls_b,
            input logic c_in, bcd,
            output logic zero, negative, overflow, c_out);
   
@@ -16,11 +17,6 @@ module alu(input logic [7:0] a, b,
   
   assign zero = (y === 8'b0); // Z flag
   assign negative = y[7] | (testbits & a[7]); // S flag
-  //assign overflow = (a[7] ^ b[7])  | (testbits & a[6]); // 2's complement overflow, V flag
-  
-  //logic [7:0] sub_y;
-  //logic sub_c_out;
-  //adderc #8 sub_adder(~a, b, c_in, sub_y, sub_c_out);
 
   // If we're doing a subtract, invert a to put through the adders.
   logic [7:0] a_conditionally_inverted;
@@ -37,14 +33,6 @@ module alu(input logic [7:0] a, b,
   // The whole purpose of this was to get the carry out from bits 6 and 7 to
   // produce the overflow flag:
   assign overflow = (low7_cout ^ full_cout) | (testbits & a[6]);
-
-//  logic [7:0] sbc_sum;
-//  logic [6:0] sbc_low7_sum;
-//  logic sbc_low7_cout, sbc_high_sum, sbc_cout;
-
-//  adderc #7 sbc_lower7_add(~a[6:0], b[6:0], c_in, sbc_low7_sum, sbc_low7_cout);
-//  adderc #1 sbc_high_add(~a[7], b[7], sbc_low7_cout, sbc_high_sum, sbc_cout);
-//  assign sbc_sum = {sbc_high_sum, sbc_low7_sum};
 
   always_comb begin
     case (op)

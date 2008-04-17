@@ -18,10 +18,10 @@ module top(input logic ph1, ph2, resetb);
   
   logic ph1_gen, ph2_gen;
   
-  assign ph0 = ph1;
+  assign ph0 = !ph1;
   
   chip chip(address, data, ph0, resetb, read_en, razor_error, osc_en, 
             osc_out, ph1_gen, ph2_gen);
-  mem mem(ph1, ph2, !(resetb), address, data, read_en);
+  mem mem(ph1_gen, ph2_gen, !(resetb), address, data, read_en);
   
 endmodule

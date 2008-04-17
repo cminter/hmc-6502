@@ -28,7 +28,7 @@ module optest;
     top.mem.ROM[4092] = 8'h00;
 
     // init SP to top of memory
-    top.chip.core.dp.regfile.reg_file[3] = 8'hFF;
+    // top.chip.core.dp.regfile.reg_file[3] = 8'hFF;
     
     // path relative to this file.
     $readmemh("test/roms/SuiteA/test04-jumpsret.rom", top.mem.ROM);

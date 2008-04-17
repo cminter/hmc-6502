@@ -33,6 +33,16 @@ single_byte:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 func	func	func	func	0	-	pc_n	pc_n	0	1
 
+set_flag:
+# 1.0
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+0xff	-	pass	p	0	-	pc_n	pc_n	0	1
+
+clear_flag:
+# 1.0
+a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
+0x00	-	pass	p	0	-	pc_n	pc_n	0	1
+
 imm:
 # immediate addressing (5.4)
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag

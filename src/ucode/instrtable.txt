@@ -155,13 +155,13 @@ FIXME: brk needs to be done
 00	brk	single_byte	FIXME	0	10
 EA	nop	single_byte	_	_	_	0	p	0	00
 
-18	clc	single_byte	A	A	_	a	p	0	01
-38	sec	single_byte	-	-	_	b	p	0	01
-58	cli	single_byte	A	A	_	a	p	0	04
-78	sei	single_byte	-	-	_	b	p	0	04
-b8	clv	single_byte	A	A	_	a	p	0	40
-d8	cld	single_byte	A	A	_	a	p	0	08
-f8	sed	single_byte	-	-	_	b	p	0	08
+18	clc	clear_flag	A	A	_	a	p	0	01
+38	sec	set_flag	-	-	_	b	p	0	01
+58	cli	clear_flag	A	A	_	a	p	0	04
+78	sei	set_flag	-	-	_	b	p	0	04
+b8	clv	clear_flag	A	A	_	a	p	0	40
+d8	cld	clear_flag	A	A	_	a	p	0	08
+f8	sed	set_flag	-	-	_	b	p	0	08
 
 aa	tax	single_byte	A	_	X	0	0	0	82
 8a	txa	single_byte	X	_	A	0	0	0	82

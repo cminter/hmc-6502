@@ -44,6 +44,8 @@ module core(output logic [15:0] address,
   logic constant_en;
   logic flag_en;
   
+  logic [9:0] alu_tristate_controls, alu_tristate_controls_b;
+  
   test_structure test_structure(osc_en, osc_out);
   
   clockgen clockgen(ph0, ph1, ph2);
@@ -53,9 +55,9 @@ module core(output logic [15:0] address,
               reg_write_en, reg_read_addr_a, reg_read_addr_b, reg_write_addr, reg_a_en, 
               reg_b_en, pch_in_en, pch_out_en, pcl_in_en, pcl_out_en, pc_inc_en, pc_sel, 
               d_in_en, d_out_sel, ah_sel, al_sel, alu_op, c_temp_en, carry_sel, constant, 
-              constant_en);
+              constant_en, alu_tristate_controls, alu_tristate_controls_b);
               
-  control con(data_in, p, ph1, ph2, resetb, p_in_en, {
+  control con(data_in, p, ph1, ph2, resetb, p_in_en, alu_tristate_controls, alu_tristate_controls_b, {
                   th_in_en,
                   th_out_en,
                   tl_in_en,

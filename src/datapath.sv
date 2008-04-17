@@ -41,7 +41,9 @@ module datapath(input logic [7:0] data_in,
                 input logic c_temp_en,
                 input logic [1:0] carry_sel,
                 input logic [7:0] constant,
-                input logic constant_en
+                input logic constant_en,
+                
+                input logic [9:0] alu_tristate_controls, alu_tristate_controls_b
                 );
   
   wire  [7:0] a_s1, flag_selected_s2;
@@ -110,7 +112,7 @@ module datapath(input logic [7:0] data_in,
   mux3 #8 al_mux(pcl_next_s2, r_s2, tl_s2, al_sel, address[7:0]);
   
   // ALU and carry logic
-  alu alu(a_s1, b_s1, r_s1, alu_op, c_in_s1, p_s1[4], 
+  alu alu(a_s1, b_s1, r_s1, alu_op, alu_tristate_controls, alu_tristate_controls_b, c_in_s1, p_s1[4], 
           flags_s1[1], flags_s1[7], flags_s1[6], flags_s1[0]);
   
   // -buffer to prevent loops

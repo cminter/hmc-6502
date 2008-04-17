@@ -16,6 +16,8 @@ module chip(output logic [15:0] address,
             assign data = (read_en) ? 8'bz : data_out;
             assign data_in = (read_en) ? data : 8'bz;
             
-            core core(address, data_in, data_out, ph1, ph2, reset, read_en,
-                      razor_error);
+            core core(.address(address), .data_in(data_in), 
+                      .data_out(data_out), .ph1(ph1), .ph2(ph2), 
+                      .reset(reset), .read_en(read_en), 
+                      .razor_error(razor_error));
 endmodule

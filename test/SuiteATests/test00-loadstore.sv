@@ -12,10 +12,10 @@ module optest;
   top top(ph1, ph2, reset);
   
   always begin
-    ph1 <= 1; #8; ph1 <= 0; #12;
+    ph1 <= 1; #10; ph1 <= 0; #10;
   end
   always begin
-    ph2 <= 0; #10; ph2 <= 1; #8; ph2 <= 0; #2;
+    ph2 <= 0; #10; ph2 <= 1; #10;// ph2 <= 0; #2;
   end
   
   initial begin

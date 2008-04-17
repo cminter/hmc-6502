@@ -5,11 +5,11 @@
 `timescale 1 ns / 1 ps
 
 module optest;
-  reg ph1, ph2, reset;
+  reg ph1, ph2, resetb;
   
   wire [7:0] data;
   
-  top top(ph1, ph2, reset);
+  top top(ph1, ph2, resetb);
   
   always begin
     ph1 <= 1; #10; ph1 <= 0; #10;
@@ -31,9 +31,9 @@ module optest;
     $readmemh("test/roms/SuiteA/test00-loadstore.rom", top.mem.ROM);
     
     // start test
-    reset = 1;
+    resetb = 0;
     #100;
-    reset = 0;
+    resetb = 1;
     #3400;
     assert (top.mem.RAM[554] == 8'h55) $display ("PASSED Test 00 - loads & stores");
       else $error("FAILED Test 00 - loads & stores");

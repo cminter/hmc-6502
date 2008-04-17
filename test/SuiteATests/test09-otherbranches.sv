@@ -5,11 +5,11 @@
 `timescale 1 ns / 1 ps
 
 module optest;
-  reg ph1, ph2, reset;
+  reg ph1, ph2, resetb;
   
   wire [7:0] data;
   
-  top top(ph1, ph2, reset);
+  top top(ph1, ph2, resetb);
   
   always begin
     ph1 <= 1; #8; ph1 <= 0; #12;
@@ -31,9 +31,9 @@ module optest;
     $readmemh("test/roms/SuiteA/test09-otherbranches.rom", top.mem.ROM);
     
     // start test
-    reset = 1;
+    resetb = 0;
     #100;
-    reset = 0;
+    resetb = 1;
     #2400;
     assert (top.mem.RAM[128] == 8'h1F) $display ("PASSED Test 09 - other branches");
       else $error("FAILED Test 09 - other branches");

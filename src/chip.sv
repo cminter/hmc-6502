@@ -8,7 +8,7 @@
 
 module chip(output logic [15:0] address,
             inout wire [7:0] data,
-            input logic ph1, ph2, reset,
+            input logic ph1, ph2, resetb,
             output logic read_en, razor_error);
             
             logic [7:0] data_in, data_out;
@@ -18,6 +18,6 @@ module chip(output logic [15:0] address,
             
             core core(.address(address), .data_in(data_in), 
                       .data_out(data_out), .ph1(ph1), .ph2(ph2), 
-                      .reset(reset), .read_en(read_en), 
+                      .resetb(resetb), .read_en(read_en), 
                       .razor_error(razor_error));
 endmodule

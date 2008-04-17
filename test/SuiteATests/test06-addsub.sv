@@ -5,11 +5,11 @@
 `timescale 1 ns / 1 ps
 
 module optest;
-  reg ph1, ph2, reset;
+  reg ph1, ph2, resetb;
   
   wire [7:0] data;
   
-  top top(ph1, ph2, reset);
+  top top(ph1, ph2, resetb);
   
   always begin
     ph1 <= 1; #8; ph1 <= 0; #12;
@@ -45,9 +45,9 @@ module optest;
     $readmemh("test/roms/SuiteA/test06-addsub.rom", top.mem.ROM);
     
     // start test
-    reset = 1;
+    resetb = 0;
     #100;
-    reset = 0;
+    resetb = 1;
     #4400;
     assert (top.mem.RAM[48] == 8'h9D) $display ("PASSED Test 06 - adds & subtracts");
       else $error("FAILED Test 06 - adds & subtracts");

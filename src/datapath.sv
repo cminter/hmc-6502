@@ -10,7 +10,7 @@ module datapath(input logic [7:0] data_in,
                 output logic [7:0] data_out,
                 output logic [15:0] address,
                 output logic [7:0] p_s1,
-                input logic ph1, ph2, reset,
+                input logic ph1, ph2, resetb,
                 output logic razor_error,
                 
                 // controls list from ucodeasm:

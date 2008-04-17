@@ -66,10 +66,10 @@ endmodule
 module latchr #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
-              input logic clk, reset);
+              input logic clk, resetb);
   
   always_latch
-    if (reset) q <= 0;
+    if (!resetb) q <= 0;
       else if (clk) q <= d;
 endmodule
 
@@ -85,10 +85,10 @@ endmodule
 module latchren #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
-              input logic clk, en, reset);
+              input logic clk, en, resetb);
   
   always_latch
-    if (reset) q <= 0;
+    if (!resetb) q <= 0;
       else if (clk & en) q <= d;
 endmodule
 
@@ -108,10 +108,10 @@ endmodule
 module flopr #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
-              input logic clk, reset);
+              input logic clk, resetb);
   
   always_ff @ (posedge clk)
-    if (reset) q <= 0;
+    if (!resetb) q <= 0;
     else q <= d;
 endmodule
 

@@ -5,7 +5,7 @@
 
 `timescale 1 ns / 1 ps
 
-module top(input logic ph1, ph2, reset);
+module top(input logic ph1, ph2, resetb);
   
   // holds memory system and CPU. nothing exported, use heirarchical names
   // to examine operation
@@ -15,7 +15,7 @@ module top(input logic ph1, ph2, reset);
   
   wire razor_error;
   
-  chip chip(address, data, ph1, ph2, reset, read_en, razor_error);
-  mem mem(ph1, ph2, reset, address, data, read_en);
+  chip chip(address, data, ph1, ph2, resetb, read_en, razor_error);
+  mem mem(ph1, ph2, !(resetb), address, data, read_en);
   
 endmodule

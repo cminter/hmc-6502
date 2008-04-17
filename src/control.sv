@@ -17,7 +17,7 @@ parameter BRANCH_NOT_TAKEN_STATE = 8'd5;
 parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 
 module control(input logic [7:0] data_in, p,
-               input logic ph1, ph2, reset,
+               input logic ph1, ph2, resetb,
                output logic [7:0] p_in_en,
                output logic [(C_STATE_WIDTH + C_OP_WIDTH - 1):0] controls_out);
                
@@ -44,7 +44,7 @@ module control(input logic [7:0] data_in, p,
   // opcode logic
   latch #1 opcode_lat_p1(last_cycle, last_cycle_s2, ph1);
   latch #1 opcode_lat_p2(last_cycle_s2, first_cycle, ph2);
-  latchren #8 opcode_buf(data_in, latched_opcode, ph1, first_cycle, reset);
+  latchren #8 opcode_buf(data_in, latched_opcode, ph1, first_cycle, resetb);
   opcode_pla opcode_pla(latched_opcode, {carry_sel_op, 
                                          c_op_opcode, branch_polarity, 
                                          op_flags, next_state_opcode});
@@ -61,8 +61,8 @@ module control(input logic [7:0] data_in, p,
                          next_state_sel, next_state);
   
   // state PLA
-  latchr #8 state_lat_p1(next_state, next_state_s2, ph1, reset);
-  latchr #8 state_lat_p2(next_state_s2, state, ph2, reset);
+  latchr #8 state_lat_p1(next_state, next_state_s2, ph1, resetb);
+  latchr #8 state_lat_p2(next_state_s2, state, ph2, resetb);
   
   state_pla state_pla(state, {c_state, c_op_state, {last_cycle,
                                                     c_op_sel,

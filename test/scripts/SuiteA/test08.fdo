@@ -4,6 +4,8 @@
 
 vlib work
 vlog "src/parts.sv"
+vlog "src/clock.sv"
+vlog "src/test_structure.sv"
 vlog "src/control.sv"
 vlog "src/alu.sv"
 vlog "src/datapath.sv"

@@ -8,8 +8,10 @@
 module core(output logic [15:0] address,
             input [7:0] data_in,
             output [7:0] data_out,
-            input logic ph1, ph2, resetb,
-            output logic read_en, razor_error);
+            input logic ph0, resetb,
+            output logic read_en, razor_error,
+            input logic osc_en,
+            output logic osc_out, ph1, ph2);
   
   // giant wad of controls
   logic th_in_en;
@@ -41,6 +43,10 @@ module core(output logic [15:0] address,
   logic [7:0] constant;
   logic constant_en;
   logic flag_en;
+  
+  test_structure test_structure(osc_en, osc_out);
+  
+  clockgen clockgen(ph0, ph1, ph2);
   
   datapath dp(data_in, data_out, address, p, ph1, ph2, resetb, razor_error,
               th_in_en, th_out_en, tl_in_en, tl_out_en, p_in_en, p_out_en, p_sel, 

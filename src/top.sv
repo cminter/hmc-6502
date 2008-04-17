@@ -12,10 +12,16 @@ module top(input logic ph1, ph2, resetb);
   
   logic [15:0] address;
   wire [7:0] data;
-  
+  logic ph0;
+  logic osc_en, osc_out;
   wire razor_error;
   
-  chip chip(address, data, ph1, ph2, resetb, read_en, razor_error);
+  logic ph1_gen, ph2_gen;
+  
+  assign ph0 = ph1;
+  
+  chip chip(address, data, ph0, resetb, read_en, razor_error, osc_en, 
+            osc_out, ph1_gen, ph2_gen);
   mem mem(ph1, ph2, !(resetb), address, data, read_en);
   
 endmodule

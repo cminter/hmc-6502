@@ -27,15 +27,6 @@ module optest;
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
     
-    top.chip.core.dp.flaglatch.latch0.q = 0;
-    top.chip.core.dp.flaglatch.latch1.q = 0;
-    top.chip.core.dp.flaglatch.latch2.q = 0;
-    top.chip.core.dp.flaglatch.latch3.q = 0;
-    top.chip.core.dp.flaglatch.latch4.q = 0;
-    top.chip.core.dp.flaglatch.latch5.q = 0;
-    top.chip.core.dp.flaglatch.latch6.q = 0;
-    top.chip.core.dp.flaglatch.latch7.q = 0;
-    
     // path relative to this file.
     $readmemh("test/roms/SuiteA/test06-addsub.rom", top.mem.ROM);
     

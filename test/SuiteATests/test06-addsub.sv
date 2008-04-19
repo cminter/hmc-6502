@@ -27,11 +27,6 @@ module optest;
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
     
-    top.chip.core.dp.regfile.reg_file[0] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[1] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[2] = 8'h0;
-    top.chip.core.dp.regfile.reg_file[3] = 8'h0;
-    
     top.chip.core.dp.flaglatch.latch0.q = 0;
     top.chip.core.dp.flaglatch.latch1.q = 0;
     top.chip.core.dp.flaglatch.latch2.q = 0;

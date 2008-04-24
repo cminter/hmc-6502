@@ -235,6 +235,8 @@ class State:
         if 'dec' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'
+        if 'rol' == self.in_states['alu_op']:
+            self.out.alu_op = int2bin(0x6, 4)
             
         # carry source selection -- set by alu_op unless c_sel is present.
         # If c_sel is present and not '-', then the carry selection made by

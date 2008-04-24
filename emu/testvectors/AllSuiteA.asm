@@ -36,6 +36,8 @@ start:
 	STA $020C
 	LDA #$6C
 	STA $020D
+	LDA #$42
+	STA $020E
 	
 
 ; expected result: $022A = 0x55
@@ -372,7 +374,7 @@ test03:
 	
 ; expected result: $40 = 0x42
 test04:
-	LDA #$E3 ;originally:#$7C
+	LDA #$E8 ;originally:#$7C
 	STA $20
 	LDA #$42 ;originally:#$02
 	STA $21
@@ -840,7 +842,7 @@ test12:
 runstuff:
 	LDA #$45
 	PHA
-	LDA #$5C
+	LDA #$61
 	PHA
 	SEC
 	PHP
@@ -879,8 +881,32 @@ test13:
 ; CHECK test13
 	LDA $21
 	CMP $020D
-	BEQ suiteafinal
+	BEQ test14
 	LDA #$0D
+	STA $0210
+	JMP theend
+
+
+; expect result: $60 = 0x42
+test14:
+	; !!! NOTICE: BRK doesn't work in this
+	; simulator, so commented instructions 
+	; are what should be executed...
+	;JMP pass_intrp
+	LDA #$41
+	STA $60
+	;RTI
+	;pass_intrp:
+	;LDA #$FF
+	;STA $60
+	;BRK (two bytes)
+	INC $60
+	
+; CHECK test14
+	LDA $60
+	CMP $020E
+	BEQ suiteafinal
+	LDA #$0E
 	STA $0210
 	JMP theend
 

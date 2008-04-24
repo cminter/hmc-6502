@@ -1,11 +1,11 @@
-// AllSuiteA.sv
+// test14-brk.sv
+// basic regression test
+// tbarr at cs dot hmc dot edu
 
 `timescale 1 ns / 1 ps
 
 module optest;
   reg ph1, ph2, resetb;
-
-  reg [7:0] aresult;
   
   wire [7:0] data;
   
@@ -20,30 +20,27 @@ module optest;
   
   initial begin
     // for VCD file
-    $dumpfile("test/VCD/outAllSuiteA.vcd");
+    $dumpfile("test/VCD/outSuiteA-test14.vcd");
     $dumpvars;
 
     // init ROM
     top.mem.ROM[4093] = 8'hf0;
     top.mem.ROM[4092] = 8'h00;
-    
-    // BRK Interrupt Vector
-    top.mem.ROM[4095] = 8'hf5;
-    top.mem.ROM[4094] = 8'ha4;
 
+    // BRK Interrupt Vector
+    top.mem.ROM[4095] = 8'hf0;
+    top.mem.ROM[4094] = 8'h05;
+    
     // path relative to this file.
-    $readmemh("test/roms/AllSuiteA.rom", top.mem.ROM);
+    $readmemh("test/roms/SuiteA/test14-brk.rom", top.mem.ROM);
     
     // start test
     resetb = 0;
     #100;
     resetb = 1;
-    #40000;
-    assign aresult = top.mem.RAM[528];
-    assert (aresult == 8'hFF) $display ("SUCCESS! PASSED SUITE A.");
-        else $error("FAILURE: Suite A failed at test%d.", aresult);
-    //assert (top.mem.RAM[528] == 8'hFF) $display ("PASSED");
-    //  else $error("FAILED");
+    #1900;
+    assert (top.mem.RAM[96] == 8'h42) $display ("PASSED Test 14 - brk");
+      else $error("FAILED Test 14 - brk");
     $dumpflush;
     $stop;
   end

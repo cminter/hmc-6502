@@ -316,15 +316,18 @@ db	-	pass	none	1	pc_n	pc_n	pc_n	0	1
 db	-	pass	pc_h	10	r	r	temp	1	0
 tl	-	pass	pc_l	01	r	temp	temp	0	0
 
-jmp_ind:
-# recall bug with page crossing
+jmp_ind_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	pcinc
-db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	1
-db	-	pass	none	0	-	r	temp	1	0	0
 db	-	pass	pc_l	01	r	-	-	0	0	0
 tl	-	inc	none	0	-	temp	r	0	0	0
 # this is where we'd fix Mr. Peddle's bug.
 db	-	pass	pc_h	10	r	r	pc_n	0	0	0
+
+jmp_ind:
+# recall bug with page crossing
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	pcinc	next_s
+db	-	pass	none	1	pc_n	pc_n	pc_n	0	1	1	-
+db	-	pass	none	0	-	r	temp	1	0	0	jmp_ind_final
 
 rts:
 # pull low, then high of pc, jump to pc+1
@@ -345,6 +348,21 @@ db	-	pass	pc_l	01	r	-	-	0	0	-
 sp	-	inc	sp	0	-	1	r	0	0	-
 db	-	pass	pc_h	10	r	-	-	0	0	pull_final
 #sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0
+
+break:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	tl_lat	th_lat	c_sel	flag	next_s
+# set break flag
+0x10	-	pass	p	1	-	pc_n	pc_n	0	1	0	0	0	1	-
+# once pc has been incremented again, push it onto the stack
+sp	pc_h	dec	sp	0	-	1	r	b	0	0	0	1	0	-
+sp	pc_l	dec	sp	0	-	1	r	b	0	0	0	1	0	-
+# push processor onto the stack
+sp	p	dec	sp	0	-	1	r	b	0	0	0	1	0	-
+# set interrupt flag
+0x14	-	pass	p	1	-	pc_n	pc_n	0	1	0	0	0	1	-
+# load and set PC to address stored at $FFFE-$FFFF
+0xfe	-	pass	none	0	-	-	-	0	0	1	0	0	0	-
+0xff	-	pass	none	0	-	r	temp	0	0	0	1	0	0	jmp_ind_final
 
 branch_head:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src

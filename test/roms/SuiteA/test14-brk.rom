@@ -1,0 +1,35 @@
+// 6502 Test #14
+// Heather Justice 4/23/08
+// Tests BRK.
+// Assumes prior tests pass...
+//
+// EXPECTED RESULT: $60 = 0x42
+//
+// LDA #$65
+a9
+65
+// JMP pass_intrp
+4c
+0a
+f0
+// LDA #$41
+a9
+41
+// STA $60
+85
+60
+// RTI
+40
+// pass_intrp:
+// LDA #$FF
+a9
+ff
+// STA $60
+85
+60
+// BRK
+ff
+ff
+// INC $60
+e6
+60

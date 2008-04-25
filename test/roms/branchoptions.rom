@@ -1,0 +1,337 @@
+// Special Test: Branch Options
+// Heather Justice 4/24/08
+// Tests different possible "additions" of branch values to PC
+// (intended for fixing the backwards over page branch bug).
+//
+// EXPECTED RESULTS: $50 = 0x88
+//
+// LDA #$02
+a9
+02
+// CMP #$02
+c9
+02
+// BEQ lowmid1
+f0
+4d
+// ROR
+6a
+// NOP's... (76 of them)
+a9//ea
+a9//ea
+a9//ea
+a9//ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+// lowmid1 ------
+// CLC
+18
+// ROL
+2a
+// CMP #$04
+c9
+04
+// BEQ $f0ae
+f0
+55
+// ADC #$07
+69
+07
+// JMP final
+4c
+27
+f1
+// ROR
+6a
+// NOP's... (79 of them)
+a9//ea
+a9//ea
+a9//ea
+a9//ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+// lowmid2 ------
+// CLC
+18
+// ROL
+2a
+// CMP #$08
+c9
+08
+// BEQ highstart
+f0
+6b
+// CMP #$20
+c9
+20
+// BEQ lowmid2
+f0
+f6
+// CMP #$40
+c9
+40
+// BEQ lowmid1
+f0
+97
+// ROR
+6a
+// NOP's... (98 of them)
+a9//ea
+a9//ea
+a9//ea
+a9//ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+ea
+// highstart ------
+// CLC
+18
+// ROL
+2a
+// CMP #$10
+c9
+10
+// BEQ lowmid2
+f0
+89
+// LDA #$00
+a9
+00
+// final ------
+// STA $50
+85
+50

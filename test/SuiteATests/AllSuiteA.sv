@@ -38,7 +38,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #40000;
+    #45000;
     assign aresult = top.mem.RAM[528];
     assert (aresult == 8'hFF) $display ("SUCCESS! PASSED SUITE A.");
         else $error("FAILURE: Suite A failed at test%d.", aresult);

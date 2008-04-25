@@ -19,9 +19,26 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	sta_src	las
 db	-	pass	none	1	pc_n	pc_n	pc_n	0	0	opcode	0
 
 branch_taken:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat
-0x0	pc_h	add+t	pc_h	10	r	-	-	0	0	0	1
-tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	c_sel
+tl	-	rol	none	0	-	-	-	0	t	0	0	-
+0x00	-	dec	none	0	-	-	-	0	0	0	1	t
+th	pc_h	add	pc_h	10	r	-	-	0	0	0	0	0
+tl	pc_l	add	pc_l	01	r	-	-	0	t	0	0	0
+0x0	pc_h	add+t	pc_h	10	r	r	pc_n	0	0	0	1	-
+
+# old tested stuff, probably not important unless something's still broken:
+##tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0	-
+#th	-	rol	none	0	-	-	-	0	t	0	0	-
+#0x00	-	dec	none	0	-	-	-	0	0	0	0	t
+#db	pc_h	add	none	1	r	-	-	0	0	0	0	0
+#th	pc_l	add	none	0	-	-	-	1	t	1	0	0
+#0x0	pc_h	add+t	pc_h	10	r	-	-	0	0	0	1	-
+#tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0	-
+
+branch_head:
+a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src
+db	-	pass	none	1	pc_n	pc_n	pc_n	1	t	1	0	b
+# if we don't take the branch, go back to base.
 
 none:
 # just fetch next instruction
@@ -363,10 +380,4 @@ sp	p	dec	sp	0	-	1	r	b	0	0	0	1	0	-
 # load and set PC to address stored at $FFFE-$FFFF
 0xfe	-	pass	none	0	-	-	-	0	0	1	0	0	0	-
 0xff	-	pass	none	0	-	r	temp	0	0	0	1	0	0	jmp_ind_final
-
-branch_head:
-a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src
-db	pc_l	add+1	none	1	pc_n	pc_n	pc_n	1	t	1	0	b
-
-# if we don't take the branch, go back to base.
 

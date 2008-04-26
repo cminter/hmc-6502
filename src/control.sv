@@ -161,8 +161,6 @@ module opcode_pla(input logic [7:0] opcode,
   case(opcode)
       `include "src/ucode/opcode_translator/translated_opcodes.txt"
 
-    // NOT AUTO-GENERATED
-    8'h00: out_data <= 33'bzz_0000_0_0_00_00_00_0_0__0_11111111_01101111; // break
     default: out_data <= '0; // processor resets on undefined opcode
   endcase
 endmodule

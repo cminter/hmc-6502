@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3000;
+    #3400;
     assert (top.mem.RAM[66] == 8'hA5) $display ("PASSED Test 08 - cpx & cpy & bit");
       else $error("FAILED Test 08 - cpx & cpy & bit");
     $dumpflush;

@@ -151,7 +151,6 @@ F1	sbc	indirect_y	dp	A	A	3	p	0	C3
 94	sty	mem_wr_zpx	dp	Y	mem	0	0	0	00
 8C	sty	mem_wr_abs	dp	Y	mem	0	0	0	00
 
-FF	brk	break	-	-	-	0	0	0	14
 EA	nop	single_byte	_	_	_	0	p	0	00
 
 18	clc	clear_flag	A	A	_	a	p	0	01

@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3000;
+    #3400;
     assert (top.mem.RAM[51] == 8'h42) $display ("PASSED Test 12 - rti");
       else $error("FAILED Test 12 - rti");
     $dumpflush;

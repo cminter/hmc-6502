@@ -5,7 +5,7 @@
 import sys
 from odict import OrderedDict
 
-BASE_STATE = 5
+BASE_STATE = 11
 
 class ParseError(Exception):
     pass
@@ -157,6 +157,12 @@ class State:
             self.out.flag_en = '1'
         if 'a'== self.in_states['wrt_en']:
             self.out.reg_write_addr = '00'
+            self.out.reg_write_en = '1'
+        if 'x' == self.in_states['wrt_en']:
+            self.out.reg_write_addr = '01'
+            self.out.reg_write_en = '1'
+        if 'y' == self.in_states['wrt_en']:
+            self.out.reg_write_addr = '10'
             self.out.reg_write_en = '1'
         if '1' == self.in_states['pc_w_en']:
             self.out.pch_in_en = '1'

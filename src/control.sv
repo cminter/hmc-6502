@@ -11,8 +11,8 @@ parameter C_STATE_WIDTH = 32;
 parameter C_OP_WIDTH = 14;
 parameter C_INT_WIDTH = 12; // total width of internal state signals
 
-parameter BRANCH_TAKEN_STATE = 8'd6;
-parameter BRANCH_NOT_TAKEN_STATE = 8'd5;
+parameter BRANCH_TAKEN_STATE = 8'd12;
+parameter BRANCH_NOT_TAKEN_STATE = 8'd11;
 
 parameter C_TOTAL = (C_STATE_WIDTH + C_OP_WIDTH + C_INT_WIDTH);
 
@@ -162,8 +162,8 @@ module opcode_pla(input logic [7:0] opcode,
       `include "src/ucode/opcode_translator/translated_opcodes.txt"
 
     // NOT AUTO-GENERATED
-    8'h00: out_data <= 33'bzz_0000_0_0_00_00_00_0_0__0_11111111_00000000; // reset
-    default: out_data <= 'x;
+    8'h00: out_data <= 33'bzz_0000_0_0_00_00_00_0_0__0_11111111_01101111; // break
+    default: out_data <= '0; // processor resets on undefined opcode
   endcase
 endmodule
 

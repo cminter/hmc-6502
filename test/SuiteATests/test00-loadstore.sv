@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3400;
+    #4000;
     assert (top.mem.RAM[554] == 8'h55) $display ("PASSED Test 00 - loads & stores");
       else $error("FAILED Test 00 - loads & stores");
     $dumpflush;

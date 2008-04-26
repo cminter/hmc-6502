@@ -38,7 +38,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #1900;
+    #2300;
     assert (top.mem.RAM[96] == 8'h42) $display ("PASSED Test 14 - brk");
       else $error("FAILED Test 14 - brk");
     $dumpflush;

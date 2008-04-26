@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #4400;
+    #4800;
     assert (top.mem.RAM[477] == 8'h6E) $display ("PASSED Test 03 - bitshifts");
       else $error("FAILED Test 03 - bit shifts");
     $dumpflush;

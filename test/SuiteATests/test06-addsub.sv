@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #4400;
+    #4800;
     assert (top.mem.RAM[48] == 8'h9D) $display ("PASSED Test 06 - adds & subtracts");
       else $error("FAILED Test 06 - adds & subtracts");
     $dumpflush;

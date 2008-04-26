@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3900;
+    #4300;
     assert (top.mem.RAM[21] == 8'h7F) $display ("PASSED Test 07 - cmp & beq & bne");
       else $error("FAILED Test 07 - cmp & beq & bne");
     $dumpflush;

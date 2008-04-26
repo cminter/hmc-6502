@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #900;
+    #1400;
     assert (top.mem.RAM[64] == 8'h33) $display ("PASSED Test 05 - register instructions");
       else $error("FAILED Test 05 - register instructions");
     $dumpflush;

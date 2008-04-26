@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3900;
+    #4300;
     assert (top.mem.RAM[48] == 8'hCE) $display ("PASSED Test 10 - flag instructions");
       else $error("FAILED Test 10 - flag instructions");
     $dumpflush;

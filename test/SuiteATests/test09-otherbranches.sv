@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #3400;
+    #3800;
     assert (top.mem.RAM[128] == 8'h1F) $display ("PASSED Test 09 - other branches");
       else $error("FAILED Test 09 - other branches");
     $dumpflush;

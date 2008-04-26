@@ -9,9 +9,16 @@ reset:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	pcinc
 0x00	-	pass	p	p	-	-	-	-	0
 0x00	-	pass	a	0	-	-	-	-	0
+0x00	-	pass	x	0	-	-	-	-	0
+0x00	-	pass	y	0	-	-	-	-	0
 0xff	-	pass	sp	0	-	-	-	-	0
-0xf0	-	pass	pc_h	10	r	-	-	1	0
-0x00	-	pass	pc_l	01	r	temp	r	0	0
+# load program counter from {0xfffd, 0xfffc}.
+0xff	-	pass	-	0	-	-	-	1	0
+0xfd	-	pass	-	0	-	temp	r	-	0
+db	-	pass	pc_h	10	r	-	-	0	0
+0xfc	-	pass	-	0	-	temp	r	-	0
+db	-	pass	pc_l	01	r	-	-	0	0
+0x00	-	pass	-	0	-	pc_n	pc_n	0	0
 
 # ensure that base state in assembler is changed to reflect changes here.
 base:

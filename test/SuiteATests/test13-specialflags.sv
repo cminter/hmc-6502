@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #800;
+    #1200;
     assert (top.mem.RAM[33] == 8'h0C) $display ("PASSED Test 13 - special flags");
       else $error("FAILED Test 13 - special flags");
     $dumpflush;

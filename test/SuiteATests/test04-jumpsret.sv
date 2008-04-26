@@ -37,7 +37,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #1200;
+    #1600;
     assert (top.mem.RAM[64] == 8'h42) $display ("PASSED Test 04 - jumps & returns");
       else $error("FAILED Test 04 - jumps & returns");
     $dumpflush;

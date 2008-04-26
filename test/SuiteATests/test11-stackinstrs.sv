@@ -34,7 +34,7 @@ module optest;
     resetb = 0;
     #100;
     resetb = 1;
-    #800;
+    #1200;
     assert (top.mem.RAM[48] == 8'h29) $display ("PASSED Test 11 - stack instructions");
       else $error("FAILED Test 11 - stack instructions");
     $dumpflush;

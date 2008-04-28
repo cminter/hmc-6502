@@ -1,3 +1,4 @@
+# Microarchitecture team's early notes.
 
 opcode_pla produces the following signals (with corresponding bits) for use in datapath:
 
@@ -45,19 +46,6 @@ ALU CODES:
       4'h9: {y, c_out} = {1'b0, a & b}; // test bits
       4'ha: {c_out, y} = {1'b0, a ^ b}; // EOR
       4'hb: {y, c_out} = 9'b111111111; // ones (for setting flags)
-Old-New
-	0-2
-	1-3
-	2-4
-	3-8
-	4-a
-	5-0
-	6-1
-	7-5
-	8-6
-	9-7
-	a-9
-	b-b
 
 Bitfield for flags is: [N,V,_,B,D,I,Z,C]
     N = Negative Result -- sometimes (S)ign Bit

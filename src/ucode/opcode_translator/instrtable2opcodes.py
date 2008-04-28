@@ -1,4 +1,4 @@
-# Author:   Kyle Marsh <kmarsh@cs.hmc.edu>, Harvey Mudd College
+# Author:   Kyle Marsh <KMarsh@cs.hmc.edu>, Harvey Mudd College
 # Date:     11 March 2008
 #
 #   IN:
@@ -12,7 +12,7 @@
 #
 #   NOTES:
 #       *The opcode output is system verilog in the following form:
-#           8'hXX: out_data <= 31'b<aluop>_<d_in_en>_<reg_write_en>_
+#           8'hXX: out_data <= 31'b<c_sel>_<aluop>_<d_in_en>_<reg_write_en>_
 #               <reg_read_addr_a>_<reg_read_addr_b>_<reg_write_addr>_
 #               <reg_a_en>_<reg_b_en>__<branch_polarity>_<flags>_<state>;
 #
@@ -21,20 +21,23 @@
 #       handles IO redirection.
 
 help = """Useage: python instrtable2opcodes.py infile.txt
-Script to take in a table of instructions and generate lines of verilog to
-be included in the case statement of the opcode_pla module in control.sv.
+Script to take in a table of instructions and generate lines of system verilog
+to be included in the case statement of the opcode_pla module in control.sv.
+This script leaves the next state label as a string, so
+/src/ucode/opcode_translator/opcode_label2bin.py must be run on its output
+to convert those into bitfields.
 
 Output lines are in the following form:
-    8'hXX: out_data <= 31'b<aluop>_<d_in_en>_<reg_write_en>_
+    8'hXX: out_data <= 31'b<c_sel>_<aluop>_<d_in_en>_<reg_write_en>_
         <reg_read_addr_a>_<reg_read_addr_b>_<reg_write_addr>_
-        <reg_a_en>_<reg_b_en>__<branch_polarity>_<flags>_<state_label>;
+        <reg_a_en>_<reg_b_en>__<branch_polarity>_<flags>_<next_state_label>;
 """
 
 import re
 import sys
 import os
 
-# Global Constants
+# Global Constants (order of fields in the input file)
 FIELDS = 10
 OPCODE = 0
 INSTR = 1
@@ -174,6 +177,7 @@ def main():
         label = line[STATE]
         instruction = line[INSTR]
 
+        # Write the output to the file.
         outfile.write("8'h%s: out_data <= 33'b%s_%s_%s_%s_%s_%s_%s_%s_%s__%s_%s_%s; //%s (%s)\n"
                 %(opcode, carry_select, aluop, d_in_en, reg_write_en,
                   reg_read_addr_a, reg_read_addr_b, reg_write_addr,

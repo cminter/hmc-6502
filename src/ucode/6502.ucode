@@ -1,9 +1,31 @@
 # 6502.ucode
-# input for ucodeasm
-# tbarr at cs hmc edu, 28oct07
+# 6502 microcode table for hmc-6502
+# 28oct07
+# tbarr at cs hmc edu
+# hjustice at hmc edu
+# kmarsh at cs hmc edu
 #
-# SPECIAL NOTE FOR NEXT STATES: last state with next_s = NEXT_STATE_NAME 
-# means that NEXT_STATE_NAME must appear *first* in this file...
+# Microcode for the Mudd II hmc-6502.  This table is used as input by
+# /src/ucode/ucasm.py to generate the contents of the system verilog case
+# structure in control.sv for the state ROM (called state_pla in the verilog).
+#
+# Each labeled section, called a state, executes some number of cycles,
+# referred to as cycles or lines.  Each line describes the control signals
+# that are important to that cycle.  Each signal listed will be set by
+# /src/ucode/ucasm.py when it assembles this table. If any signal is listed
+# as "func", the opcode ROM is used to determine the control signals rather
+# than the state ROM -- see func_mux, c_op_state, and c_op_opcode in
+# control.sv to see which signals these are.
+# 
+# Finally, two warnings: because a "func" listed anywhere in a line will
+# trigger the opcode ROM, other signals may be set in that line that are not
+# actually used because they will be selected from the opcode ROM instead of
+# the state ROM.  This is confusing and the assembler should have been
+# written to prevent it, but it is something we must deal with.  Second,
+# when next_s is listed for the last cycle in a state, the state that gets
+# jumped to must appear earlier in this file than the first reference to it.
+# Basically the assembler takes a single pass and has to know about a state
+# before it can reference it.
 
 reset:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	pcinc
@@ -20,7 +42,8 @@ db	-	pass	pc_h	10	r	-	-	0	0
 db	-	pass	pc_l	01	r	-	-	0	0
 0x00	-	pass	-	0	-	pc_n	pc_n	0	0
 
-# ensure that base state in assembler is changed to reflect changes here.
+# ROM index of base needs to be hard coded into ucasm.py.  If you make any
+# changes above this point, make sure to update ucasm.py.
 base:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	sta_src	last_cy
 db	-	pass	none	1	pc_n	pc_n	pc_n	0	0	opcode	0
@@ -33,15 +56,6 @@ th	pc_h	add	pc_h	10	r	-	-	0	0	0	0	0
 tl	pc_l	add	pc_l	01	r	-	-	0	t	0	0	0
 0x0	pc_h	add+t	pc_h	10	r	r	pc_n	0	0	0	1	-
 
-# old tested stuff, probably not important unless something's still broken:
-##tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0	-
-#th	-	rol	none	0	-	-	-	0	t	0	0	-
-#0x00	-	dec	none	0	-	-	-	0	0	0	0	t
-#db	pc_h	add	none	1	r	-	-	0	0	0	0	0
-#th	pc_l	add	none	0	-	-	-	1	t	1	0	0
-#0x0	pc_h	add+t	pc_h	10	r	-	-	0	0	0	1	-
-#tl	-	pass	pc_l	01	r	temp	temp	0	0	0	0	-
-
 branch_head:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	pcinc	flag	tl_lat	th_lat	nxt_src
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	t	1	0	b
@@ -53,37 +67,30 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 -	-	pass	none	0	-	pc_n	pc_n	0	0
 
 single_byte:
-# 1.0
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 func	func	func	func	0	-	pc_n	pc_n	0	1
 
 set_flag:
-# 1.0
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 0xff	-	pass	p	0	-	pc_n	pc_n	0	1
 
 clear_flag:
-# 1.0
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 0x00	-	pass	p	0	-	pc_n	pc_n	0	1
 
 imm:
-# immediate addressing (5.4)
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
 db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 mem_ex_zpa:
-# 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	-	pass	none	0	pc_n	0	r	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 mem_wr_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri
 db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpa:
-# 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	func	pass	none	0	pc_n	0	r	0	0	b	mem_wr_final
 
@@ -94,21 +101,15 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next
 mem_wr_zpx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	x	add	none	0	pc_n	0	-	1	0	0	mem_wr_zpxy2
-#-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_zpy:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	y	add	none	0	pc_n	0	-	1	0	0	mem_wr_zpxy2
-#-	func	-	none	0	-	0	temp	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_abs:
-# 5.6
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	-
 db	func	pass	none	0	-	r	temp	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	1	0
 
 mem_wr_abxy2:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
@@ -118,16 +119,10 @@ db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
 mem_wr_abx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
 db	x	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	mem_wr_abxy2
-#db	-	pass+t	none	0	-	-	-	1	0	0	0	-
-#db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_aby:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
 db	y	add	none	1	pc_n	pc_n	pc_n	0	1	t	0	mem_wr_abxy2
-#db	-	pass+t	none	0	-	-	-	1	0	0	0	-
-#db	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_idy:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
@@ -145,8 +140,6 @@ tl	y	add	none	0	-	temp	r	0	1	t	0	-
 th	-	pass+t	none	0	-	r	temp	1	0	0	0	-
 # Use temporary register as address and write whatever func says
 -	func	pass	none	0	-	temp	temp	0	0	0	b	mem_wr_final
-# Incremet the program counter and set the flags
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 mem_wr_idx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	memwri	next_s
@@ -160,14 +153,11 @@ db	-	pass	none	0	-	-	-	1	0	0	0	-
 tl	x	add	none	0	-	0	r	0	0	0	0	-
 # knowing result is low byte address, get data for writing:
 db	func	pass	none	0	-	temp	r	0	0	0	b	mem_wr_final
-# final write state:
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	1	0
 
 abs:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	-
 db	-	pass	none	0	-	r	temp	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 indirect_x:
 # Fetch opcode, then base offset+X, stored in a_lat. Repeat for offset+x+1, 
@@ -183,8 +173,6 @@ db	-	pass	none	0	-	-	-	1	0	0	-
 tl	x	add	none	0	-	0	r	0	0	0	-
 # knowing result is low byte address, get data from memory:
 db	-	pass	none	0	-	temp	r	0	0	0	imm
-# finally, do the instruction function:
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1	
 
 abs_xy_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
@@ -193,26 +181,18 @@ db	-	pass+t	none	0	-	r	temp	0	0	imm
 abs_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	x	add	none	1	pc_n	pc_n	pc_n	1	t	abs_xy_final
-#db	-	pass+t	none	0	-	r	temp	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# abs_y looks like abs_x.
 abs_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	y	add	none	1	pc_n	pc_n	pc_n	1	t	abs_xy_final
-#db	-	pass+t	none	0	-	r	temp	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 zp_x:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	x	add	none	0	-	0	r	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
-# zp_y looks like zp_x.
 zp_y:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	next_s
 db	y	add	none	0	-	0	r	0	0	imm
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	1
 
 inc:
 a_sel	b_sel	alu_op	wrt_en	pcinc	pc_sel	a_h_sel	a_l_sel	tl_lat	flag
@@ -238,14 +218,10 @@ db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
 mem_rw_zpa:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	-	pass	none	0	pc_n	0	r	1	0	0	mem_rw_zp2
-#db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
 
 mem_rw_zpx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	flag	memwri	next_s
 db	x	add	none	0	pc_n	0	r	1	0	0	mem_rw_zp2
-#db	func	func	func	0	-	0	temp	0	1	r	mem_rw_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0
 
 mem_rw_ab2:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
@@ -255,18 +231,14 @@ mem_rw_abs:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
 db	-	pass	none	1	pc_n	pc_n	pc_n	1	0	0	0	-
 db	-	pass	none	0	pc_n	r	temp	0	1	0	0	mem_rw_ab2
-#db	func	func	func	0	-	temp	temp	0	0	1	r	mem_rw_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 mem_rw_abx:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	tl_lat	th_lat	flag	memwri	next_s
 db	x	add	none	1	pc_n	pc_n	pc_n	1	0	t	0	-
 db	-	pass+t	none	0	pc_n	r	temp	0	1	0	0	mem_rw_ab2
-#db	func	func	func	0	-	temp	temp	0	0	1	r	mem_rw_final
-#db	-	-	none	1	pc_n	pc_n	pc_n	0	0	0	0
 
 indirect_y:
-# over by two cycles
+# two cycles longer than on original 6502
 # "indirect indexed" addressing: *((*arg)+y)
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	th_lat	tl_lat	flag	next_s
 # Address of low byte comes in over data line -- save it in temp_high and pass it to address
@@ -283,8 +255,6 @@ tl	y	add	none	0	-	-	-	0	1	t	-
 th	-	pass+t	none	0	-	-	-	1	0	0	-
 # Get data from address stored in temps
 db	-	pass	none	0	-	temp	temp	0	0	0	imm
-# Data comes in on data line.  Opcode PLA decides what to do for the rest. PC is incremented
-#db	func	func	func	1	pc_n	pc_n	pc_n	0	0	1
 
 # store and read-modify-write instructions look a lot like these.
 # RMW ops must use non-default data read source R.
@@ -297,7 +267,6 @@ a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
 push:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
 sp	func	dec	sp	0	-	1	r	b	0	1	push_final
-#-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
 
 pull_final:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel
@@ -307,18 +276,15 @@ pull:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
 sp	-	pass	none	0	-	1	r	0	0	-	-
 db	-	pass	func	0	-	-	-	0	0	0	pull_final
-#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 push_flags:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
 sp	p	dec	sp	0	-	1	r	b	0	1	push_final
-#-	-	-	none	1	pc_n	pc_n	pc_n	0	0	-
 
 pull_flags:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	c_sel	next_s
 sp	-	pass	none	0	-	1	r	0	0	-	-
 db	-	pass	p	0	-	-	-	0	0	-	pull_final
-#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0	1
 
 jsr:
 # push high order byte of pc+2, then low order byte, jump to {pcl, pch}.
@@ -371,7 +337,6 @@ sp	-	inc	sp	0	-	1	r	0	0	-
 db	-	pass	pc_l	01	r	-	-	0	0	-
 sp	-	inc	sp	0	-	1	r	0	0	-
 db	-	pass	pc_h	10	r	-	-	0	0	pull_final
-#sp	-	inc	sp	1	pc_n	pc_n	pc_n	0	0
 
 break:
 a_sel	b_sel	alu_op	wrt_en	pc_w_en	pc_sel	a_h_sel	a_l_sel	memwri	pcinc	tl_lat	th_lat	c_sel	flag	next_s

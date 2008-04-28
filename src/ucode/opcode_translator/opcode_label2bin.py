@@ -3,14 +3,14 @@
 #
 #   IN:
 #       *argv[1]                # List of lines destined for control.sv with
-#                               # next-state labels instead of numbers.
+#                               # next-state labels instead of ROM indices.
 #       *6502.ucode.compiled    # File containing state labels and their
-#                               # corresponding number in decimal.
+#                               # corresponding ROM indices in decimal.
 #       *argv[2]                # Optional expected output file for testing.
 #
 #   OUT:
 #       *tranlsated_opcodes.txt # List of lines for control.sv with
-#                               # next-state numbers in place
+#                               # next-state indices in place
 #       *out.diff               # If argv[2] supplied and valid, contains
 #                               # `diff translated_opcodes.txt argv[2]'
 #
@@ -21,7 +21,7 @@
 
 help = """Useage: python opcode_label2bin.py infile [expected_output]
 Translation script to replace next-state names in lines of the input file with
-their corresponding numbers as defined in 6502.ucode.compiled.
+their corresponding ROM indices as defined in 6502.ucode.compiled.
 
 If the optional expected_output file is included, this is compared against
 the output of the script using diff and the result is sent to out.diff.  If
@@ -76,14 +76,15 @@ def main():
     except IndexError:
         debug = False
 
-    # Hard-coded relative path to ucode file
+    # Hard-coded relative path to compiled microcode.
     namefile = open('../6502.ucode.compiled')
     name_list = namefile.readlines()
     namefile.close()
     
-    # Suck out the lines with the labels and numbers.  First chop off the
+    # Suck out the lines with the labels and indices.  First chop off the
     # leading comments which get in the way.  Assumes we know a significant
-    # amount about the format of 6502.ucode.compiled.
+    # amount about the format of 6502.ucode.compiled **and that the format
+    # doesn't change -- this is non-robust code**.
     name_list = name_list[4:]
     name_list = [line.strip('// ').strip() for line in name_list if
             re.match('^// [a-z_]+:[0-9]+$', line)]
@@ -94,7 +95,7 @@ def main():
         namelistoutfile.close()
 
     # First part of each element is the key, second is the value; turn it
-    # into a dictionary.  All non alphanumeric characters in thekey are
+    # into a dictionary.  All non alphanumeric characters in the key are
     # escaped to make it regex-safe later.
     name_dict = {}
     for line in name_list:

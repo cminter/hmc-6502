@@ -1,4 +1,13 @@
-Opcode Instr AddrMd SrcA SrcB Dest ALUOp c_sel B_polar flags
+This table lists all defined opcodes and the opcode-specific control signals
+for each.  It gets compiled by
+/src/ucode/opcode_translator/instrtable2opcodes.py and
+/src/ucode/opcode_translator/opcode_label2bin.py into the system verilog
+lines to populate the case structure in the opcode_pla module in control.sv.
+the signals are provided in the following order:
+        Opcode Instr AddrMd SrcA SrcB Dest ALUOp carry_sel Branch_polarity flags
+This file should be viewed with a tab stop of 12 or larger to keep its
+structure in a human-readable form.
+
 Note: Bitfield for flags is: [N,V,_,B,D,I,Z,C]
 N = Negative Result -- sometimes (S)ign Bit
 V = Overflow
@@ -9,7 +18,6 @@ I = Interrupt Disable
 Z = Zero Result
 C = Carry
 
-FIXME: Sample opcode lines have flag mask of 02 -- why?
 69	adc	imm	dp	A	A	2	p	0	C3
 65	adc	mem_ex_zpa	dp	A	A	2	p	0	C3
 75	adc	zp_x	dp	A	A	2	p	0	C3

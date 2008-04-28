@@ -1,6 +1,17 @@
 # ucasm.py
 # microcode assembler for 6502
 # tbarr@cs.hmc.edu, 28oct2007
+# hjustice@hmc.edu
+# kmarsh@cs.hmc.edu
+#
+# This code reads in 6520 microcode formatted as in /src/ucode/6502.ucode
+# and assembles it into system verilog lines for inclusion into a case
+# structure (used to define a ROM).  It uses ordered dictionaries to store
+# the values of the control signals and writes them to the standard output
+# when it finishes.
+#
+# The ordered dictionaries are initialized with default values for each
+# signal, so the microcode file needs only specify relevant signals.
 
 import sys
 from odict import OrderedDict
@@ -235,9 +246,6 @@ class State:
         if 'add+t' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x2, 4)
             self.out.carry_sel = '01'
-#        if 'cmp' == self.in_states['alu_op']:
-#            self.out.alu_op = int2bin(0x3, 4)
-#            self.out.carry_sel = '11'
         if 'dec' == self.in_states['alu_op']:
             self.out.alu_op = int2bin(0x1, 4)
             self.out.carry_sel = '11'

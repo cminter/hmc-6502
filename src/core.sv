@@ -5,6 +5,8 @@
 
 `timescale 1 ns / 1 ps
 
+// core wires together the datapath and controller and throws in the clock
+// generator.
 module core(output logic [15:0] address,
             input [7:0] data_in,
             output [7:0] data_out,

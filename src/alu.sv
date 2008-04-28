@@ -15,6 +15,7 @@ module alu(input logic [7:0] a, b,
   logic testbits;
   assign testbits = (op === 4'h9);
   
+  // Set the flags
   assign zero = (y === 8'b0); // Z flag
   assign negative = y[7] | (testbits & a[7]); // S flag
 
@@ -30,8 +31,8 @@ module alu(input logic [7:0] a, b,
   adderc #1 high_add(a_conditionally_inverted[7], b[7], low7_cout, high_sum, full_cout);
   assign full_sum = {high_sum, low7_sum};
 
-  // The whole purpose of this was to get the carry out from bits 6 and 7 to
-  // produce the overflow flag:
+  // The whole purpose of the last 8 lines was to get the carry out from bits
+  // 6 and 7 to produce the overflow flag:
   assign overflow = (low7_cout ^ full_cout) | (testbits & a[6]);
   
   always_comb begin

@@ -2,6 +2,7 @@
 // parts bin for hmc-6502 CPU
 // 31oct07
 // tbarr at cs hmc edu
+// All the bits and pieces used in larger modules.
 
 `timescale 1 ns / 1 ps
 
@@ -15,6 +16,8 @@ module adderc #(parameter WIDTH = 8)
   assign {cout, y} = a + b + cin;
 endmodule
 
+// Adder with no carry in (actually described in code as A+C_in rather than
+// A+B but it's functionally equivalent)
 module halfadder #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0]  a,
               input logic              cin,
@@ -24,6 +27,8 @@ module halfadder #(parameter WIDTH = 8)
   assign {cout, y} = a + cin;
 endmodule
 
+// Decides whether or not to take a branch by comparing unmasked flags to the
+// processor state register and branhc polarity.
 module branchlogic(input logic [7:0] p, op_flags,
                    input logic branch_polarity,
                    output logic branch_taken);
@@ -33,6 +38,7 @@ module branchlogic(input logic [7:0] p, op_flags,
   assign branch_taken = branch_polarity ^ flag_high;
 endmodule
 
+// The almighty tristate.
 module tristate #(parameter WIDTH = 8)
                 (input logic [WIDTH-1:0] in,
                  input logic enable,
@@ -53,6 +59,9 @@ module latch #(parameter WIDTH = 8)
       if (clk) q <= d;
 endmodule
 
+// Razor Latch module.  In verilog this is functionally equivallent to a
+// normal latch, but the error output is important in actual hardware.  See
+// the description of razor latches in the chip report for more information.
 module razorlatch #(parameter WIDTH = 8)
              (input logic [WIDTH-1:0] d,
               output logic [WIDTH-1:0] q,
@@ -128,6 +137,7 @@ module registerbuf (input logic in_enable, out_enable,
   tristate #8 tris(value, out_enable, out_bus);
 endmodule
 
+// Incrementer
 module inc #(parameter WIDTH = 16)
                   (input logic [WIDTH-1:0] a,
                    input logic c_in,

@@ -1,7 +1,9 @@
-// control.sv
+// control-prototype.sv
 // control FSM and opcode ROM for hmc-6502 CPU
 // 31oct07
 // tbarr at cs hmc edu
+// this was a proof of concept for the controller early in the design
+// process.  It is no longer used in the RTL.  Please refer to control.sv.
 
 `timescale 1 ns / 1 ps
 

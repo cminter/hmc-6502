@@ -2,6 +2,8 @@
 // top level test module for hmc-6502
 // 2dec07
 // tbarr at cs hmc edu
+// The highest level of the project.  Contains the entire chip and connects
+// it to memory for simulation.
 
 `timescale 1 ns / 1 ps
 

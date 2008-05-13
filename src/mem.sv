@@ -27,7 +27,11 @@ module mem(input logic ph1, ph2, reset,
            else data_out = 8'b0; // zero on undefined read
       end
     //memwrite
-    else if ( address[15:12] == 4'b0000 ) RAM[address[11:0]] <= data;
+    end
+
+ always_ff @ ( negedge ph2 ) begin
+    if ( ~read_write_sel ) begin
+      if ( address[15:12] == 4'b0000 ) RAM[address[11:0]] <= data;
   end
-  
+ end
 endmodule
